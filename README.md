@@ -12,7 +12,7 @@ The theme is AI/software engineering with validation: use agents or automation t
 | Kubernetes DevOps validation | `Accenture_01 Kubernetes_DevOps.pdf` | `kube-copilot` | `kube-copilot/reports/risk-comparison.md` |
 | Electric haul truck trajectory planning | `RTSIH - Opt-OO - Trajectory planning for electric haul trucks.pdf` | `haul-truck-planner` | `haul-truck-planner/reports/route-experiment.md` |
 
-Read `THREE_LINE_ESIPS_PLAN.md` for the short application and interview framing.
+Read `BEGINNER_GUIDE.zh-CN.md` first if you are new to the workspace, then read `THREE_LINE_ESIPS_PLAN.md` for the short application and interview framing.
 
 ## Quick Check
 
