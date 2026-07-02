@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aegisops-demo-api
+spec:
+  template:
+    spec:
+      containers:
+        - name: api
+          image: aegisops/demo-api:latest
+          env:
+            - name: APP_MODE
+              value: demo

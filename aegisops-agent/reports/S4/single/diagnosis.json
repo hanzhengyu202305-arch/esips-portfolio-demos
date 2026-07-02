@@ -1,0 +1,17 @@
+{
+  "scenario_id": "S4",
+  "root_cause_id": "invalid_app_mode_env",
+  "confidence": 0.93,
+  "evidence_refs": [
+    "k8s:S4:invalid-env"
+  ],
+  "retrieved_context_refs": [
+    "kubernetes-crashloop",
+    "github-actions",
+    "docker-build"
+  ],
+  "impact": "Pod restarts because APP_MODE is set to an unsupported value.",
+  "fix_plan": [
+    "Patch k8s/overlays/broken-env/deployment.yaml using the scenario allowlist."
+  ]
+}

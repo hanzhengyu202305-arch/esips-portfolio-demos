@@ -1,0 +1,178 @@
+[
+  {
+    "scenario_id": "S1",
+    "mode": "single",
+    "root_cause_correct": true,
+    "fix_successful": true,
+    "latency_seconds": 0.397,
+    "prompt_tokens": 548,
+    "completion_tokens": 220,
+    "estimated_cost_usd": 0.000214,
+    "tool_calls": 6
+  },
+  {
+    "scenario_id": "S1",
+    "mode": "multi",
+    "root_cause_correct": true,
+    "fix_successful": true,
+    "latency_seconds": 0.401,
+    "prompt_tokens": 808,
+    "completion_tokens": 340,
+    "estimated_cost_usd": 0.000325,
+    "tool_calls": 10
+  },
+  {
+    "scenario_id": "S2",
+    "mode": "single",
+    "root_cause_correct": true,
+    "fix_successful": true,
+    "latency_seconds": 0.386,
+    "prompt_tokens": 572,
+    "completion_tokens": 220,
+    "estimated_cost_usd": 0.000218,
+    "tool_calls": 6
+  },
+  {
+    "scenario_id": "S2",
+    "mode": "multi",
+    "root_cause_correct": true,
+    "fix_successful": true,
+    "latency_seconds": 0.405,
+    "prompt_tokens": 832,
+    "completion_tokens": 340,
+    "estimated_cost_usd": 0.000329,
+    "tool_calls": 10
+  },
+  {
+    "scenario_id": "S3",
+    "mode": "single",
+    "root_cause_correct": true,
+    "fix_successful": true,
+    "latency_seconds": 0.407,
+    "prompt_tokens": 560,
+    "completion_tokens": 220,
+    "estimated_cost_usd": 0.000216,
+    "tool_calls": 6
+  },
+  {
+    "scenario_id": "S3",
+    "mode": "multi",
+    "root_cause_correct": true,
+    "fix_successful": true,
+    "latency_seconds": 0.405,
+    "prompt_tokens": 820,
+    "completion_tokens": 340,
+    "estimated_cost_usd": 0.000327,
+    "tool_calls": 10
+  },
+  {
+    "scenario_id": "S4",
+    "mode": "single",
+    "root_cause_correct": true,
+    "fix_successful": true,
+    "latency_seconds": 0.401,
+    "prompt_tokens": 564,
+    "completion_tokens": 220,
+    "estimated_cost_usd": 0.000217,
+    "tool_calls": 6
+  },
+  {
+    "scenario_id": "S4",
+    "mode": "multi",
+    "root_cause_correct": true,
+    "fix_successful": true,
+    "latency_seconds": 0.404,
+    "prompt_tokens": 824,
+    "completion_tokens": 340,
+    "estimated_cost_usd": 0.000328,
+    "tool_calls": 10
+  },
+  {
+    "scenario_id": "S5",
+    "mode": "single",
+    "root_cause_correct": true,
+    "fix_successful": true,
+    "latency_seconds": 0.404,
+    "prompt_tokens": 554,
+    "completion_tokens": 220,
+    "estimated_cost_usd": 0.000215,
+    "tool_calls": 6
+  },
+  {
+    "scenario_id": "S5",
+    "mode": "multi",
+    "root_cause_correct": true,
+    "fix_successful": true,
+    "latency_seconds": 0.398,
+    "prompt_tokens": 814,
+    "completion_tokens": 340,
+    "estimated_cost_usd": 0.000326,
+    "tool_calls": 10
+  },
+  {
+    "scenario_id": "S6",
+    "mode": "single",
+    "root_cause_correct": true,
+    "fix_successful": true,
+    "latency_seconds": 0.407,
+    "prompt_tokens": 538,
+    "completion_tokens": 220,
+    "estimated_cost_usd": 0.000213,
+    "tool_calls": 6
+  },
+  {
+    "scenario_id": "S6",
+    "mode": "multi",
+    "root_cause_correct": true,
+    "fix_successful": true,
+    "latency_seconds": 0.426,
+    "prompt_tokens": 798,
+    "completion_tokens": 340,
+    "estimated_cost_usd": 0.000324,
+    "tool_calls": 10
+  },
+  {
+    "scenario_id": "S7",
+    "mode": "single",
+    "root_cause_correct": true,
+    "fix_successful": true,
+    "latency_seconds": 0.427,
+    "prompt_tokens": 542,
+    "completion_tokens": 220,
+    "estimated_cost_usd": 0.000213,
+    "tool_calls": 6
+  },
+  {
+    "scenario_id": "S7",
+    "mode": "multi",
+    "root_cause_correct": true,
+    "fix_successful": true,
+    "latency_seconds": 0.426,
+    "prompt_tokens": 802,
+    "completion_tokens": 340,
+    "estimated_cost_usd": 0.000324,
+    "tool_calls": 10
+  },
+  {
+    "scenario_id": "S8",
+    "mode": "single",
+    "root_cause_correct": true,
+    "fix_successful": true,
+    "latency_seconds": 0.411,
+    "prompt_tokens": 546,
+    "completion_tokens": 220,
+    "estimated_cost_usd": 0.000214,
+    "tool_calls": 6
+  },
+  {
+    "scenario_id": "S8",
+    "mode": "multi",
+    "root_cause_correct": true,
+    "fix_successful": true,
+    "latency_seconds": 0.409,
+    "prompt_tokens": 806,
+    "completion_tokens": 340,
+    "estimated_cost_usd": 0.000325,
+    "tool_calls": 10
+  }
+]

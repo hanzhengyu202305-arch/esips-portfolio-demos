@@ -1,0 +1,7 @@
+--- a/k8s/overlays/healthy/kustomization.yaml
++++ b/k8s/overlays/healthy/kustomization.yaml
+@@ -1,3 +1,3 @@
+ image:
+   repository: aegisops/demo-api
+-  tag: canary-missing
++  tag: local

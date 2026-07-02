@@ -1,0 +1,4 @@
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 8000

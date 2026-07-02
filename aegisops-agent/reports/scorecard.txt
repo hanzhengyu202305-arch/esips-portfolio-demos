@@ -1,0 +1,33 @@
+导师评分: 100.0/100
+结论: PASS
+
+关键指标:
+- diagnosis_accuracy: 1.0
+- fix_success_rate: 1.0
+- avg_latency_seconds: 0.407
+- max_cost_per_run_usd: 0.000329
+- evaluated_runs: 16
+
+明细:
+{
+  "functional": {
+    "raw_score": 100.0,
+    "weight": 0.35,
+    "weighted_points": 35.0
+  },
+  "performance": {
+    "raw_score": 100.0,
+    "weight": 0.2,
+    "weighted_points": 20.0
+  },
+  "quality": {
+    "raw_score": 100.0,
+    "weight": 0.3,
+    "weighted_points": 30.0
+  },
+  "cost_ops": {
+    "raw_score": 100.0,
+    "weight": 0.15,
+    "weighted_points": 15.0
+  }
+}

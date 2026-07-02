@@ -1,0 +1,14 @@
+{
+  "scenario_id": "S1",
+  "files_changed": [
+    "apps/demo-api/app/service.py"
+  ],
+  "diff_path": "reports/S1/single/patch.diff",
+  "patch_applied": true,
+  "validation_passed": true,
+  "commands_run": [
+    "/opt/anaconda3/bin/python3.13 -m pytest apps/demo-api/tests -q",
+    "/opt/anaconda3/bin/python3.13 scripts/lint.py",
+    "/opt/anaconda3/bin/python3.13 scripts/devops_check.py --scenario S1 --patched-dir reports/S1/single/patched"
+  ]
+}

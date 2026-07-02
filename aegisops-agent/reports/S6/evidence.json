@@ -1,0 +1,17 @@
+{
+  "scenario_id": "S6",
+  "title": "Kubernetes ImagePullBackOff because image tag is missing",
+  "category": "kubernetes",
+  "failure_summary": "Deployment references an image tag that does not exist in the local registry.",
+  "signals": [
+    {
+      "id": "k8s:S6:image-tag",
+      "kind": "kubernetes",
+      "message": "Image tag canary-missing cannot be pulled.",
+      "severity": "high"
+    }
+  ],
+  "artifacts": [
+    "reports/S6/raw_failure.log"
+  ]
+}

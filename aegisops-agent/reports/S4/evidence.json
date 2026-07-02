@@ -1,0 +1,17 @@
+{
+  "scenario_id": "S4",
+  "title": "Kubernetes CrashLoopBackOff because APP_MODE is invalid",
+  "category": "kubernetes",
+  "failure_summary": "Pod restarts because APP_MODE is set to an unsupported value.",
+  "signals": [
+    {
+      "id": "k8s:S4:invalid-env",
+      "kind": "kubernetes",
+      "message": "Deployment sets APP_MODE to unsupported value 'broken'.",
+      "severity": "high"
+    }
+  ],
+  "artifacts": [
+    "reports/S4/raw_failure.log"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "scenario_id": "S1",
+  "mode": "multi",
+  "root_cause_correct": true,
+  "fix_successful": true,
+  "latency_seconds": 0.401,
+  "prompt_tokens": 808,
+  "completion_tokens": 340,
+  "estimated_cost_usd": 0.000325,
+  "tool_calls": 10
+}

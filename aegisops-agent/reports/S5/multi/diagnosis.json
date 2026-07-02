@@ -1,0 +1,17 @@
+{
+  "scenario_id": "S5",
+  "root_cause_id": "wrong_readiness_probe_path",
+  "confidence": 0.97,
+  "evidence_refs": [
+    "k8s:S5:probe-404"
+  ],
+  "retrieved_context_refs": [
+    "k8s-readiness-probe",
+    "kubernetes-crashloop",
+    "container-security"
+  ],
+  "impact": "The pod is running but not ready because readiness probes call /readyz.",
+  "fix_plan": [
+    "Patch k8s/overlays/broken-probe/deployment.yaml using the scenario allowlist."
+  ]
+}

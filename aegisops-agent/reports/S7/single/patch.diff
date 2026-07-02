@@ -1,0 +1,10 @@
+--- a/k8s/overlays/insecure/deployment.yaml
++++ b/k8s/overlays/insecure/deployment.yaml
+@@ -2,4 +2,6 @@
+   - name: api
+     image: aegisops/demo-api:local
+     securityContext:
+-      runAsUser: 0
++      runAsNonRoot: true
++      runAsUser: 10001
++      allowPrivilegeEscalation: false

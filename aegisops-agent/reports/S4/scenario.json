@@ -1,0 +1,36 @@
+{
+  "scenario_id": "S4",
+  "slug": "k8s_crashloop",
+  "title": "Kubernetes CrashLoopBackOff because APP_MODE is invalid",
+  "category": "kubernetes",
+  "root_cause_id": "invalid_app_mode_env",
+  "failure_summary": "Pod restarts because APP_MODE is set to an unsupported value.",
+  "raw_log": "kubectl get pods\naegisops-demo-api-7f8c9d   0/1   CrashLoopBackOff   5   4m\nkubectl logs aegisops-demo-api-7f8c9d\nRuntimeError: APP_MODE must be one of demo, test, prod; got 'broken'\n",
+  "evidence_signals": [
+    {
+      "id": "k8s:S4:invalid-env",
+      "kind": "kubernetes",
+      "message": "Deployment sets APP_MODE to unsupported value 'broken'.",
+      "severity": "high"
+    }
+  ],
+  "allowed_files": [
+    "k8s/overlays/broken-env/deployment.yaml"
+  ],
+  "blocked_files": [
+    ".github/workflows/*",
+    "agent/evaluation/gold_labels.json",
+    "apps/demo-api/tests/*",
+    "tests/*"
+  ],
+  "validation_kind": "k8s-dry-run",
+  "runbook_query": "Kubernetes CrashLoopBackOff invalid environment variable APP_MODE",
+  "broken_files": {
+    "k8s/overlays/broken-env/deployment.yaml": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: aegisops-demo-api\nspec:\n  template:\n    spec:\n      containers:\n        - name: api\n          image: aegisops/demo-api:latest\n          env:\n            - name: APP_MODE\n              value: broken\n"
+  },
+  "fixed_files": {
+    "k8s/overlays/broken-env/deployment.yaml": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: aegisops-demo-api\nspec:\n  template:\n    spec:\n      containers:\n        - name: api\n          image: aegisops/demo-api:latest\n          env:\n            - name: APP_MODE\n              value: demo\n"
+  },
+  "manual_debug_minutes": 28,
+  "human_review_minutes": 8
+}

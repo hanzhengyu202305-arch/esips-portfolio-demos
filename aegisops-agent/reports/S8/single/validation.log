@@ -1,0 +1,12 @@
+$ /opt/anaconda3/bin/python3.13 -m pytest apps/demo-api/tests -q
+.....                                                                    [100%]
+5 passed in 0.01s
+
+
+$ /opt/anaconda3/bin/python3.13 scripts/lint.py
+All checks passed!
+
+
+$ /opt/anaconda3/bin/python3.13 scripts/devops_check.py --scenario S8 --patched-dir reports/S8/single/patched
+passed: latency fix should avoid nested loop
+

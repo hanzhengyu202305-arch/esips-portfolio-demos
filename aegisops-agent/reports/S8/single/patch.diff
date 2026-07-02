@@ -1,0 +1,15 @@
+--- a/apps/demo-api/app/service.py
++++ b/apps/demo-api/app/service.py
+@@ -1,8 +1,6 @@
+ def score_orders(orders):
+-    scores = []
++    totals_by_customer = {}
+     for order in orders:
+-        for other in orders:
+-            if order["customer_id"] == other["customer_id"]:
+-                pass
+-        scores.append(order["amount"])
+-    return scores
++        totals_by_customer.setdefault(order["customer_id"], 0)
++        totals_by_customer[order["customer_id"]] += order["amount"]
++    return [totals_by_customer[order["customer_id"]] for order in orders]

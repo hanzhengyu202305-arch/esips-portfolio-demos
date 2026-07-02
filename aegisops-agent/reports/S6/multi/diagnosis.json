@@ -1,0 +1,17 @@
+{
+  "scenario_id": "S6",
+  "root_cause_id": "image_tag_mismatch",
+  "confidence": 0.97,
+  "evidence_refs": [
+    "k8s:S6:image-tag"
+  ],
+  "retrieved_context_refs": [
+    "docker-build",
+    "k8s-readiness-probe",
+    "kubernetes-crashloop"
+  ],
+  "impact": "Deployment references an image tag that does not exist in the local registry.",
+  "fix_plan": [
+    "Patch k8s/overlays/healthy/kustomization.yaml using the scenario allowlist."
+  ]
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "agent": "TriageAgent",
+    "action": "group evidence by source"
+  },
+  {
+    "agent": "RCAAgent",
+    "action": "select root_cause_id=wrong_discount_logic"
+  },
+  {
+    "agent": "FixAgent",
+    "action": "generate whitelisted patch preview"
+  },
+  {
+    "agent": "ReviewAgent",
+    "action": "check validation and guardrails"
+  }
+]

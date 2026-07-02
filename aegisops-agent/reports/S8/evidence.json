@@ -1,0 +1,17 @@
+{
+  "scenario_id": "S8",
+  "title": "Latency regression because order scoring uses a nested loop",
+  "category": "latency",
+  "failure_summary": "The scoring path regressed after adding an O(n^2) customer aggregation loop.",
+  "signals": [
+    {
+      "id": "latency:S8:nested-loop",
+      "kind": "benchmark",
+      "message": "Nested loop repeats customer aggregation for every order.",
+      "severity": "medium"
+    }
+  ],
+  "artifacts": [
+    "reports/S8/raw_failure.log"
+  ]
+}

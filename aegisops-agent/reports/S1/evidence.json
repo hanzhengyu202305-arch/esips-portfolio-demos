@@ -1,0 +1,17 @@
+{
+  "scenario_id": "S1",
+  "title": "pytest failure because discount logic is wrong",
+  "category": "pytest",
+  "failure_summary": "pytest assertion fails because gold customer discount is 1% instead of 10%.",
+  "signals": [
+    {
+      "id": "pytest:S1:assertion",
+      "kind": "pytest",
+      "message": "Gold tier discount expected 25.0 but observed 2.5.",
+      "severity": "high"
+    }
+  ],
+  "artifacts": [
+    "reports/S1/raw_failure.log"
+  ]
+}

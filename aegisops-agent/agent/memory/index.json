@@ -1,0 +1,44 @@
+[
+  {
+    "id": "container-security",
+    "title": "Container Security",
+    "path": "docs/runbooks/container-security.md",
+    "text": "# Container Security Context\n\nSymptoms:\n\n- Policy checks flag root container execution.\n- `allowPrivilegeEscalation` is missing or true.\n\nFix pattern:\n\n- Set `runAsNonRoot: true`.\n- Use a non-root numeric user.\n- Disable privilege escalation.\n"
+  },
+  {
+    "id": "docker-build",
+    "title": "Docker Build",
+    "path": "docs/runbooks/docker-build.md",
+    "text": "# Docker Build Missing Dependencies\n\nSymptoms:\n\n- Image build fails with `ModuleNotFoundError`.\n- The import works locally only when the developer environment has extra packages.\n\nFix pattern:\n\n- Add the missing dependency to the image requirements file.\n- Keep the patch scoped to packaging metadata.\n- Rerun a docker dry-run or equivalent validation.\n"
+  },
+  {
+    "id": "github-actions",
+    "title": "Github Actions",
+    "path": "docs/runbooks/github-actions.md",
+    "text": "# GitHub Actions Environment Variables\n\nSymptoms:\n\n- CI fails before tests execute meaningful assertions.\n- Logs show an empty or invalid environment setting.\n\nFix pattern:\n\n- Set safe explicit defaults in CI env configuration.\n- Avoid patching the workflow itself in the agent preview.\n"
+  },
+  {
+    "id": "k8s-readiness-probe",
+    "title": "K8S Readiness Probe",
+    "path": "docs/runbooks/k8s-readiness-probe.md",
+    "text": "# Kubernetes Readiness Probe Failures\n\nSymptoms:\n\n- Pod runs but never becomes ready.\n- Events show readiness probe 404 or timeout.\n\nFix pattern:\n\n- Compare probe path with application routes.\n- Point readiness to a lightweight endpoint such as `/health`.\n"
+  },
+  {
+    "id": "kubernetes-crashloop",
+    "title": "Kubernetes Crashloop",
+    "path": "docs/runbooks/kubernetes-crashloop.md",
+    "text": "# Kubernetes CrashLoopBackOff\n\nSymptoms:\n\n- Pod status shows `CrashLoopBackOff`.\n- Application logs show startup validation failures.\n\nFix pattern:\n\n- Inspect deployment environment values.\n- Patch the overlay so application settings use supported values.\n- Rerun Kubernetes dry-run validation before rollout.\n"
+  },
+  {
+    "id": "latency-regression",
+    "title": "Latency Regression",
+    "path": "docs/runbooks/latency-regression.md",
+    "text": "# Latency Regression\n\nSymptoms:\n\n- p95 latency increases after an aggregation change.\n- Code repeats the same lookup inside a nested loop.\n\nFix pattern:\n\n- Precompute totals by key.\n- Replace O(n^2) loops with a single pass and indexed lookup.\n"
+  },
+  {
+    "id": "pytest-failure",
+    "title": "Pytest Failure",
+    "path": "docs/runbooks/pytest-failure.md",
+    "text": "# Pytest Assertion Failures\n\nSymptoms:\n\n- A deterministic unit test fails with an unexpected value.\n- The failure points to application logic rather than infrastructure.\n\nFix pattern:\n\n- Compare expected and observed values.\n- Patch the smallest implementation surface.\n- Rerun pytest before preparing a PR summary.\n"
+  }
+]

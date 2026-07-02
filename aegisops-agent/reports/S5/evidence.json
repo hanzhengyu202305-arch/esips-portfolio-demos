@@ -1,0 +1,17 @@
+{
+  "scenario_id": "S5",
+  "title": "Kubernetes readiness probe path is wrong",
+  "category": "kubernetes",
+  "failure_summary": "The pod is running but not ready because readiness probes call /readyz.",
+  "signals": [
+    {
+      "id": "k8s:S5:probe-404",
+      "kind": "kubernetes",
+      "message": "Readiness probe path /readyz does not exist.",
+      "severity": "medium"
+    }
+  ],
+  "artifacts": [
+    "reports/S5/raw_failure.log"
+  ]
+}

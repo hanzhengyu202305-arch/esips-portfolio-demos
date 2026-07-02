@@ -1,0 +1,17 @@
+{
+  "scenario_id": "S2",
+  "root_cause_id": "missing_python_dependency",
+  "confidence": 0.97,
+  "evidence_refs": [
+    "docker:S2:missing-module"
+  ],
+  "retrieved_context_refs": [
+    "docker-build",
+    "container-security",
+    "github-actions"
+  ],
+  "impact": "Docker build imports pydantic but the image requirements omit it.",
+  "fix_plan": [
+    "Patch apps/demo-api/requirements.txt using the scenario allowlist."
+  ]
+}

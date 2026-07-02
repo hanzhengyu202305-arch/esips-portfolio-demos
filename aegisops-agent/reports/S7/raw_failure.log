@@ -1,0 +1,2 @@
+policy check failed
+container api must runAsNonRoot and must set allowPrivilegeEscalation=false

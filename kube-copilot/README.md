@@ -1,0 +1,31 @@
+# Kube Copilot
+
+Preparation project for `Accenture_01 Kubernetes_DevOps.pdf`.
+
+## Brief fit
+
+The official brief asks for a prototype or workflow recommendation engine that uses generative AI to automate Kubernetes-based CI/CD pipeline work, then assesses correctness, security, reliability, risk, and limits.
+
+This local project keeps the LLM layer simulated and focuses on the engineering core:
+
+- Generate a Dockerfile, Kubernetes Deployment, Kubernetes Service, GitHub Actions workflow, and validation checklist from structured deployment requirements.
+- Validate generated infrastructure-as-code for pinned image tags, resource requests and limits, readiness and liveness probes, and CI presence.
+- Produce a small report that separates machine-generated config from human review points.
+
+The generated Kubernetes YAML now follows the shape of the official examples in `github-references/kubernetes-examples`: `Deployment` selectors match pod labels, `Service` defaults to `ClusterIP`, containers expose HTTP ports, and resource requests/limits plus readiness/liveness probes are explicit.
+
+## Run
+
+```bash
+python3 -m unittest discover -s tests -v
+python3 -m kube_copilot.cli --out demo-output
+make report
+```
+
+## Portfolio talking points
+
+- Shows Kubernetes, Docker, CI/CD, and IaC validation basics.
+- Gives a concrete answer to "where is AI useful, and where do humans still need to review?"
+- Can later be connected to a real LLM by replacing the structured generator with prompt/model output while keeping the same validator.
+- `make report` writes `reports/risk-comparison.md`, showing a safe generated config beside a risky `latest`/missing-limits config.
+

@@ -1,0 +1,17 @@
+{
+  "scenario_id": "S3",
+  "root_cause_id": "missing_app_mode_env",
+  "confidence": 0.93,
+  "evidence_refs": [
+    "gha:S3:empty-env"
+  ],
+  "retrieved_context_refs": [
+    "github-actions",
+    "docker-build",
+    "container-security"
+  ],
+  "impact": "CI starts the app with an empty APP_MODE environment variable.",
+  "fix_plan": [
+    "Patch ci/env.example.yml using the scenario allowlist."
+  ]
+}

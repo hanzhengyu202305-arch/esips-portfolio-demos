@@ -1,0 +1,36 @@
+{
+  "scenario_id": "S7",
+  "slug": "container_security_failure",
+  "title": "Container security failure because the API runs as root",
+  "category": "security",
+  "root_cause_id": "container_runs_as_root",
+  "failure_summary": "Policy validation flags a root container and missing privilege escalation controls.",
+  "raw_log": "policy check failed\ncontainer api must runAsNonRoot and must set allowPrivilegeEscalation=false\n",
+  "evidence_signals": [
+    {
+      "id": "security:S7:root-container",
+      "kind": "security",
+      "message": "Container securityContext allows root execution.",
+      "severity": "high"
+    }
+  ],
+  "allowed_files": [
+    "k8s/overlays/insecure/deployment.yaml"
+  ],
+  "blocked_files": [
+    ".github/workflows/*",
+    "agent/evaluation/gold_labels.json",
+    "apps/demo-api/tests/*",
+    "tests/*"
+  ],
+  "validation_kind": "security-dry-run",
+  "runbook_query": "Kubernetes container securityContext runAsNonRoot allowPrivilegeEscalation",
+  "broken_files": {
+    "k8s/overlays/insecure/deployment.yaml": "containers:\n  - name: api\n    image: aegisops/demo-api:local\n    securityContext:\n      runAsUser: 0\n"
+  },
+  "fixed_files": {
+    "k8s/overlays/insecure/deployment.yaml": "containers:\n  - name: api\n    image: aegisops/demo-api:local\n    securityContext:\n      runAsNonRoot: true\n      runAsUser: 10001\n      allowPrivilegeEscalation: false\n"
+  },
+  "manual_debug_minutes": 30,
+  "human_review_minutes": 9
+}

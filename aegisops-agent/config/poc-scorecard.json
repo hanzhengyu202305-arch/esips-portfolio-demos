@@ -1,0 +1,15 @@
+{
+  "weights": {
+    "functional": 0.35,
+    "performance": 0.20,
+    "quality": 0.30,
+    "cost_ops": 0.15
+  },
+  "thresholds": {
+    "diagnosis_accuracy_min": 0.90,
+    "fix_success_rate_min": 0.85,
+    "avg_latency_seconds_max": 1.00,
+    "max_cost_per_run_usd": 0.001,
+    "evaluated_runs_min": 16
+  }
+}

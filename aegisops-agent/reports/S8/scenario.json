@@ -1,0 +1,36 @@
+{
+  "scenario_id": "S8",
+  "slug": "latency_regression",
+  "title": "Latency regression because order scoring uses a nested loop",
+  "category": "latency",
+  "root_cause_id": "nested_loop_latency_regression",
+  "failure_summary": "The scoring path regressed after adding an O(n^2) customer aggregation loop.",
+  "raw_log": "benchmark failed\np95 latency increased from 120ms to 980ms after order scoring change\n",
+  "evidence_signals": [
+    {
+      "id": "latency:S8:nested-loop",
+      "kind": "benchmark",
+      "message": "Nested loop repeats customer aggregation for every order.",
+      "severity": "medium"
+    }
+  ],
+  "allowed_files": [
+    "apps/demo-api/app/service.py"
+  ],
+  "blocked_files": [
+    ".github/workflows/*",
+    "agent/evaluation/gold_labels.json",
+    "apps/demo-api/tests/*",
+    "tests/*"
+  ],
+  "validation_kind": "latency-dry-run",
+  "runbook_query": "Python latency regression nested loop precompute totals by customer",
+  "broken_files": {
+    "apps/demo-api/app/service.py": "def score_orders(orders):\n    scores = []\n    for order in orders:\n        for other in orders:\n            if order[\"customer_id\"] == other[\"customer_id\"]:\n                pass\n        scores.append(order[\"amount\"])\n    return scores\n"
+  },
+  "fixed_files": {
+    "apps/demo-api/app/service.py": "def score_orders(orders):\n    totals_by_customer = {}\n    for order in orders:\n        totals_by_customer.setdefault(order[\"customer_id\"], 0)\n        totals_by_customer[order[\"customer_id\"]] += order[\"amount\"]\n    return [totals_by_customer[order[\"customer_id\"]] for order in orders]\n"
+  },
+  "manual_debug_minutes": 35,
+  "human_review_minutes": 10
+}

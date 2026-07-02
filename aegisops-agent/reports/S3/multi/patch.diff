@@ -1,0 +1,8 @@
+--- a/ci/env.example.yml
++++ b/ci/env.example.yml
+@@ -1,4 +1,4 @@
+ env:
+-  APP_MODE: ""
++  APP_MODE: "demo"
+ steps:
+   - run: pytest

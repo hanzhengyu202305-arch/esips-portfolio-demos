@@ -1,0 +1,17 @@
+{
+  "scenario_id": "S7",
+  "title": "Container security failure because the API runs as root",
+  "category": "security",
+  "failure_summary": "Policy validation flags a root container and missing privilege escalation controls.",
+  "signals": [
+    {
+      "id": "security:S7:root-container",
+      "kind": "security",
+      "message": "Container securityContext allows root execution.",
+      "severity": "high"
+    }
+  ],
+  "artifacts": [
+    "reports/S7/raw_failure.log"
+  ]
+}

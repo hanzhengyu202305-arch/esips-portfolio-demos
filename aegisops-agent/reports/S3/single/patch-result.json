@@ -1,0 +1,14 @@
+{
+  "scenario_id": "S3",
+  "files_changed": [
+    "ci/env.example.yml"
+  ],
+  "diff_path": "reports/S3/single/patch.diff",
+  "patch_applied": true,
+  "validation_passed": true,
+  "commands_run": [
+    "/opt/anaconda3/bin/python3.13 -m pytest apps/demo-api/tests -q",
+    "/opt/anaconda3/bin/python3.13 scripts/lint.py",
+    "/opt/anaconda3/bin/python3.13 scripts/devops_check.py --scenario S3 --patched-dir reports/S3/single/patched"
+  ]
+}

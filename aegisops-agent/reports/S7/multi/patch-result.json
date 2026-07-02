@@ -1,0 +1,14 @@
+{
+  "scenario_id": "S7",
+  "files_changed": [
+    "k8s/overlays/insecure/deployment.yaml"
+  ],
+  "diff_path": "reports/S7/multi/patch.diff",
+  "patch_applied": true,
+  "validation_passed": true,
+  "commands_run": [
+    "/opt/anaconda3/bin/python3.13 -m pytest apps/demo-api/tests -q",
+    "/opt/anaconda3/bin/python3.13 scripts/lint.py",
+    "/opt/anaconda3/bin/python3.13 scripts/devops_check.py --scenario S7 --patched-dir reports/S7/multi/patched"
+  ]
+}

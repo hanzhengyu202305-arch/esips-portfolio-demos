@@ -1,0 +1,17 @@
+{
+  "scenario_id": "S7",
+  "root_cause_id": "container_runs_as_root",
+  "confidence": 0.93,
+  "evidence_refs": [
+    "security:S7:root-container"
+  ],
+  "retrieved_context_refs": [
+    "container-security",
+    "k8s-readiness-probe",
+    "kubernetes-crashloop"
+  ],
+  "impact": "Policy validation flags a root container and missing privilege escalation controls.",
+  "fix_plan": [
+    "Patch k8s/overlays/insecure/deployment.yaml using the scenario allowlist."
+  ]
+}

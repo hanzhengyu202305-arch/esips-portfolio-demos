@@ -1,0 +1,70 @@
+{
+  "status": "PASS",
+  "score": 100.0,
+  "metrics": {
+    "functional": {
+      "evaluated_runs": 16,
+      "scenarios": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8"
+      ],
+      "modes": [
+        "multi",
+        "single"
+      ],
+      "fix_success_rate": 1.0
+    },
+    "performance": {
+      "avg_latency_seconds": 0.407,
+      "avg_tool_calls": 8.0
+    },
+    "quality": {
+      "diagnosis_accuracy": 1.0
+    },
+    "cost_ops": {
+      "max_cost_per_run_usd": 0.000329,
+      "total_estimated_cost_usd": 0.004328
+    }
+  },
+  "breakdown": {
+    "functional": {
+      "raw_score": 100.0,
+      "weight": 0.35,
+      "weighted_points": 35.0
+    },
+    "performance": {
+      "raw_score": 100.0,
+      "weight": 0.2,
+      "weighted_points": 20.0
+    },
+    "quality": {
+      "raw_score": 100.0,
+      "weight": 0.3,
+      "weighted_points": 30.0
+    },
+    "cost_ops": {
+      "raw_score": 100.0,
+      "weight": 0.15,
+      "weighted_points": 15.0
+    }
+  },
+  "thresholds": {
+    "diagnosis_accuracy_min": 0.9,
+    "fix_success_rate_min": 0.85,
+    "avg_latency_seconds_max": 1.0,
+    "max_cost_per_run_usd": 0.001,
+    "evaluated_runs_min": 16
+  },
+  "weights": {
+    "functional": 0.35,
+    "performance": 0.2,
+    "quality": 0.3,
+    "cost_ops": 0.15
+  }
+}

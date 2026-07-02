@@ -1,0 +1,31 @@
+{
+  "project": "aegisops-agent",
+  "python_version": "3.13.9",
+  "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+  "checks": {
+    "project_root": {
+      "ok": true,
+      "detail": "/Users/hanzhengyu/Documents/industry/aegisops-agent"
+    },
+    "pytest": {
+      "ok": true,
+      "detail": "importable"
+    },
+    "fastapi": {
+      "ok": false,
+      "detail": "not importable: No module named 'fastapi'"
+    },
+    "docker": {
+      "ok": true,
+      "detail": "/opt/homebrew/bin/docker"
+    },
+    "kind": {
+      "ok": false,
+      "detail": "missing; optional dry-run fallback is available"
+    },
+    "kubectl": {
+      "ok": false,
+      "detail": "missing; optional dry-run fallback is available"
+    }
+  }
+}

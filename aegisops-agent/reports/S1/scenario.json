@@ -1,0 +1,36 @@
+{
+  "scenario_id": "S1",
+  "slug": "pytest_failure",
+  "title": "pytest failure because discount logic is wrong",
+  "category": "pytest",
+  "root_cause_id": "wrong_discount_logic",
+  "failure_summary": "pytest assertion fails because gold customer discount is 1% instead of 10%.",
+  "raw_log": "tests/test_demo_api.py::test_discount_logic_is_deterministic FAILED\nE       assert 2.5 == 25.0\nE        + where 2.5 = calculate_discount(order_total=250.0, customer_tier='gold')\n",
+  "evidence_signals": [
+    {
+      "id": "pytest:S1:assertion",
+      "kind": "pytest",
+      "message": "Gold tier discount expected 25.0 but observed 2.5.",
+      "severity": "high"
+    }
+  ],
+  "allowed_files": [
+    "apps/demo-api/app/service.py"
+  ],
+  "blocked_files": [
+    ".github/workflows/*",
+    "agent/evaluation/gold_labels.json",
+    "apps/demo-api/tests/*",
+    "tests/*"
+  ],
+  "validation_kind": "pytest",
+  "runbook_query": "pytest assertion wrong business logic discount",
+  "broken_files": {
+    "apps/demo-api/app/service.py": "def calculate_discount(order_total: float, customer_tier: str) -> float:\n    if customer_tier == \"gold\":\n        return round(order_total * 0.01, 2)\n    return 0.0\n"
+  },
+  "fixed_files": {
+    "apps/demo-api/app/service.py": "def calculate_discount(order_total: float, customer_tier: str) -> float:\n    if customer_tier == \"gold\" and order_total >= 100:\n        return round(order_total * 0.10, 2)\n    return 0.0\n"
+  },
+  "manual_debug_minutes": 18,
+  "human_review_minutes": 5
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "agent": "TriageAgent",
+    "action": "group evidence by source"
+  },
+  {
+    "agent": "RCAAgent",
+    "action": "select root_cause_id=image_tag_mismatch"
+  },
+  {
+    "agent": "FixAgent",
+    "action": "generate whitelisted patch preview"
+  },
+  {
+    "agent": "ReviewAgent",
+    "action": "check validation and guardrails"
+  }
+]

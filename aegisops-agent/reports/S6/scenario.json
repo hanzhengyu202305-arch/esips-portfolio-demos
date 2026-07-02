@@ -1,0 +1,36 @@
+{
+  "scenario_id": "S6",
+  "slug": "image_tag_mismatch",
+  "title": "Kubernetes ImagePullBackOff because image tag is missing",
+  "category": "kubernetes",
+  "root_cause_id": "image_tag_mismatch",
+  "failure_summary": "Deployment references an image tag that does not exist in the local registry.",
+  "raw_log": "Failed to pull image \"aegisops/demo-api:canary-missing\"\nBack-off pulling image \"aegisops/demo-api:canary-missing\"\n",
+  "evidence_signals": [
+    {
+      "id": "k8s:S6:image-tag",
+      "kind": "kubernetes",
+      "message": "Image tag canary-missing cannot be pulled.",
+      "severity": "high"
+    }
+  ],
+  "allowed_files": [
+    "k8s/overlays/healthy/kustomization.yaml"
+  ],
+  "blocked_files": [
+    ".github/workflows/*",
+    "agent/evaluation/gold_labels.json",
+    "apps/demo-api/tests/*",
+    "tests/*"
+  ],
+  "validation_kind": "k8s-dry-run",
+  "runbook_query": "Kubernetes ImagePullBackOff image tag mismatch",
+  "broken_files": {
+    "k8s/overlays/healthy/kustomization.yaml": "image:\n  repository: aegisops/demo-api\n  tag: canary-missing\n"
+  },
+  "fixed_files": {
+    "k8s/overlays/healthy/kustomization.yaml": "image:\n  repository: aegisops/demo-api\n  tag: local\n"
+  },
+  "manual_debug_minutes": 24,
+  "human_review_minutes": 7
+}

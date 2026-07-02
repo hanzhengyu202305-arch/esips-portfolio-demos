@@ -1,0 +1,8 @@
+--- a/k8s/overlays/broken-env/deployment.yaml
++++ b/k8s/overlays/broken-env/deployment.yaml
+@@ -10,4 +10,4 @@
+           image: aegisops/demo-api:latest
+           env:
+             - name: APP_MODE
+-              value: broken
++              value: demo

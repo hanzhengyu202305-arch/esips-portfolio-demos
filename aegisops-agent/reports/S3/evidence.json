@@ -1,0 +1,17 @@
+{
+  "scenario_id": "S3",
+  "title": "GitHub Actions failure because APP_MODE is missing",
+  "category": "ci",
+  "failure_summary": "CI starts the app with an empty APP_MODE environment variable.",
+  "signals": [
+    {
+      "id": "gha:S3:empty-env",
+      "kind": "github-actions",
+      "message": "APP_MODE is empty in CI env.",
+      "severity": "medium"
+    }
+  ],
+  "artifacts": [
+    "reports/S3/raw_failure.log"
+  ]
+}

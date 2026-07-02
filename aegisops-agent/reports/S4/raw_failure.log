@@ -1,0 +1,4 @@
+kubectl get pods
+aegisops-demo-api-7f8c9d   0/1   CrashLoopBackOff   5   4m
+kubectl logs aegisops-demo-api-7f8c9d
+RuntimeError: APP_MODE must be one of demo, test, prod; got 'broken'

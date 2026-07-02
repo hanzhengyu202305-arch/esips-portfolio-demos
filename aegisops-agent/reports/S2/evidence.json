@@ -1,0 +1,17 @@
+{
+  "scenario_id": "S2",
+  "title": "Docker build failure because a dependency is missing",
+  "category": "docker",
+  "failure_summary": "Docker build imports pydantic but the image requirements omit it.",
+  "signals": [
+    {
+      "id": "docker:S2:missing-module",
+      "kind": "docker-build",
+      "message": "Image build cannot import pydantic.",
+      "severity": "high"
+    }
+  ],
+  "artifacts": [
+    "reports/S2/raw_failure.log"
+  ]
+}

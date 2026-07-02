@@ -1,0 +1,133 @@
+{
+  "passed": true,
+  "checked_items": 21,
+  "failed_items": 0,
+  "checks": [
+    {
+      "name": "README.md",
+      "ok": true,
+      "path": "README.md",
+      "detail": "main project entrypoint"
+    },
+    {
+      "name": "SPEC.md",
+      "ok": true,
+      "path": "SPEC.md",
+      "detail": "scope and definition of done"
+    },
+    {
+      "name": "SOW contract",
+      "ok": true,
+      "path": "SOW.md",
+      "detail": "scope, milestones, pass/fail thresholds, weights, and rubric"
+    },
+    {
+      "name": "Data Card",
+      "ok": true,
+      "path": "DATACARD.md",
+      "detail": "synthetic data provenance and compliance boundary"
+    },
+    {
+      "name": "Operations manual",
+      "ok": true,
+      "path": "OPERATIONS.md",
+      "detail": "setup, demo, CI/CD, Kubernetes checks, and release runbook"
+    },
+    {
+      "name": "PR template",
+      "ok": true,
+      "path": ".github/pull_request_template.md",
+      "detail": "review checklist tied to SOW evidence"
+    },
+    {
+      "name": "PoC validation guide",
+      "ok": true,
+      "path": "POC_VALIDATION.md",
+      "detail": "functional, performance, quality, and cost/ops review guide"
+    },
+    {
+      "name": "PoC scorecard config",
+      "ok": true,
+      "path": "config/poc-scorecard.json",
+      "detail": "explicit PoC thresholds and weights"
+    },
+    {
+      "name": "newcomer guide",
+      "ok": true,
+      "path": "docs/NEWCOMER_GUIDE.zh-CN.md",
+      "detail": "beginner onboarding path"
+    },
+    {
+      "name": "demo script",
+      "ok": true,
+      "path": "docs/demo-script.md",
+      "detail": "5-minute reviewer walkthrough"
+    },
+    {
+      "name": "ESIPS mapping",
+      "ok": true,
+      "path": "docs/esips-accenture-mapping.md",
+      "detail": "industry-placement positioning"
+    },
+    {
+      "name": "scenario matrix",
+      "ok": true,
+      "path": "reports/scenario-matrix.md",
+      "detail": "scenario coverage table"
+    },
+    {
+      "name": "doctor report",
+      "ok": true,
+      "path": "reports/doctor.md",
+      "detail": "local environment readiness"
+    },
+    {
+      "name": "PoC scorecard",
+      "ok": true,
+      "path": "reports/scorecard.txt",
+      "detail": "weighted PoC PASS/FAIL result"
+    },
+    {
+      "name": "PoC metrics",
+      "ok": true,
+      "path": "reports/poc-metrics.json",
+      "detail": "normalized PoC metrics and scoring breakdown"
+    },
+    {
+      "name": "S4 multi diagnosis",
+      "ok": true,
+      "path": "reports/S4/multi/diagnosis.json",
+      "detail": "expected root_cause_id='invalid_app_mode_env', observed 'invalid_app_mode_env'"
+    },
+    {
+      "name": "S4 multi demo validation",
+      "ok": true,
+      "path": "reports/S4/multi/metrics.json",
+      "detail": "expected fix_successful=True, observed True"
+    },
+    {
+      "name": "S4 patch diff",
+      "ok": true,
+      "path": "reports/S4/multi/patch.diff",
+      "detail": "reviewable remediation patch preview"
+    },
+    {
+      "name": "S4 PR summary",
+      "ok": true,
+      "path": "reports/S4/multi/pr-summary.md",
+      "detail": "human-reviewable remediation handoff"
+    },
+    {
+      "name": "evaluation coverage",
+      "ok": true,
+      "path": "reports/eval-results.json",
+      "detail": "all scenarios include single and multi results"
+    },
+    {
+      "name": "final portfolio report",
+      "ok": true,
+      "path": "reports/final-portfolio-report.md",
+      "detail": "reviewer-facing final report"
+    }
+  ]
+}

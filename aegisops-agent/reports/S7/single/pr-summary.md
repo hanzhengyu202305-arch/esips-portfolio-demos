@@ -1,0 +1,40 @@
+# PR Summary
+
+## Incident
+
+Container security failure because the API runs as root
+
+## Root Cause
+
+`container_runs_as_root` with confidence `0.93`.
+
+Policy validation flags a root container and missing privilege escalation controls.
+
+## Files Changed
+
+- `k8s/overlays/insecure/deployment.yaml`
+
+## Validation
+
+Validation: passed
+
+Commands run:
+
+- `/opt/anaconda3/bin/python3.13 -m pytest apps/demo-api/tests -q`
+- `/opt/anaconda3/bin/python3.13 scripts/lint.py`
+- `/opt/anaconda3/bin/python3.13 scripts/devops_check.py --scenario S7 --patched-dir reports/S7/single/patched`
+
+## Risk And Review
+
+- Human review required before merge.
+- Patch targets were checked against the scenario allowlist.
+- CI workflows, tests, and gold labels remain blocked patch targets.
+
+## Metrics
+
+- mode: `single`
+- root_cause_correct: `True`
+- fix_successful: `True`
+- latency_seconds: `0.427`
+- estimated_cost_usd: `0.000213`
+- tool_calls: `6`

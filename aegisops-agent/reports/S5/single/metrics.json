@@ -1,0 +1,11 @@
+{
+  "scenario_id": "S5",
+  "mode": "single",
+  "root_cause_correct": true,
+  "fix_successful": true,
+  "latency_seconds": 0.404,
+  "prompt_tokens": 554,
+  "completion_tokens": 220,
+  "estimated_cost_usd": 0.000215,
+  "tool_calls": 6
+}

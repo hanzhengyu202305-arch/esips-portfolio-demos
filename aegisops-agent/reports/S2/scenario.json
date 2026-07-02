@@ -1,0 +1,37 @@
+{
+  "scenario_id": "S2",
+  "slug": "docker_build_failure",
+  "title": "Docker build failure because a dependency is missing",
+  "category": "docker",
+  "root_cause_id": "missing_python_dependency",
+  "failure_summary": "Docker build imports pydantic but the image requirements omit it.",
+  "raw_log": "Step 7/8 : RUN python -c \"import pydantic\"\nModuleNotFoundError: No module named 'pydantic'\nThe command '/bin/sh -c python -c \"import pydantic\"' returned a non-zero code: 1\n",
+  "evidence_signals": [
+    {
+      "id": "docker:S2:missing-module",
+      "kind": "docker-build",
+      "message": "Image build cannot import pydantic.",
+      "severity": "high"
+    }
+  ],
+  "allowed_files": [
+    "apps/demo-api/requirements.txt",
+    "apps/demo-api/Dockerfile"
+  ],
+  "blocked_files": [
+    ".github/workflows/*",
+    "agent/evaluation/gold_labels.json",
+    "apps/demo-api/tests/*",
+    "tests/*"
+  ],
+  "validation_kind": "docker-dry-run",
+  "runbook_query": "Docker build missing python dependency ModuleNotFoundError",
+  "broken_files": {
+    "apps/demo-api/requirements.txt": "fastapi==0.115.0\nuvicorn==0.30.6\n"
+  },
+  "fixed_files": {
+    "apps/demo-api/requirements.txt": "fastapi==0.115.0\nuvicorn==0.30.6\npydantic==2.9.2\n"
+  },
+  "manual_debug_minutes": 20,
+  "human_review_minutes": 6
+}

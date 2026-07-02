@@ -1,0 +1,3 @@
+Step 7/8 : RUN python -c "import pydantic"
+ModuleNotFoundError: No module named 'pydantic'
+The command '/bin/sh -c python -c "import pydantic"' returned a non-zero code: 1

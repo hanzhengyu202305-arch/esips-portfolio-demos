@@ -1,0 +1,17 @@
+{
+  "scenario_id": "S1",
+  "root_cause_id": "wrong_discount_logic",
+  "confidence": 0.93,
+  "evidence_refs": [
+    "pytest:S1:assertion"
+  ],
+  "retrieved_context_refs": [
+    "pytest-failure",
+    "container-security",
+    "docker-build"
+  ],
+  "impact": "pytest assertion fails because gold customer discount is 1% instead of 10%.",
+  "fix_plan": [
+    "Patch apps/demo-api/app/service.py using the scenario allowlist."
+  ]
+}

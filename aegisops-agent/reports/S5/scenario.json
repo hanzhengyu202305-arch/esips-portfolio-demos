@@ -1,0 +1,36 @@
+{
+  "scenario_id": "S5",
+  "slug": "k8s_probe_failure",
+  "title": "Kubernetes readiness probe path is wrong",
+  "category": "kubernetes",
+  "root_cause_id": "wrong_readiness_probe_path",
+  "failure_summary": "The pod is running but not ready because readiness probes call /readyz.",
+  "raw_log": "Readiness probe failed: HTTP probe failed with statuscode: 404\nGET /readyz returned 404 while /health returned 200.\n",
+  "evidence_signals": [
+    {
+      "id": "k8s:S5:probe-404",
+      "kind": "kubernetes",
+      "message": "Readiness probe path /readyz does not exist.",
+      "severity": "medium"
+    }
+  ],
+  "allowed_files": [
+    "k8s/overlays/broken-probe/deployment.yaml"
+  ],
+  "blocked_files": [
+    ".github/workflows/*",
+    "agent/evaluation/gold_labels.json",
+    "apps/demo-api/tests/*",
+    "tests/*"
+  ],
+  "validation_kind": "k8s-dry-run",
+  "runbook_query": "Kubernetes readiness probe wrong path 404 health",
+  "broken_files": {
+    "k8s/overlays/broken-probe/deployment.yaml": "readinessProbe:\n  httpGet:\n    path: /readyz\n    port: 8000\n"
+  },
+  "fixed_files": {
+    "k8s/overlays/broken-probe/deployment.yaml": "readinessProbe:\n  httpGet:\n    path: /health\n    port: 8000\n"
+  },
+  "manual_debug_minutes": 25,
+  "human_review_minutes": 7
+}
