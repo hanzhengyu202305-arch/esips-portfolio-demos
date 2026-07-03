@@ -4,6 +4,6 @@
 - mode: `multi`
 - root_cause_correct: `True`
 - fix_successful: `True`
-- latency_seconds: `0.421`
+- latency_seconds: `0.369`
 - estimated_cost_usd: `0.000327`
 - tool_calls: `10`
