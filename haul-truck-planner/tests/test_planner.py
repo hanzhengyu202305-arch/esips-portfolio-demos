@@ -1,7 +1,7 @@
 import unittest
 
 from haul_truck_planner.experiments import compare_shortest_and_energy_aware
-from haul_truck_planner.planner import MineMap, Truck, plan_route
+from haul_truck_planner.planner import MineMap, Truck, plan_route, plan_route_astar
 
 
 class HaulTruckPlannerTests(unittest.TestCase):
@@ -21,6 +21,26 @@ class HaulTruckPlannerTests(unittest.TestCase):
         self.assertEqual(result.path[-1], (4, 3))
         self.assertIn((2, 2), result.path)
         self.assertGreaterEqual(min(result.energy_trace), truck.reserve_kwh)
+        self.assertGreater(result.expanded_states, 0)
+
+    def test_astar_reaches_goal_with_reserve_under_same_constraints(self):
+        mine = MineMap(
+            width=5,
+            height=4,
+            blocked={(1, 1), (1, 2), (3, 1)},
+            charging={(2, 2)},
+            grades={(2, 1): 0.16, (2, 2): -0.05},
+            risk_zones={(4, 1): 2.5, (4, 2): 2.5},
+        )
+        truck = Truck(capacity_kwh=10.0, initial_kwh=6.2, reserve_kwh=1.0)
+
+        result = plan_route_astar(mine, start=(0, 0), goal=(4, 3), truck=truck)
+
+        self.assertEqual(result.path[0], (0, 0))
+        self.assertEqual(result.path[-1], (4, 3))
+        self.assertIn((2, 2), result.path)
+        self.assertGreaterEqual(min(result.energy_trace), truck.reserve_kwh)
+        self.assertGreater(result.expanded_states, 0)
 
     def test_reports_no_route_when_reserve_cannot_be_maintained(self):
         mine = MineMap(width=3, height=1, blocked=set(), charging=set(), grades={})
@@ -63,9 +83,22 @@ class HaulTruckPlannerTests(unittest.TestCase):
 
         self.assertFalse(comparison.shortest_feasible)
         self.assertTrue(comparison.energy_aware_feasible)
+        self.assertTrue(comparison.astar_feasible)
+        self.assertLess(comparison.shortest_minimum_energy_margin_kwh, 0)
+        self.assertGreaterEqual(comparison.astar_minimum_energy_margin_kwh, 0)
+        self.assertTrue(comparison.dijkstra_uses_charging)
+        self.assertTrue(comparison.astar_uses_charging)
+        self.assertFalse(comparison.shortest_avoids_risk_cells)
+        self.assertTrue(comparison.dijkstra_avoids_risk_cells)
+        self.assertTrue(comparison.astar_avoids_risk_cells)
         self.assertIn("charging lane", comparison.recommendation)
         markdown = comparison.to_markdown()
-        self.assertIn("| shortest path |", markdown)
+        self.assertIn("| geometric shortest path |", markdown)
+        self.assertIn("| battery-state Dijkstra |", markdown)
+        self.assertIn("| A* energy-aware planner |", markdown)
+        self.assertIn("expanded_states", markdown)
+        self.assertIn("charging_used", markdown)
+        self.assertIn("avoids_risk_cells", markdown)
         self.assertIn("## Operational takeaway", markdown)
         self.assertIn("shortest route violates the reserve constraint", markdown)
         self.assertIn("minimum energy margin", markdown)

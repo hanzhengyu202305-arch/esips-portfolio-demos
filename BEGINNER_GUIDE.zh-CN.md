@@ -379,7 +379,7 @@ Haul Truck Planner connects my EE background to mining automation. It plans elec
 
 不要这样讲：
 
-- 不要说这些是 production-ready 系统。
+- 不要说这些已经可以用于生产环境。
 - 不要说 AegisOps 会自动改真实公司代码。
 - 不要说 Kube Copilot 生成的 YAML 可以直接部署。
 - 不要说 Haul Truck Planner 是完整矿山调度系统。

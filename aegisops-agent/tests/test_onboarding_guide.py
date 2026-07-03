@@ -38,4 +38,20 @@ def test_readme_links_to_newcomer_guide_and_quickstart() -> None:
 
     assert "docs/NEWCOMER_GUIDE.zh-CN.md" in readme
     assert "make quickstart" in readme
+    assert "issue-to-pr-report.md" in readme
     assert "quickstart:" in makefile
+    assert "issue-to-pr-report:" in makefile
+
+
+def test_issue_to_pr_fixture_and_walkthrough_are_reviewable() -> None:
+    issue = PROJECT_ROOT / "fixtures" / "issues" / "S4_crashloopbackoff_issue.md"
+    walkthrough = PROJECT_ROOT / "docs" / "incident-to-pr-walkthrough.md"
+
+    issue_text = issue.read_text(encoding="utf-8")
+    walkthrough_text = walkthrough.read_text(encoding="utf-8")
+
+    assert "CrashLoopBackOff" in issue_text
+    assert "invalid APP_MODE" in issue_text
+    assert "invalid_app_mode_env" in walkthrough_text
+    assert "reports/S4/multi/pr-summary.md" in walkthrough_text
+    assert "allowed_files" in walkthrough_text

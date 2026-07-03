@@ -14,6 +14,8 @@ This local project keeps the LLM layer simulated and focuses on the engineering 
 
 The generated Kubernetes YAML now follows the shape of the official examples in `github-references/kubernetes-examples`: `Deployment` selectors match pod labels, `Service` defaults to `ClusterIP`, containers expose HTTP ports, and resource requests/limits plus readiness/liveness probes are explicit.
 
+Policy rules are documented in [`docs/policy-rules.md`](docs/policy-rules.md). Static review fixtures live under `fixtures/safe/`, `fixtures/partial/`, and `fixtures/risky/`.
+
 ## Run
 
 ```bash
@@ -27,5 +29,4 @@ make report
 - Shows Kubernetes, Docker, CI/CD, and IaC validation basics.
 - Gives a concrete answer to "where is AI useful, and where do humans still need to review?"
 - Can later be connected to a real LLM by replacing the structured generator with prompt/model output while keeping the same validator.
-- `make report` writes `reports/risk-comparison.md`, showing a safe generated config beside a risky `latest`/missing-limits config.
-
+- `make report` writes `reports/risk-comparison.md` and `reports/policy-matrix.md`, showing safe, partial-remediation, and risky generated configs.

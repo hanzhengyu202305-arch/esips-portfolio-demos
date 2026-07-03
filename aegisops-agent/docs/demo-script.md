@@ -81,6 +81,6 @@ Close with:
 
 ## If Asked For More Detail
 
-- For Kubernetes config generation, show `/Users/hanzhengyu/Documents/industry/kube-copilot`.
-- For memory, cost, energy proxy, and single-vs-multi-agent research, show `/Users/hanzhengyu/Documents/industry/accenture-agent-research-lab`.
+- For Kubernetes config generation, show the public-safe sibling demo `kube-copilot`.
+- For memory, cost, energy proxy, and single-vs-multi-agent research, show the AegisOps reports in `reports/`.
 - For Accenture mapping, show `docs/esips-accenture-mapping.md`.

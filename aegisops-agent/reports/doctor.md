@@ -6,7 +6,7 @@
 
 | check | ok | detail |
 | --- | ---: | --- |
-| project_root | true | /Users/hanzhengyu/Documents/industry/aegisops-agent |
+| project_root | true | repository root contains Makefile and agent/ |
 | pytest | true | importable |
 | fastapi | false | not importable: No module named 'fastapi' |
 | docker | true | /opt/homebrew/bin/docker |

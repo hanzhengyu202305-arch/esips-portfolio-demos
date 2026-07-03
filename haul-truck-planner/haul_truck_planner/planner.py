@@ -36,6 +36,7 @@ class RouteResult:
     path: list[Point]
     energy_trace: list[float]
     total_cost: float
+    expanded_states: int = 0
 
 
 def plan_route(mine: MineMap, start: Point, goal: Point, truck: Truck) -> RouteResult:
@@ -44,14 +45,16 @@ def plan_route(mine: MineMap, start: Point, goal: Point, truck: Truck) -> RouteR
     queue: list[tuple[float, Point, float]] = [(0.0, start, start_energy)]
     best: dict[tuple[Point, float], float] = {(start, start_energy): 0.0}
     previous: dict[tuple[Point, float], tuple[Point, float] | None] = {(start, start_energy): None}
+    expanded_states = 0
 
     while queue:
         cost, point, energy = heappop(queue)
         state = (point, energy)
         if cost > best.get(state, inf):
             continue
+        expanded_states += 1
         if point == goal:
-            return _reconstruct(previous, state, truck.initial_kwh, mine)
+            return _reconstruct(previous, state, truck.initial_kwh, mine, expanded_states)
 
         for next_point in mine.neighbors(point):
             consumed = _energy_cost(mine, next_point)
@@ -67,6 +70,44 @@ def plan_route(mine: MineMap, start: Point, goal: Point, truck: Truck) -> RouteR
                 best[next_state] = next_cost
                 previous[next_state] = state
                 heappush(queue, (next_cost, next_point, next_energy))
+
+    raise ValueError("no energy-feasible route found")
+
+
+def plan_route_astar(mine: MineMap, start: Point, goal: Point, truck: Truck) -> RouteResult:
+    """Plan an energy-feasible route using A* over position and battery state."""
+    start_energy = round(truck.initial_kwh, 1)
+    queue: list[tuple[float, float, Point, float]] = [
+        (_heuristic(start, goal), 0.0, start, start_energy)
+    ]
+    best: dict[tuple[Point, float], float] = {(start, start_energy): 0.0}
+    previous: dict[tuple[Point, float], tuple[Point, float] | None] = {(start, start_energy): None}
+    expanded_states = 0
+
+    while queue:
+        _priority, cost, point, energy = heappop(queue)
+        state = (point, energy)
+        if cost > best.get(state, inf):
+            continue
+        expanded_states += 1
+        if point == goal:
+            return _reconstruct(previous, state, truck.initial_kwh, mine, expanded_states)
+
+        for next_point in mine.neighbors(point):
+            consumed = _energy_cost(mine, next_point)
+            next_energy = energy - consumed
+            if next_energy < truck.reserve_kwh:
+                continue
+            if next_point in mine.charging:
+                next_energy = min(truck.capacity_kwh, next_energy + 6.0)
+            next_energy = round(next_energy, 1)
+            next_cost = cost + _planning_cost(mine, next_point)
+            next_state = (next_point, next_energy)
+            if next_cost < best.get(next_state, inf):
+                best[next_state] = next_cost
+                previous[next_state] = state
+                priority = next_cost + _heuristic(next_point, goal)
+                heappush(queue, (priority, next_cost, next_point, next_energy))
 
     raise ValueError("no energy-feasible route found")
 
@@ -88,6 +129,7 @@ def _reconstruct(
     end_state: tuple[Point, float],
     initial_kwh: float,
     mine: MineMap,
+    expanded_states: int,
 ) -> RouteResult:
     states: list[tuple[Point, float]] = []
     state: tuple[Point, float] | None = end_state
@@ -102,4 +144,14 @@ def _reconstruct(
     total_cost = 0.0
     for point in path[1:]:
         total_cost += _planning_cost(mine, point)
-    return RouteResult(path=path, energy_trace=energy_trace, total_cost=round(total_cost, 2))
+    return RouteResult(
+        path=path,
+        energy_trace=energy_trace,
+        total_cost=round(total_cost, 2),
+        expanded_states=expanded_states,
+    )
+
+
+def _heuristic(point: Point, goal: Point) -> float:
+    distance = abs(point[0] - goal[0]) + abs(point[1] - goal[1])
+    return distance * 0.6

@@ -2,6 +2,8 @@
 
 这个文件是当前 ESIPS 作品集的三条主线说明。它不是课程作业答案，也不是生产系统说明；它是申请和面试时的本地证据地图。
 
+For a public reviewer one-page overview, read `docs/EXECUTIVE_ONE_PAGE.md`. For explicit claim boundaries, read `CLAIMS_MATRIX.md`.
+
 ## 1. AegisOps Agent -> Accenture SDLC Agents
 
 目标 brief: `Accenture_02 SDLC_Agents.pdf`

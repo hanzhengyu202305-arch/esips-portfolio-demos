@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: partial-api
+spec:
+  replicas: 2
+  template:
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: partial-api
+          image: ghcr.io/example/partial-api:1.1.0
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

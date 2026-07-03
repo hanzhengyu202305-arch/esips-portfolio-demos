@@ -39,7 +39,7 @@ Dependencies:
 
 - Python 3.11+, `pytest`, `fastapi`, and `uvicorn`.
 - Optional local tooling for extended checks: Docker, `kubectl`, and kind.
-- Local ESIPS brief files under `/Users/hanzhengyu/Documents/industry/S2_2026_June_December` for positioning only.
+- Private local ESIPS brief files are used for positioning only and are not included in this public repository.
 
 ## 3. Timeboxed Plan
 

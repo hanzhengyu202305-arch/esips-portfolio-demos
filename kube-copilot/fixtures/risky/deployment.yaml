@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: risky-api
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: risky-api
+          image: example/risky-api:latest
+          securityContext:
+            allowPrivilegeEscalation: true
+            privileged: true
+          resources:
+            requests:
+              cpu: ""
+              memory: ""
+            limits:
+              cpu: ""
+              memory: ""

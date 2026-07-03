@@ -20,7 +20,7 @@ def run_doctor(reports_dir: Path | str = Path("reports")) -> Path:
         "checks": {
             "project_root": {
                 "ok": (PROJECT_ROOT / "Makefile").exists() and (PROJECT_ROOT / "agent").exists(),
-                "detail": str(PROJECT_ROOT),
+                "detail": "repository root contains Makefile and agent/",
             },
             "pytest": _python_module_check("pytest"),
             "fastapi": _python_module_check("fastapi"),

@@ -4,7 +4,7 @@ MODE ?= multi
 QUERY ?= CrashLoopBackOff invalid environment variable
 RUNS ?= 3
 
-.PHONY: help setup quickstart acceptance test test-app lint build-index retrieve scenario collect-evidence demo validate eval-mock matrix doctor scorecard poc-repro poc docker-build kind-setup report serve-app
+.PHONY: help setup quickstart acceptance test test-app lint build-index retrieve scenario collect-evidence demo validate eval-mock matrix doctor scorecard poc-repro poc docker-build kind-setup report issue-to-pr-report serve-app
 
 help:
 	@$(PYTHON) -m agent.main help
@@ -72,6 +72,10 @@ kind-setup:
 	$(PYTHON) scripts/setup_kind.py
 
 report:
+	$(PYTHON) -m agent.main report
+
+issue-to-pr-report:
+	$(PYTHON) -m agent.main demo --scenario S4 --mode multi
 	$(PYTHON) -m agent.main report
 
 serve-app:

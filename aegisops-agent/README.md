@@ -140,6 +140,7 @@ reports/S4/multi/validation.log
 reports/S4/multi/metrics.json
 reports/S4/multi/demo-report.md
 reports/S4/multi/pr-summary.md
+reports/S4/multi/issue-to-pr-report.md
 ```
 
 For S4, the expected root cause is:
@@ -155,6 +156,14 @@ The fastest interview path is:
 3. Open `reports/S4/multi/pr-summary.md` to show how the agent turns the fix into a human-reviewable PR note.
 4. Show the patch preview and validation log.
 5. Run `make eval-mock` or open `reports/eval-summary.md` to compare single-agent and multi-agent workflows.
+
+For the step-by-step reviewer version, read [docs/incident-to-pr-walkthrough.md](docs/incident-to-pr-walkthrough.md).
+
+To refresh the issue-style evidence path:
+
+```bash
+make issue-to-pr-report
+```
 
 ## Useful Commands
 
@@ -220,7 +229,9 @@ reports/S4/multi/pr-summary.md
 - Data Card: `DATACARD.md`
 - Operations manual: `OPERATIONS.md`
 - ESIPS mapping: `docs/esips-accenture-mapping.md`
+- Incident-to-PR walkthrough: `docs/incident-to-pr-walkthrough.md`
 - Demo script: `docs/demo-script.md`
 - Application pack: `docs/application-pack.md`
 - PR summary example: `reports/S4/multi/pr-summary.md`
+- Issue-to-PR report: `reports/S4/multi/issue-to-pr-report.md`
 - Final portfolio report: `reports/final-portfolio-report.md`
