@@ -35,6 +35,6 @@ Commands run:
 - mode: `multi`
 - root_cause_correct: `True`
 - fix_successful: `True`
-- latency_seconds: `0.398`
+- latency_seconds: `0.375`
 - estimated_cost_usd: `0.000326`
 - tool_calls: `10`

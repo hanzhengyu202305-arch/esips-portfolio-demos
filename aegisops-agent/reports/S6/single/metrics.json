@@ -3,7 +3,7 @@
   "mode": "single",
   "root_cause_correct": true,
   "fix_successful": true,
-  "latency_seconds": 0.407,
+  "latency_seconds": 0.363,
   "prompt_tokens": 538,
   "completion_tokens": 220,
   "estimated_cost_usd": 0.000213,

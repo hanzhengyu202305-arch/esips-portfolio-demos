@@ -7,6 +7,9 @@ from agent.evaluation.evaluator import run_eval
 from agent.scenarios import list_scenarios
 
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+
 def create_scenario_matrix(output_path: Path | str = Path("reports/scenario-matrix.md")) -> Path:
     path = Path(output_path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -34,6 +37,7 @@ def create_final_report(reports_dir: Path | str = Path("reports")) -> Path:
     if not eval_summary.exists() or not eval_results_path.exists():
         run_eval(reports_path)
     scenario_matrix = create_scenario_matrix(reports_path / "scenario-matrix.md")
+    issue_to_pr_report = create_issue_to_pr_report(reports_path)
 
     scenarios = list_scenarios()
     eval_results = json.loads(eval_results_path.read_text(encoding="utf-8"))
@@ -90,6 +94,7 @@ def create_final_report(reports_dir: Path | str = Path("reports")) -> Path:
         "Key demo artifacts:",
         "",
         "- `reports/S4/multi/demo-report.md`",
+        "- `reports/S4/multi/issue-to-pr-report.md`",
         "- `reports/S4/multi/pr-summary.md`",
         "- `reports/S4/multi/patch.diff`",
         "- `reports/S4/multi/validation.log`",
@@ -131,10 +136,48 @@ def create_final_report(reports_dir: Path | str = Path("reports")) -> Path:
         "- ESIPS mapping: `docs/esips-accenture-mapping.md`",
         "- Application pack: `docs/application-pack.md`",
         "- Acceptance checklist: `reports/acceptance-checklist.md`",
+        f"- S4 issue-to-PR report: `{issue_to_pr_report}`",
     ]
     final_path = reports_path / "final-portfolio-report.md"
     final_path.write_text("\n".join(report) + "\n", encoding="utf-8")
     return final_path
+
+
+def create_issue_to_pr_report(reports_dir: Path | str = Path("reports")) -> Path:
+    reports_path = Path(reports_dir)
+    output_path = reports_path / "S4" / "multi" / "issue-to-pr-report.md"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    issue_path = PROJECT_ROOT / "fixtures" / "issues" / "S4_crashloopbackoff_issue.md"
+    issue_excerpt = issue_path.read_text(encoding="utf-8").split("## Reviewer Boundary")[0].strip()
+    lines = [
+        "# S4 Issue-To-PR Report",
+        "",
+        "## Source Issue Fixture",
+        "",
+        issue_excerpt,
+        "",
+        "## Workflow Evidence",
+        "",
+        "| step | artifact | reviewer check |",
+        "| --- | --- | --- |",
+        "| issue / failing symptom | `fixtures/issues/S4_crashloopbackoff_issue.md` | GitHub-style issue fixture describes expected and observed behavior. |",
+        "| evidence collection | `reports/S4/evidence.json` | Failure evidence is structured before diagnosis. |",
+        "| runbook retrieval | `reports/S4/multi/diagnosis.json` | Retrieved context includes Kubernetes CrashLoopBackOff runbooks. |",
+        "| root-cause diagnosis | `reports/S4/multi/diagnosis.json` | Expected root cause is `invalid_app_mode_env`. |",
+        "| guarded patch preview | `reports/S4/multi/patch.diff` | Patch changes only the scenario allowlisted deployment file. |",
+        "| validation | `reports/S4/multi/validation.log` | Tests, lint, and DevOps dry-run validation are recorded. |",
+        "| PR summary | `reports/S4/multi/pr-summary.md` | Human reviewer gets incident, root cause, files changed, validation, and risk notes. |",
+        "",
+        "## Expected Root Cause",
+        "",
+        "`invalid_app_mode_env`",
+        "",
+        "## Boundary",
+        "",
+        "This report does not create a real pull request and does not require a GitHub token or live cluster. It is a deterministic portfolio artifact that shows how the AegisOps workflow can turn a failure issue into a human-reviewable patch preview.",
+    ]
+    output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return output_path
 
 
 def _demote_markdown_headings(markdown: str) -> str:

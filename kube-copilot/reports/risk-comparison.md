@@ -4,10 +4,11 @@ Target ESIPS brief: `Accenture_01 Kubernetes_DevOps.pdf`.
 
 This report frames Kube Copilot as a small Kubernetes-based CI/CD pipeline assistant: generation is useful, but validation and human review remain the trust boundary.
 
-| case | status | findings |
-| --- | --- | --- |
-| safe | PASS | none |
-| risky | FAIL | image tag must not be latest; cpu limit is required; memory limit is required; cpu request is required; memory request is required; runAsNonRoot must be true; privileged containers are not allowed; privilege escalation must be disabled |
+| case | validation | reviewer decision | findings |
+| --- | --- | --- | --- |
+| safe | PASS | PASS | none |
+| risky | FAIL | FAIL | image tag must not be latest; cpu limit is required; memory limit is required; cpu request is required; memory request is required; runAsNonRoot must be true; privileged containers are not allowed; privilege escalation must be disabled |
+| partial | FAIL | PARTIAL | liveness probe is required; ci workflow is required |
 
 ## Remediation checklist
 
@@ -20,7 +21,7 @@ This report frames Kube Copilot as a small Kubernetes-based CI/CD pipeline assis
 ## Interview framing
 
 The generator can draft Kubernetes and CI/CD files, but the validator is the trust boundary.
-The generated YAML is not production-ready until it passes policy checks.
+The generated YAML is not suitable for production use until it passes policy checks.
 Human review remains required for secrets, RBAC, production rollout, and business risk.
 
 ## Public references

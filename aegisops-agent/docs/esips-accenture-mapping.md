@@ -23,6 +23,6 @@ Use this as the main Accenture project. The clean story is:
 4. A patch preview is generated under safety guardrails.
 5. Validation and evaluation reports make the result auditable.
 
-For `Accenture_01`, pair this project with `/Users/hanzhengyu/Documents/industry/kube-copilot`, which is more directly focused on generated Kubernetes and CI/CD configuration.
+For `Accenture_01`, pair this project with the public-safe sibling demo `kube-copilot`, which is more directly focused on generated Kubernetes and CI/CD configuration.
 
-For `Accenture_03/04/05`, pair this project with `/Users/hanzhengyu/Documents/industry/accenture-agent-research-lab`, which isolates memory retrieval, cost/energy proxy metrics, and single-vs-multi-agent comparison.
+For `Accenture_03/04/05`, use the AegisOps reports for memory retrieval, cost/energy proxy metrics, and single-vs-multi-agent comparison. Do not publish private local research folders.

@@ -13,6 +13,9 @@ dependencies = [
 pythonpath = ["."]
 testpaths = ["tests", "apps/demo-api/tests"]
 
+[tool.setuptools.packages.find]
+include = ["agent*"]
+
 [tool.ruff]
 line-length = 100
 target-version = "py311"

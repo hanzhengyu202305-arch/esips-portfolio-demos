@@ -5,7 +5,7 @@
   "checks": {
     "project_root": {
       "ok": true,
-      "detail": "/Users/hanzhengyu/Documents/industry/aegisops-agent"
+      "detail": "repository root contains Makefile and agent/"
     },
     "pytest": {
       "ok": true,

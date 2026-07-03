@@ -1,0 +1,64 @@
+{
+  "overall_portfolio_status": "PASS",
+  "generated_at_utc": "2026-07-03T08:52:14+00:00",
+  "checks": [
+    {
+      "name": "top-level tests",
+      "status": "PASS",
+      "returncode": 0,
+      "command": [
+        "make",
+        "test",
+        "AEGISOPS_PY=/opt/anaconda3/bin/python3.13"
+      ],
+      "output_tail": "/Library/Developer/CommandLineTools/usr/bin/make -C haul-truck-planner test\npython3 -m unittest discover -s tests -v\ntest_astar_reaches_goal_with_reserve_under_same_constraints (test_planner.HaulTruckPlannerTests.test_astar_reaches_goal_with_reserve_under_same_constraints) ... ok\ntest_experiment_compares_shortest_path_with_energy_aware_path (test_planner.HaulTruckPlannerTests.test_experiment_compares_shortest_path_with_energy_aware_path) ... ok\ntest_perception_risk_penalty_changes_route_without_blocking_cells (test_planner.HaulTruckPlannerTests.test_perception_risk_penalty_changes_route_without_blocking_cells) ... ok\ntest_plans_route_that_uses_charging_lane_when_energy_is_tight (test_planner.HaulTruckPlannerTests.test_plans_route_that_uses_charging_lane_when_energy_is_tight) ... ok\ntest_reports_no_route_when_reserve_cannot_be_maintained (test_planner.HaulTruckPlannerTests.test_reports_no_route_when_reserve_cannot_be_maintained) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.001s\n\nOK"
+    },
+    {
+      "name": "AegisOps acceptance",
+      "status": "PASS",
+      "returncode": 0,
+      "command": [
+        "make",
+        "-C",
+        "aegisops-agent",
+        "acceptance",
+        "PYTHON=/opt/anaconda3/bin/python3.13"
+      ],
+      "output_tail": "/opt/anaconda3/bin/python3.13 -m agent.main acceptance\nreports/acceptance-checklist.md"
+    },
+    {
+      "name": "Kube Copilot report",
+      "status": "PASS",
+      "returncode": 0,
+      "command": [
+        "make",
+        "-C",
+        "kube-copilot",
+        "report"
+      ],
+      "output_tail": "python3 -m kube_copilot.risk_report\nreports/risk-comparison.md"
+    },
+    {
+      "name": "Haul Truck Planner report",
+      "status": "PASS",
+      "returncode": 0,
+      "command": [
+        "make",
+        "-C",
+        "haul-truck-planner",
+        "report"
+      ],
+      "output_tail": "python3 -m haul_truck_planner.experiments\nreports/route-experiment.md"
+    },
+    {
+      "name": "public boundary check",
+      "status": "PASS",
+      "returncode": 0,
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "scripts/public_boundary_check.py"
+      ],
+      "output_tail": "PASS public boundary check"
+    }
+  ]
+}

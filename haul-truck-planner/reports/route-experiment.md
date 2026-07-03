@@ -1,18 +1,21 @@
 # Haul truck route experiment
 
-| strategy | feasible | path_length | path |
-| --- | --- | ---: | --- |
-| shortest path | False | 8 | `[(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (4, 1), (4, 2), (4, 3)]` |
-| energy-aware path | True | 8 | `[(0, 0), (1, 0), (2, 0), (2, 1), (2, 2), (2, 3), (3, 3), (4, 3)]` |
+| strategy | feasible | path_length | minimum_energy_margin_kwh | expanded_states | charging_used | avoids_risk_cells | path |
+| --- | --- | ---: | ---: | ---: | --- | --- | --- |
+| geometric shortest path | False | 8 | -1.80 | n/a | False | False | `[(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (4, 1), (4, 2), (4, 3)]` |
+| battery-state Dijkstra | True | 8 | 1.40 | 37 | True | True | `[(0, 0), (1, 0), (2, 0), (2, 1), (2, 2), (2, 3), (3, 3), (4, 3)]` |
+| A* energy-aware planner | True | 8 | 1.40 | 23 | True | True | `[(0, 0), (1, 0), (2, 0), (2, 1), (2, 2), (2, 3), (3, 3), (4, 3)]` |
 
-## Energy trace
+## Energy traces
 
-`[6.2, 5.2, 4.2, 2.4, 7.6, 6.6, 5.6, 4.6]`
+- battery-state Dijkstra: `[6.2, 5.2, 4.2, 2.4, 7.6, 6.6, 5.6, 4.6]`
+- A* energy-aware planner: `[6.2, 5.2, 4.2, 2.4, 7.6, 6.6, 5.6, 4.6]`
 
 ## Planning algorithm note
 
 The current planner is a battery-state Dijkstra search: each state tracks both grid position and remaining energy, so the route is accepted only when it reaches the goal while preserving the reserve.
-This is the baseline algorithm for the portfolio demo. The natural next step is to add A* with an admissible distance/energy heuristic, then compare it with EV routing problem ideas such as partial charging, charge time, route windows, and payload-dependent energy use.
+A* uses the same battery-state transition model and a conservative Manhattan-distance lower bound. Dijkstra remains the correctness baseline; A* is included as a small path-planning comparison, not a production optimizer.
+The next research step is to compare this simplified model with EV routing problem ideas such as partial charging, charge time, route windows, and payload-dependent energy use.
 
 ## ELEC5308-style perception risk layer
 
