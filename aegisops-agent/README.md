@@ -25,6 +25,12 @@ make report
 
 This positioning is intentionally broader than a RAG chatbot. The model is only one component inside a controlled software-delivery loop with tests, safety constraints, and measurable trade-offs.
 
+## Open-Source Context And Boundary
+
+AegisOps sits in the same broad agentic software-engineering ecosystem as projects such as [SWE-agent](https://github.com/SWE-agent/SWE-agent), [mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent), [OpenHands](https://github.com/OpenHands/OpenHands), and [LangGraph](https://github.com/langchain-ai/langgraph). The shared theme is using an agent workflow to move from engineering evidence to a proposed software action.
+
+The boundary is deliberate: this project is a deterministic portfolio demo, not a full autonomous developer platform. It uses local scenarios, synthetic incidents, a `MockLLM`, whitelisted patch previews, and repeatable validation so the workflow can be inspected in an ESIPS interview without credentials, hidden services, or uncontrolled production actions.
+
 ## Why This Matters For Accenture ESIPS
 
 | Accenture theme | AegisOps evidence |

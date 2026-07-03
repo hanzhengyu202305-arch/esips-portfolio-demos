@@ -36,6 +36,20 @@ class RouteComparison:
                 "",
                 "`" + str(self.energy_aware.energy_trace) + "`",
                 "",
+                "## Planning algorithm note",
+                "",
+                (
+                    "The current planner is a battery-state Dijkstra search: each state "
+                    "tracks both grid position and remaining energy, so the route is "
+                    "accepted only when it reaches the goal while preserving the reserve."
+                ),
+                (
+                    "This is the baseline algorithm for the portfolio demo. The natural "
+                    "next step is to add A* with an admissible distance/energy heuristic, "
+                    "then compare it with EV routing problem ideas such as partial charging, "
+                    "charge time, route windows, and payload-dependent energy use."
+                ),
+                "",
                 "## ELEC5308-style perception risk layer",
                 "",
                 "`" + str(self.perception_risks) + "`",
@@ -71,6 +85,11 @@ class RouteComparison:
                     "electric haul truck trajectory-planning brief. It shows why mine "
                     "dispatch software needs state-of-charge constraints, perception risk, "
                     "and charging infrastructure awareness, not just shortest path search."
+                ),
+                (
+                    "Open-source robotics and EVRP projects are useful references for the "
+                    "next algorithmic steps, but this repo only claims a small, synthetic, "
+                    "reviewable planning prototype."
                 ),
             ]
         ) + "\n"

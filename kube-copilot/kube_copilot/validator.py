@@ -37,6 +37,14 @@ def validate_workspace(workspace: GeneratedWorkspace) -> ValidationReport:
         findings.append("readiness probe is required")
     if "livenessProbe:" not in deployment:
         findings.append("liveness probe is required")
+    if "securityContext:" not in deployment:
+        findings.append("securityContext is required")
+    if "runAsNonRoot: true" not in deployment:
+        findings.append("runAsNonRoot must be true")
+    if "privileged: true" in deployment:
+        findings.append("privileged containers are not allowed")
+    if "allowPrivilegeEscalation: false" not in deployment:
+        findings.append("privilege escalation must be disabled")
     if "requests:" not in deployment:
         findings.append("resource requests are required")
     if ".github/workflows/ci.yml" not in workspace.files:
@@ -63,4 +71,3 @@ def _section_has_value(yaml_text: str, section: str, key: str) -> bool:
             value = stripped.split(":", 1)[1].strip().strip('"')
             return bool(value)
     return False
-

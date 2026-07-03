@@ -15,9 +15,10 @@ def generate_workspace(
     replicas: int,
     cpu_limit: str,
     memory_limit: str,
+    secure_context: bool = True,
 ) -> GeneratedWorkspace:
     """Generate a small deployable Kubernetes/CI workspace."""
-    deployment = _deployment_yaml(app_name, image, port, replicas, cpu_limit, memory_limit)
+    deployment = _deployment_yaml(app_name, image, port, replicas, cpu_limit, memory_limit, secure_context)
     files = {
         "Dockerfile": _dockerfile(port),
         "k8s/deployment.yaml": deployment,
@@ -58,53 +59,84 @@ def _deployment_yaml(
     replicas: int,
     cpu_limit: str,
     memory_limit: str,
+    secure_context: bool,
 ) -> str:
     cpu_request = _request_from_limit(cpu_limit)
     memory_request = _request_from_limit(memory_limit)
-    return dedent(
-        f"""\
-        apiVersion: apps/v1
-        kind: Deployment
-        metadata:
-          name: {app_name}
-          labels:
-            app: {app_name}
-        spec:
-          replicas: {replicas}
-          selector:
-            matchLabels:
-              app: {app_name}
-          template:
-            metadata:
-              labels:
-                app: {app_name}
-            spec:
-              containers:
-                - name: {app_name}
-                  image: {image}
-                  ports:
-                    - containerPort: {port}
-                  readinessProbe:
-                    httpGet:
-                      path: /health
-                      port: {port}
-                    initialDelaySeconds: 5
-                    periodSeconds: 10
-                  livenessProbe:
-                    httpGet:
-                      path: /health
-                      port: {port}
-                    initialDelaySeconds: 15
-                    periodSeconds: 20
-                  resources:
-                    requests:
-                      cpu: "{cpu_request}"
-                      memory: "{memory_request}"
-                    limits:
-                      cpu: "{cpu_limit}"
-                      memory: "{memory_limit}"
-        """
+    lines = [
+        "apiVersion: apps/v1",
+        "kind: Deployment",
+        "metadata:",
+        f"  name: {app_name}",
+        "  labels:",
+        f"    app: {app_name}",
+        "spec:",
+        f"  replicas: {replicas}",
+        "  selector:",
+        "    matchLabels:",
+        f"      app: {app_name}",
+        "  template:",
+        "    metadata:",
+        "      labels:",
+        f"        app: {app_name}",
+        "    spec:",
+    ]
+    if secure_context:
+        lines.extend(
+            [
+                "      securityContext:",
+                "        runAsNonRoot: true",
+            ]
+        )
+    lines.extend(
+        [
+            "      containers:",
+            f"        - name: {app_name}",
+            f"          image: {image}",
+            "          ports:",
+            f"            - containerPort: {port}",
+            "          securityContext:",
+        ]
     )
+    if secure_context:
+        lines.extend(
+            [
+                "            allowPrivilegeEscalation: false",
+                "            privileged: false",
+                "            readOnlyRootFilesystem: true",
+            ]
+        )
+    else:
+        lines.extend(
+            [
+                "            allowPrivilegeEscalation: true",
+                "            privileged: true",
+            ]
+        )
+    lines.extend(
+        [
+            "          readinessProbe:",
+            "            httpGet:",
+            "              path: /health",
+            f"              port: {port}",
+            "            initialDelaySeconds: 5",
+            "            periodSeconds: 10",
+            "          livenessProbe:",
+            "            httpGet:",
+            "              path: /health",
+            f"              port: {port}",
+            "            initialDelaySeconds: 15",
+            "            periodSeconds: 20",
+            "          resources:",
+            "            requests:",
+            f'              cpu: "{cpu_request}"',
+            f'              memory: "{memory_request}"',
+            "            limits:",
+            f'              cpu: "{cpu_limit}"',
+            f'              memory: "{memory_limit}"',
+        ]
+    )
+    return "\n".join(lines) + "\n"
 
 
 def _service_yaml(app_name: str, port: int) -> str:
@@ -154,9 +186,9 @@ def _checklist(app_name: str) -> str:
 
         - Image tag is pinned and reproducible.
         - CPU and memory limits are set.
+        - Pod and container security contexts prevent root and privileged execution.
         - Readiness probe points to a lightweight health endpoint.
         - CI performs Docker build and Kubernetes client-side dry-run.
         - Human review remains required for secrets, RBAC, and production rollout.
         """
     )
-

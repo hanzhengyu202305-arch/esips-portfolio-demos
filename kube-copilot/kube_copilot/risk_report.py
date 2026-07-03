@@ -21,6 +21,7 @@ def compare_safe_and_risky_workspace() -> str:
             replicas=1,
             cpu_limit="",
             memory_limit="",
+            secure_context=False,
         ),
     }
 
@@ -51,6 +52,7 @@ def compare_safe_and_risky_workspace() -> str:
             "- Pin image tags to immutable versions before deployment review.",
             "- Set CPU and memory requests and limits for every container.",
             "- Validate probes before rollout so health checks match the application contract.",
+            "- Require non-root security contexts and reject privileged containers.",
             "- Keep generated manifests behind CI and human review gates.",
             "",
             "## Interview framing",
@@ -58,6 +60,14 @@ def compare_safe_and_risky_workspace() -> str:
             "The generator can draft Kubernetes and CI/CD files, but the validator is the trust boundary.",
             "The generated YAML is not production-ready until it passes policy checks.",
             "Human review remains required for secrets, RBAC, production rollout, and business risk.",
+            "",
+            "## Public references",
+            "",
+            (
+                "This demo is intentionally much smaller than kube-linter, kubeconform, kube-score, "
+                "Polaris, Kyverno, Gatekeeper, or Datree. The shared idea is that generated "
+                "Kubernetes manifests need policy-style checks before they are trusted."
+            ),
         ]
     )
     return "\n".join(lines) + "\n"

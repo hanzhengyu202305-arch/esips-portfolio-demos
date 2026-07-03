@@ -14,6 +14,8 @@ The theme is AI/software engineering with validation: use agents or automation t
 
 Read `BEGINNER_GUIDE.zh-CN.md` first if you are new to the workspace, then read `THREE_LINE_ESIPS_PLAN.md` for the short application and interview framing.
 
+For public open-source references behind the three demo lines, read `REFERENCES.md`.
+
 ## Quick Check
 
 ```bash

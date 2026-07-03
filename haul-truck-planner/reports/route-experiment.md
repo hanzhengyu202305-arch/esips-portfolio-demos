@@ -9,6 +9,11 @@
 
 `[6.2, 5.2, 4.2, 2.4, 7.6, 6.6, 5.6, 4.6]`
 
+## Planning algorithm note
+
+The current planner is a battery-state Dijkstra search: each state tracks both grid position and remaining energy, so the route is accepted only when it reaches the goal while preserving the reserve.
+This is the baseline algorithm for the portfolio demo. The natural next step is to add A* with an admissible distance/energy heuristic, then compare it with EV routing problem ideas such as partial charging, charge time, route windows, and payload-dependent energy use.
+
 ## ELEC5308-style perception risk layer
 
 `{(4, 1): 2.5, (4, 2): 2.5}`
@@ -27,3 +32,4 @@ Use the charging lane and avoid high perception risk cells even when the geometr
 ## Interview framing
 
 This is a compact energy-constrained routing demo for the RTSIH electric haul truck trajectory-planning brief. It shows why mine dispatch software needs state-of-charge constraints, perception risk, and charging infrastructure awareness, not just shortest path search.
+Open-source robotics and EVRP projects are useful references for the next algorithmic steps, but this repo only claims a small, synthetic, reviewable planning prototype.

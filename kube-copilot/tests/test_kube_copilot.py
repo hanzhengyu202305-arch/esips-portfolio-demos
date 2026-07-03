@@ -20,10 +20,17 @@ class KubeCopilotTests(unittest.TestCase):
         self.assertIn("k8s/deployment.yaml", workspace.files)
         self.assertIn("k8s/service.yaml", workspace.files)
         self.assertIn(".github/workflows/ci.yml", workspace.files)
-        self.assertIn("ore-api", workspace.files["k8s/deployment.yaml"])
-        self.assertIn("ghcr.io/example/ore-api:1.2.0", workspace.files["k8s/deployment.yaml"])
-        self.assertIn("requests:", workspace.files["k8s/deployment.yaml"])
-        self.assertIn("livenessProbe:", workspace.files["k8s/deployment.yaml"])
+        deployment = workspace.files["k8s/deployment.yaml"]
+        self.assertIn("ore-api", deployment)
+        self.assertIn("ghcr.io/example/ore-api:1.2.0", deployment)
+        self.assertIn("requests:", deployment)
+        self.assertIn("livenessProbe:", deployment)
+        self.assertIn("      securityContext:\n        runAsNonRoot: true", deployment)
+        self.assertIn("      containers:\n        - name: ore-api", deployment)
+        self.assertIn(
+            "          securityContext:\n            allowPrivilegeEscalation: false\n            privileged: false",
+            deployment,
+        )
         self.assertIn("type: ClusterIP", workspace.files["k8s/service.yaml"])
 
     def test_validator_flags_missing_limits_and_latest_tag(self):
@@ -69,6 +76,24 @@ class KubeCopilotTests(unittest.TestCase):
         self.assertFalse(report.passed)
         self.assertIn("liveness probe is required", report.findings)
 
+    def test_validator_flags_privileged_security_context(self):
+        workspace = generate_workspace(
+            app_name="privileged-api",
+            image="ghcr.io/example/privileged-api:1.0.0",
+            port=8000,
+            replicas=2,
+            cpu_limit="500m",
+            memory_limit="512Mi",
+            secure_context=False,
+        )
+
+        report = validate_workspace(workspace)
+
+        self.assertFalse(report.passed)
+        self.assertIn("runAsNonRoot must be true", report.findings)
+        self.assertIn("privileged containers are not allowed", report.findings)
+        self.assertIn("privilege escalation must be disabled", report.findings)
+
     def test_risk_report_compares_safe_and_risky_generation(self):
         markdown = compare_safe_and_risky_workspace()
 
@@ -79,9 +104,12 @@ class KubeCopilotTests(unittest.TestCase):
         self.assertIn("Pin image tags to immutable versions", markdown)
         self.assertIn("Set CPU and memory requests and limits", markdown)
         self.assertIn("Validate probes before rollout", markdown)
+        self.assertIn("Require non-root security contexts", markdown)
+        self.assertIn("privileged containers are not allowed", markdown)
         self.assertIn("Accenture_01 Kubernetes_DevOps", markdown)
         self.assertIn("Kubernetes-based CI/CD pipeline", markdown)
         self.assertIn("generated YAML is not production-ready until it passes policy checks", markdown)
+        self.assertIn("kube-linter", markdown)
 
 
 if __name__ == "__main__":
