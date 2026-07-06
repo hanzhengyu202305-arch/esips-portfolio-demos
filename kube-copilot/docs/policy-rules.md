@@ -2,6 +2,16 @@
 
 Kube Copilot treats generated infrastructure as a draft. The validator is the trust boundary before any human considers deployment.
 
+## External Anchors
+
+The rules are aligned with Kubernetes documentation and mature validation ecosystems:
+
+- Kubernetes documents CPU and memory requests/limits as resource-management controls.
+- Kubernetes documents readiness, liveness, and startup probes as application-health signals.
+- Tools such as kube-linter, kubeconform, Kyverno, and Gatekeeper show why generated manifests should pass policy-style checks before trust.
+
+This project keeps those ideas small and deterministic for a portfolio demo. It does not replace production scanners, schema validators, or admission controllers.
+
 | rule | why it matters | safe example | risky example |
 | --- | --- | --- | --- |
 | No `latest` image tag | Reproducible deployments need immutable image versions. | `ghcr.io/example/api:1.2.0` | `example/api:latest` |

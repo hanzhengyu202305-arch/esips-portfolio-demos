@@ -4,7 +4,7 @@
 关键指标:
 - diagnosis_accuracy: 1.0
 - fix_success_rate: 1.0
-- avg_latency_seconds: 0.393
+- avg_latency_seconds: 0.412
 - max_cost_per_run_usd: 0.000329
 - evaluated_runs: 16
 
