@@ -69,6 +69,23 @@ Current evidence:
 - Add richer EV routing constraints such as charge time, queueing, payload mass, and route windows.
 - Keep the mining context explicit: this is not a production haul-road optimizer or fleet dispatcher.
 
+## EvidenceOps Scorecard
+
+Local demo: [`evidenceops-scorecard`](evidenceops-scorecard)
+
+| reference | useful pattern | how this repo uses the idea |
+| --- | --- | --- |
+| [OpenSSF Scorecard](https://github.com/ossf/scorecard) | Automated repository health checks | EvidenceOps applies the scorecard idea to portfolio evidence artifacts and reviewer readiness. |
+| [SLSA](https://slsa.dev/) | Software supply-chain integrity and provenance vocabulary | EvidenceOps uses the language of evidence, release gates, and public artifact traceability. |
+| [OpenTelemetry documentation](https://opentelemetry.io/docs/) | Observability vocabulary around traces, metrics, and logs | EvidenceOps frames portfolio reports as evidence signals rather than informal claims. |
+| [Google SRE monitoring chapter](https://sre.google/sre-book/monitoring-distributed-systems/) | Monitoring and reliability signal thinking | EvidenceOps keeps the same discipline: visible signals, explicit boundaries, and actionability. |
+
+Current evidence:
+
+- `evidenceops-scorecard/reports/evidence-scorecard.md` inventories public evidence across the three project lines.
+- `evidenceops-scorecard/reports/submission-readiness.md` separates public evidence readiness from official application confirmation.
+- Keep this as a portfolio audit layer, not a formal compliance, provenance, or production assurance tool.
+
 ## Public Boundary
 
 - No private Canvas, SONIA, CV, transcript, WAM, mailbox, or application-form data belongs in this public repository.

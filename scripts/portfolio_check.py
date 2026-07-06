@@ -34,6 +34,7 @@ def main() -> int:
         ("AegisOps acceptance", ["make", "-C", "aegisops-agent", "acceptance", f"PYTHON={args.aegisops_python}"]),
         ("Kube Copilot report", ["make", "-C", "kube-copilot", "report"]),
         ("Haul Truck Planner report", ["make", "-C", "haul-truck-planner", "report"]),
+        ("EvidenceOps scorecard", ["make", "-C", "evidenceops-scorecard", "report"]),
         ("public boundary check", [sys.executable, "scripts/public_boundary_check.py"]),
     ]
 

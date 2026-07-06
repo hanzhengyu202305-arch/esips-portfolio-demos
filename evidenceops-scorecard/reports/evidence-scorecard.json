@@ -1,0 +1,94 @@
+{
+  "portfolio_evidence_status": "PASS",
+  "application_submission_status": "NEEDS_OFFICIAL_CONFIRMATION",
+  "summary": {
+    "passed_projects": 3,
+    "total_projects": 3,
+    "portfolio_status_file": "FAIL"
+  },
+  "portfolio_evidence": [
+    {
+      "path": "README.md",
+      "exists": true,
+      "bytes": 9886
+    },
+    {
+      "path": "CLAIMS_MATRIX.md",
+      "exists": true,
+      "bytes": 3384
+    },
+    {
+      "path": "PORTFOLIO_STATUS.md",
+      "exists": true,
+      "bytes": 839
+    },
+    {
+      "path": "PORTFOLIO_STATUS.json",
+      "exists": true,
+      "bytes": 2783
+    }
+  ],
+  "projects": [
+    {
+      "id": "aegisops-agent",
+      "name": "AegisOps Agent",
+      "role": "Main SDLC agent evidence",
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "aegisops-agent/reports/final-portfolio-report.md",
+          "exists": true,
+          "bytes": 5150
+        },
+        {
+          "path": "aegisops-agent/reports/S4/multi/pr-summary.md",
+          "exists": true,
+          "bytes": 901
+        }
+      ]
+    },
+    {
+      "id": "kube-copilot",
+      "name": "Kube Copilot",
+      "role": "Kubernetes validation support",
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "kube-copilot/reports/risk-comparison.md",
+          "exists": true,
+          "bytes": 1902
+        },
+        {
+          "path": "kube-copilot/reports/policy-matrix.md",
+          "exists": true,
+          "bytes": 1547
+        }
+      ]
+    },
+    {
+      "id": "haul-truck-planner",
+      "name": "Haul Truck Planner",
+      "role": "EE and mining planning support",
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "haul-truck-planner/reports/route-experiment.md",
+          "exists": true,
+          "bytes": 2829
+        },
+        {
+          "path": "haul-truck-planner/reports/algorithm-comparison.md",
+          "exists": true,
+          "bytes": 1159
+        }
+      ]
+    }
+  ],
+  "missing_evidence": [],
+  "manual_review_items": [
+    "current official application deadline",
+    "active form fields and upload requirements",
+    "full-time placement availability period",
+    "whether public repository links are accepted in the active form"
+  ]
+}

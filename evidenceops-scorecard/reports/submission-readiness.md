@@ -1,0 +1,14 @@
+# Submission Readiness
+
+- Public evidence: `PASS`
+- Application submission: `NEEDS_OFFICIAL_CONFIRMATION`
+- Projects with evidence: `3/3`
+
+## Next Manual Checks
+
+- current official application deadline
+- active form fields and upload requirements
+- full-time placement availability period
+- whether public repository links are accepted in the active form
+
+Do not treat this file as final application approval. It is a public evidence readiness report only.
