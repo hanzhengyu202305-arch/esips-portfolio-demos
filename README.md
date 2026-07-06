@@ -58,7 +58,7 @@ Read `BEGINNER_GUIDE.zh-CN.md` first if you are new to the workspace, then read 
 
 For public open-source references behind the three demo lines, read `REFERENCES.md`.
 
-For a single-page reviewer overview, read [`docs/EXECUTIVE_ONE_PAGE.md`](docs/EXECUTIVE_ONE_PAGE.md). For a concise reviewer command path, read [`docs/REVIEWER_FAST_PATH.md`](docs/REVIEWER_FAST_PATH.md).
+For a single-page reviewer overview, read [`docs/EXECUTIVE_ONE_PAGE.md`](docs/EXECUTIVE_ONE_PAGE.md). For a concise reviewer command path, read [`docs/REVIEWER_FAST_PATH.md`](docs/REVIEWER_FAST_PATH.md). For source-backed external references, read [`docs/EXTERNAL_REFERENCE_MAP.md`](docs/EXTERNAL_REFERENCE_MAP.md).
 
 ## Interview Fast Path
 

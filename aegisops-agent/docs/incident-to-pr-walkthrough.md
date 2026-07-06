@@ -4,6 +4,16 @@ This walkthrough shows the reviewer path for the S4 Kubernetes CrashLoopBackOff 
 
 The point is not to claim autonomous production repair. The point is to show an AI-assisted SDLC workflow where evidence, diagnosis, patch preview, validation, and reporting are all inspectable.
 
+## External Anchors
+
+This workflow is positioned near public agentic software-engineering references such as SWE-agent, SWE-bench, OpenHands, and LangGraph:
+
+- issue or failure context becomes structured evidence;
+- the system proposes a software action rather than only a chat answer;
+- validation and review artifacts decide whether the action is trustworthy.
+
+AegisOps is intentionally smaller. It uses deterministic local fixtures and does not create real pull requests, use a GitHub token, or mutate a live cluster.
+
 ## Command
 
 ```bash

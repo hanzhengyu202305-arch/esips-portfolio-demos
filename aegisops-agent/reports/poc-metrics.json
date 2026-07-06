@@ -21,7 +21,7 @@
       "fix_success_rate": 1.0
     },
     "performance": {
-      "avg_latency_seconds": 0.393,
+      "avg_latency_seconds": 0.412,
       "avg_tool_calls": 8.0
     },
     "quality": {

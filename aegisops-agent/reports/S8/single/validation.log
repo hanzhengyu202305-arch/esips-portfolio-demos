@@ -1,6 +1,6 @@
 $ /opt/anaconda3/bin/python3.13 -m pytest apps/demo-api/tests -q
 .....                                                                    [100%]
-5 passed in 0.01s
+5 passed in 0.02s
 
 
 $ /opt/anaconda3/bin/python3.13 scripts/lint.py

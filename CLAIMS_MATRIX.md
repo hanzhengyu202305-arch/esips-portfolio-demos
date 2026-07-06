@@ -11,6 +11,14 @@
 | SCDL3991 EE credit substitution. | needs official confirmation | faculty/school approval | do not claim substitution without approval |
 | ELEC5308-style wording. | technical inspiration only | README and project boundary notes | perception + planning language, not official coursework output |
 
+## External Reference Boundary
+
+| Reference family | Safe use | Do not claim |
+| --- | --- | --- |
+| Agentic software engineering projects | Use as ecosystem language for issue/failure -> patch preview -> validation. | AegisOps is equivalent to SWE-agent, SWE-bench, OpenHands, or LangGraph. |
+| Kubernetes official docs and validators | Use as justification for deterministic checks around resources, probes, security context, and CI. | Kube Copilot replaces kube-linter, kubeconform, Kyverno, Gatekeeper, or production admission control. |
+| Robotics and EV routing references | Use as vocabulary for A*, Dijkstra, vehicle routing, charging, reserve, and constraints. | Haul Truck Planner is a production mine dispatch or EV routing optimiser. |
+
 ## Safe Portfolio Statement
 
 These are local, synthetic, reproducible portfolio demos. The value is in the engineering workflow, validation, reporting, and clear limitations. Generated Kubernetes manifests and patch previews require validation and human review.
