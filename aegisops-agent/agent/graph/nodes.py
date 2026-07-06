@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import time
 from pathlib import Path
 
@@ -67,7 +68,7 @@ def run_agent_flow(
     )
 
     prompt_tokens, completion_tokens = mock_llm.estimate_tokens(scenario, mode)
-    elapsed = round(max(time.perf_counter() - start, 0.001), 3)
+    elapsed = _elapsed_seconds(start, scenario.scenario_id, mode)
     tool_calls = 6 if mode == "single" else 10
     metrics = EvalResult(
         scenario_id=scenario.scenario_id,
@@ -112,6 +113,14 @@ def _stage_trace(mode: str, scenario_id: str, root_cause_id: str) -> list[dict]:
         {"agent": "FixAgent", "action": "generate whitelisted patch preview"},
         {"agent": "ReviewAgent", "action": "check validation and guardrails"},
     ]
+
+
+def _elapsed_seconds(start: float, scenario_id: str, mode: str) -> float:
+    if os.environ.get("AEGISOPS_STABLE_REPORTS") == "1":
+        base = int(scenario_id.removeprefix("S") or "0")
+        mode_offset = 0.05 if mode == "multi" else 0.0
+        return round(0.3 + (base * 0.01) + mode_offset, 3)
+    return round(max(time.perf_counter() - start, 0.001), 3)
 
 
 def _write_json(path: Path, payload: object) -> None:

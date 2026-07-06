@@ -16,6 +16,9 @@ class RouteComparison:
     recommendation: str
     perception_risks: dict[Point, float]
     charging_points: set[Point]
+    mine_width: int
+    mine_height: int
+    blocked_points: set[Point]
 
     @property
     def energy_aware_feasible(self) -> bool:
@@ -87,6 +90,14 @@ class RouteComparison:
                 "- battery-state Dijkstra: `" + str(self.energy_aware.energy_trace) + "`",
                 "- A* energy-aware planner: `" + str(self.astar_energy_aware.energy_trace) + "`",
                 "",
+                "## ASCII map",
+                "",
+                "Legend: `S` start, `G` goal, `#` blocked, `C` charging, `R` perception risk, `*` energy-aware route.",
+                "",
+                "```text",
+                self.ascii_map(),
+                "```",
+                "",
                 "## Planning algorithm note",
                 "",
                 (
@@ -150,6 +161,32 @@ class RouteComparison:
             ]
         ) + "\n"
 
+    def ascii_map(self) -> str:
+        route_points = set(self.energy_aware.path) | set(self.astar_energy_aware.path)
+        start = self.energy_aware.path[0]
+        goal = self.energy_aware.path[-1]
+        rows: list[str] = []
+        for y in range(self.mine_height):
+            cells: list[str] = []
+            for x in range(self.mine_width):
+                point = (x, y)
+                if point == start:
+                    cells.append("S")
+                elif point == goal:
+                    cells.append("G")
+                elif point in self.blocked_points:
+                    cells.append("#")
+                elif point in self.charging_points:
+                    cells.append("C")
+                elif point in self.perception_risks:
+                    cells.append("R" if point not in route_points else "*")
+                elif point in route_points:
+                    cells.append("*")
+                else:
+                    cells.append(".")
+            rows.append(" ".join(cells))
+        return "\n".join(rows)
+
 
 def compare_shortest_and_energy_aware(
     mine: MineMap,
@@ -178,6 +215,9 @@ def compare_shortest_and_energy_aware(
         recommendation=recommendation,
         perception_risks=dict(mine.risk_zones),
         charging_points=set(mine.charging),
+        mine_width=mine.width,
+        mine_height=mine.height,
+        blocked_points=set(mine.blocked),
     )
 
 
@@ -265,6 +305,12 @@ def write_algorithm_report(
         "## Engineering Takeaway",
         "",
         "The shortest path has a negative reserve margin. Both energy-aware planners use the charging lane, avoid the high perception-risk cells in this scenario, and reach the goal above reserve.",
+        "",
+        "## Map",
+        "",
+        "```text",
+        comparison.ascii_map(),
+        "```",
     ]
     output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return output_path

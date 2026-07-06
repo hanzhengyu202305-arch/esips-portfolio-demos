@@ -4,11 +4,11 @@ Target ESIPS brief: `Accenture_01 Kubernetes_DevOps.pdf`.
 
 This report frames Kube Copilot as a small Kubernetes-based CI/CD pipeline assistant: generation is useful, but validation and human review remain the trust boundary.
 
-| case | validation | reviewer decision | findings |
-| --- | --- | --- | --- |
-| safe | PASS | PASS | none |
-| risky | FAIL | FAIL | image tag must not be latest; cpu limit is required; memory limit is required; cpu request is required; memory request is required; runAsNonRoot must be true; privileged containers are not allowed; privilege escalation must be disabled |
-| partial | FAIL | PARTIAL | liveness probe is required; ci workflow is required |
+| case | validation | reviewer decision | blocking | warning | manual review |
+| --- | --- | --- | --- | --- | --- |
+| safe | PASS | PASS | none | none | credential handling, RBAC, rollout window, and production context still require human review |
+| risky | FAIL | FAIL | image tag must not be latest; runAsNonRoot must be true; privileged containers are not allowed; privilege escalation must be disabled | cpu limit is required; memory limit is required; cpu request is required; memory request is required | none |
+| partial | FAIL | PARTIAL | ci workflow is required | liveness probe is required | none |
 
 ## Remediation checklist
 
@@ -17,6 +17,7 @@ This report frames Kube Copilot as a small Kubernetes-based CI/CD pipeline assis
 - Validate probes before rollout so health checks match the application contract.
 - Require non-root security contexts and reject privileged containers.
 - Keep generated manifests behind CI and human review gates.
+- Treat credential handling, RBAC, network policy, cluster quota, rollout window, and business risk as manual review items.
 
 ## Interview framing
 

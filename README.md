@@ -58,7 +58,16 @@ Read `BEGINNER_GUIDE.zh-CN.md` first if you are new to the workspace, then read 
 
 For public open-source references behind the three demo lines, read `REFERENCES.md`.
 
-For a single-page reviewer overview, read [`docs/EXECUTIVE_ONE_PAGE.md`](docs/EXECUTIVE_ONE_PAGE.md). For a concise reviewer command path, read [`docs/REVIEWER_FAST_PATH.md`](docs/REVIEWER_FAST_PATH.md). For source-backed external references, read [`docs/EXTERNAL_REFERENCE_MAP.md`](docs/EXTERNAL_REFERENCE_MAP.md).
+For a single-page reviewer overview, read [`docs/EXECUTIVE_ONE_PAGE.md`](docs/EXECUTIVE_ONE_PAGE.md). For a concise reviewer command path, read [`docs/REVIEWER_FAST_PATH.md`](docs/REVIEWER_FAST_PATH.md). For a live presentation script, read [`docs/FIVE_MINUTE_DEMO_SCRIPT.md`](docs/FIVE_MINUTE_DEMO_SCRIPT.md). For source-backed external references, read [`docs/EXTERNAL_REFERENCE_MAP.md`](docs/EXTERNAL_REFERENCE_MAP.md).
+
+## Visual Evidence
+
+```text
+Portfolio status: PASS
+S4 AegisOps: issue -> evidence -> RCA -> patch preview -> validation -> PR summary
+Kube Copilot: safe PASS / partial PARTIAL / risky FAIL with blocking-warning-review categories
+Haul Truck Planner: shortest path infeasible; Dijkstra and A* feasible with charging lane
+```
 
 ## Interview Fast Path
 

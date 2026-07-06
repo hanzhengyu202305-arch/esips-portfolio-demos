@@ -37,15 +37,18 @@ def compare_safe_and_risky_workspace() -> str:
             "review remain the trust boundary."
         ),
         "",
-        "| case | validation | reviewer decision | findings |",
-        "| --- | --- | --- | --- |",
+        "| case | validation | reviewer decision | blocking | warning | manual review |",
+        "| --- | --- | --- | --- | --- | --- |",
     ]
     for name, workspace in cases.items():
         report = validate_workspace(workspace)
         validation = "PASS" if report.passed else "FAIL"
         decision = _reviewer_decision(report.findings)
-        findings = "; ".join(report.findings) if report.findings else "none"
-        lines.append(f"| {name} | {validation} | {decision} | {findings} |")
+        grouped = _group_findings(report.findings)
+        blocking = _join_findings(grouped["blocking"])
+        warning = _join_findings(grouped["warning"])
+        manual_review = _join_findings(grouped["manual_review"])
+        lines.append(f"| {name} | {validation} | {decision} | {blocking} | {warning} | {manual_review} |")
     lines.extend(
         [
             "",
@@ -56,6 +59,7 @@ def compare_safe_and_risky_workspace() -> str:
             "- Validate probes before rollout so health checks match the application contract.",
             "- Require non-root security contexts and reject privileged containers.",
             "- Keep generated manifests behind CI and human review gates.",
+            "- Treat credential handling, RBAC, network policy, cluster quota, rollout window, and business risk as manual review items.",
             "",
             "## Interview framing",
             "",
@@ -147,6 +151,38 @@ def _reviewer_decision(findings: list[str]) -> str:
     if len(findings) <= 3:
         return "PARTIAL"
     return "FAIL"
+
+
+def _group_findings(findings: list[str]) -> dict[str, list[str]]:
+    grouped = {"blocking": [], "warning": [], "manual_review": []}
+    for finding in findings:
+        if finding in {
+            "image tag must not be latest",
+            "runAsNonRoot must be true",
+            "privileged containers are not allowed",
+            "privilege escalation must be disabled",
+            "ci workflow is required",
+        }:
+            grouped["blocking"].append(finding)
+        elif finding in {
+            "cpu limit is required",
+            "memory limit is required",
+            "cpu request is required",
+            "memory request is required",
+            "readiness probe is required",
+            "liveness probe is required",
+            "resource requests are required",
+        }:
+            grouped["warning"].append(finding)
+        else:
+            grouped["manual_review"].append(finding)
+    if not findings:
+        grouped["manual_review"].append("credential handling, RBAC, rollout window, and production context still require human review")
+    return grouped
+
+
+def _join_findings(findings: list[str]) -> str:
+    return "; ".join(findings) if findings else "none"
 
 
 def write_report(path: str = "reports/risk-comparison.md") -> Path:

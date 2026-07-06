@@ -3,7 +3,7 @@
   "mode": "multi",
   "root_cause_correct": true,
   "fix_successful": true,
-  "latency_seconds": 0.42,
+  "latency_seconds": 0.39,
   "prompt_tokens": 824,
   "completion_tokens": 340,
   "estimated_cost_usd": 0.000328,

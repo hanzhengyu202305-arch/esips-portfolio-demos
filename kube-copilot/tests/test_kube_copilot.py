@@ -141,11 +141,12 @@ class KubeCopilotTests(unittest.TestCase):
     def test_risk_report_compares_safe_and_risky_generation(self):
         markdown = compare_safe_and_risky_workspace()
 
-        self.assertIn("| safe | PASS | PASS |", markdown)
-        self.assertIn("| partial | FAIL | PARTIAL |", markdown)
-        self.assertIn("| risky | FAIL | FAIL |", markdown)
+        self.assertIn("| safe | PASS | PASS | none | none | credential handling, RBAC", markdown)
+        self.assertIn("| partial | FAIL | PARTIAL | ci workflow is required | liveness probe is required | none |", markdown)
+        self.assertIn("| risky | FAIL | FAIL | image tag must not be latest", markdown)
         self.assertIn("image tag must not be latest", markdown)
         self.assertIn("ci workflow is required", markdown)
+        self.assertIn("manual review", markdown)
         self.assertIn("## Remediation checklist", markdown)
         self.assertIn("Pin image tags to immutable versions", markdown)
         self.assertIn("Set CPU and memory requests and limits", markdown)

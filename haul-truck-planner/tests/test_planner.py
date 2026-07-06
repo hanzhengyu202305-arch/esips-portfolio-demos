@@ -99,6 +99,8 @@ class HaulTruckPlannerTests(unittest.TestCase):
         self.assertIn("expanded_states", markdown)
         self.assertIn("charging_used", markdown)
         self.assertIn("avoids_risk_cells", markdown)
+        self.assertIn("## ASCII map", markdown)
+        self.assertIn("S * * . .", markdown)
         self.assertIn("## Operational takeaway", markdown)
         self.assertIn("shortest route violates the reserve constraint", markdown)
         self.assertIn("minimum energy margin", markdown)
