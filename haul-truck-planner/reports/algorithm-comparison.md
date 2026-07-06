@@ -15,3 +15,12 @@ Dijkstra remains the correctness baseline. A* uses the same battery-state transi
 ## Engineering Takeaway
 
 The shortest path has a negative reserve margin. Both energy-aware planners use the charging lane, avoid the high perception-risk cells in this scenario, and reach the goal above reserve.
+
+## Map
+
+```text
+S * * . .
+. # * # R
+. # C . R
+. . * * G
+```

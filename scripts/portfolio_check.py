@@ -27,6 +27,8 @@ def main() -> int:
     parser.add_argument("--aegisops-python", default=os.environ.get("AEGISOPS_PY", "/opt/anaconda3/bin/python3.13"))
     args = parser.parse_args()
 
+    env = os.environ.copy()
+    env["AEGISOPS_STABLE_REPORTS"] = "1"
     commands = [
         ("top-level tests", ["make", "test", f"AEGISOPS_PY={args.aegisops_python}"]),
         ("AegisOps acceptance", ["make", "-C", "aegisops-agent", "acceptance", f"PYTHON={args.aegisops_python}"]),
@@ -35,14 +37,14 @@ def main() -> int:
         ("public boundary check", [sys.executable, "scripts/public_boundary_check.py"]),
     ]
 
-    results = [run_check(name, command) for name, command in commands]
+    results = [run_check(name, command, env=env) for name, command in commands]
     overall_passed = all(result.passed for result in results)
     write_status(results, overall_passed)
     print("PASS portfolio-check" if overall_passed else "FAIL portfolio-check")
     return 0 if overall_passed else 1
 
 
-def run_check(name: str, command: list[str]) -> CheckResult:
+def run_check(name: str, command: list[str], env: dict[str, str] | None = None) -> CheckResult:
     print(f"==> {name}: {' '.join(command)}")
     completed = subprocess.run(
         command,
@@ -51,6 +53,7 @@ def run_check(name: str, command: list[str]) -> CheckResult:
         text=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
+        env=env,
     )
     output = completed.stdout or ""
     if output:

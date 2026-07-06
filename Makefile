@@ -22,4 +22,4 @@ public-boundary-check:
 	python3 scripts/public_boundary_check.py
 
 portfolio-check:
-	python3 scripts/portfolio_check.py --aegisops-python "$(AEGISOPS_PY)"
+	AEGISOPS_STABLE_REPORTS=1 python3 scripts/portfolio_check.py --aegisops-python "$(AEGISOPS_PY)"

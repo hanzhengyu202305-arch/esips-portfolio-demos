@@ -11,6 +11,17 @@
 - battery-state Dijkstra: `[6.2, 5.2, 4.2, 2.4, 7.6, 6.6, 5.6, 4.6]`
 - A* energy-aware planner: `[6.2, 5.2, 4.2, 2.4, 7.6, 6.6, 5.6, 4.6]`
 
+## ASCII map
+
+Legend: `S` start, `G` goal, `#` blocked, `C` charging, `R` perception risk, `*` energy-aware route.
+
+```text
+S * * . .
+. # * # R
+. # C . R
+. . * * G
+```
+
 ## Planning algorithm note
 
 The current planner is a battery-state Dijkstra search: each state tracks both grid position and remaining energy, so the route is accepted only when it reaches the goal while preserving the reserve.

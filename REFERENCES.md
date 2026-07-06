@@ -15,6 +15,7 @@ Local demo: [`aegisops-agent`](aegisops-agent)
 | [OpenHands](https://github.com/OpenHands/OpenHands) | Larger agentic software-engineering platform | AegisOps stays deterministic and local instead of claiming full autonomous development. |
 | [LangGraph](https://github.com/langchain-ai/langgraph) | Graph-style agent workflows | The demo compares single-agent and multi-agent runs over fixed scenarios. |
 | [SWE-bench](https://github.com/swe-bench/SWE-bench) | Issue-to-patch evaluation framing | AegisOps uses a smaller synthetic issue-to-PR evidence path without claiming benchmark results. |
+| [OpenSSF Scorecard](https://github.com/ossf/scorecard) | Repository security-posture checks | Future hardening item for public portfolio quality; not part of the current demo gate. |
 
 Current evidence:
 
@@ -38,6 +39,8 @@ Local demo: [`kube-copilot`](kube-copilot)
 | [Datree](https://github.com/datreeio/datree) | CI-friendly misconfiguration checks | The workflow treats CI and human review as the trust boundary. |
 | [Kubernetes resource management](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/) | CPU/memory request and limit concepts | Validator checks generated manifests for resource controls. |
 | [Kubernetes probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) | Readiness/liveness health behavior | Validator checks generated manifests for rollout and recovery signals. |
+| [Kubernetes Pod Security Standards](https://kubernetes.io/docs/concepts/security/pod-security-standards/) | Non-root, privileged-container, and privilege-escalation controls | Validator treats these as blocking review findings. |
+| [Kubernetes Security Context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) | Pod/container security settings | Supports the `securityContext` language used in the policy rules. |
 
 Current evidence:
 

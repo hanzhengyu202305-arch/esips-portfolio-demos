@@ -16,6 +16,7 @@ Reviewed on 2026-07-06. This file links the portfolio demos to public, authorita
 | [SWE-bench](https://github.com/swe-bench/SWE-bench) | Software-engineering agents are often evaluated through real issue-to-patch tasks. | AegisOps borrows the review shape: issue, evidence, patch, and validation. | Synthetic scenarios only, not benchmark results. |
 | [OpenHands](https://github.com/OpenHands/OpenHands) | Mature autonomous software-engineering platform direction. | The portfolio uses the same broad problem space but keeps the scope deterministic and local. | Not a full autonomous developer platform. |
 | [LangGraph](https://langchain-ai.github.io/langgraph/) | Graph-style agent workflows and multi-step stateful orchestration. | AegisOps frames single-agent and multi-agent RCA as workflow design, not a chatbot answer. | No dependency on LangGraph in the default demo. |
+| [OpenSSF Scorecard](https://github.com/ossf/scorecard) | Public repository security-posture checks. | Useful next-step language for repository hardening beyond the portfolio demo. | Not currently part of the validation gate. |
 
 ## Kube Copilot: Kubernetes Validation References
 
@@ -23,6 +24,8 @@ Reviewed on 2026-07-06. This file links the portfolio demos to public, authorita
 | --- | --- | --- | --- |
 | [Kubernetes resource management docs](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/) | CPU and memory requests/limits are core scheduling and reliability controls. | Validator checks CPU/memory requests and limits. | Demonstration check only. |
 | [Kubernetes probe docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) | Readiness and liveness probes support rollout and recovery behavior. | Validator checks readiness and liveness probes. | Does not run a real cluster health model. |
+| [Kubernetes Pod Security Standards](https://kubernetes.io/docs/concepts/security/pod-security-standards/) | Non-root execution, privileged-container avoidance, and privilege-escalation controls are part of the official security posture vocabulary. | Validator groups these findings as blocking issues. | Pre-deployment review only; not cluster enforcement. |
+| [Kubernetes Security Context docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) | Pod and container security settings are configured through `securityContext`. | Supports the security-context rule language in the report. | Demonstration check only. |
 | [kube-linter](https://github.com/stackrox/kube-linter) | Static analysis for Kubernetes YAML. | Kube Copilot mirrors the idea of readable pre-deployment findings. | Not a replacement scanner. |
 | [kubeconform](https://github.com/yannh/kubeconform) | Fast manifest validation. | Generated YAML is treated as draft material until checks pass. | Does not perform full schema validation. |
 | [Kyverno](https://github.com/kyverno/kyverno) and [Gatekeeper](https://github.com/open-policy-agent/gatekeeper) | Policy-as-code and admission-control direction. | This repo uses policy vocabulary for pre-deployment review. | Not an admission controller. |
