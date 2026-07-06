@@ -6,7 +6,7 @@ Use this when presenting the portfolio live. Keep the demo focused on evidence, 
 
 Say:
 
-> My ESIPS portfolio is built around AI software engineering with validation. AegisOps is the main SDLC agent demo, Kube Copilot supports the Kubernetes DevOps line, Haul Truck Planner keeps the EE/mining route-planning angle visible, and EvidenceOps Scorecard checks whether the public evidence is present and bounded.
+> My ESIPS portfolio is built around AI software engineering with validation. AegisOps is the main SDLC agent demo, Kube Copilot supports the Kubernetes DevOps line, Haul Truck Planner keeps the EE/mining route-planning angle visible, and EvidenceOps Scorecard checks whether the public evidence is present, strong enough, and bounded.
 
 Open:
 
@@ -89,7 +89,7 @@ evidenceops-scorecard/reports/submission-readiness.md
 
 Say:
 
-> EvidenceOps is the evidence layer. It checks whether the reports, claims, status files, and manual-review boundaries are present. This means the portfolio is not only a set of demos; it is a reviewable evidence package.
+> EvidenceOps is the evidence quality gate. It checks whether the reports, claims, status files, and manual-review boundaries are present, then labels evidence as PASS, WEAK, or MISSING and gives a quality score. This means the portfolio is not only a set of demos; it is a reviewable evidence package.
 
 ## 4:50-5:00 - Boundary
 

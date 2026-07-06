@@ -6,7 +6,7 @@ This repository contains three small, reproducible portfolio demos plus one evid
 
 Portfolio thesis: **AI software engineering with validation: turning industry briefs into reproducible, testable, reviewable engineering demos.**
 
-The demos share the same product story: generate or plan something, validate it, report it, and keep the human-review boundary visible. EvidenceOps Scorecard then checks whether the portfolio evidence is present and reviewable.
+The demos share the same product story: generate or plan something, validate it, report it, and keep the human-review boundary visible. EvidenceOps Scorecard then checks whether the portfolio evidence is present, strong enough for review, and safely bounded.
 
 ## Reviewer Fast Path
 
@@ -17,7 +17,7 @@ The demos share the same product story: generate or plan something, validate it,
 | 1 | `Accenture_02 SDLC_Agents` | `aegisops-agent` | Main line: RAG/runbook retrieval -> root cause -> patch preview -> validation -> report |
 | 2 | `Accenture_01 Kubernetes_DevOps` | `kube-copilot` | Kubernetes and CI/CD generation is useful only after policy validation and human review |
 | 3 | `RTSIH electric haul truck trajectory planning` | `haul-truck-planner` | Battery reserve, grade, charging access, perception risk, and energy-aware planning matter more than shortest path alone |
-| evidence layer | portfolio readiness | `evidenceops-scorecard` | Checks whether public evidence, claims, generated reports, and submission-readiness boundaries are present |
+| evidence layer | portfolio quality gate | `evidenceops-scorecard` | Labels evidence as PASS, WEAK, or MISSING and reports a 0-100 quality score |
 
 ### 3-Minute Read
 
@@ -33,7 +33,7 @@ The demos share the same product story: generate or plan something, validate it,
 | AegisOps Agent | SDLC agent RCA workflow | `make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=/opt/anaconda3/bin/python3.13` | [`aegisops-agent/reports/S4/multi/demo-report.md`](aegisops-agent/reports/S4/multi/demo-report.md), [`aegisops-agent/reports/S4/multi/pr-summary.md`](aegisops-agent/reports/S4/multi/pr-summary.md) |
 | Kube Copilot | Kubernetes validation boundary | `make -C kube-copilot report` | [`kube-copilot/reports/risk-comparison.md`](kube-copilot/reports/risk-comparison.md) |
 | Haul Truck Planner | Energy-aware route planning | `make -C haul-truck-planner demo` | [`haul-truck-planner/reports/route-experiment.md`](haul-truck-planner/reports/route-experiment.md) |
-| EvidenceOps Scorecard | Portfolio evidence readiness | `make -C evidenceops-scorecard report` | [`evidenceops-scorecard/reports/evidence-scorecard.md`](evidenceops-scorecard/reports/evidence-scorecard.md) |
+| EvidenceOps Scorecard | Portfolio evidence quality gate | `make -C evidenceops-scorecard report` | [`evidenceops-scorecard/reports/evidence-scorecard.md`](evidenceops-scorecard/reports/evidence-scorecard.md) |
 
 ### Full Validation
 
@@ -70,14 +70,14 @@ Portfolio status: PASS
 S4 AegisOps: issue -> evidence -> RCA -> patch preview -> validation -> PR summary
 Kube Copilot: safe PASS / partial PARTIAL / risky FAIL with blocking-warning-review categories
 Haul Truck Planner: shortest path infeasible; Dijkstra and A* feasible with charging lane
-EvidenceOps Scorecard: public evidence PASS; application submission still needs official confirmation
+EvidenceOps Scorecard: public evidence PASS; quality score 100/100; application submission still needs official confirmation
 ```
 
 ## Interview Fast Path
 
 30-second pitch:
 
-> My ESIPS portfolio is built around AI software engineering with validation. AegisOps Agent is the main SDLC agent demo: it turns a reproducible DevOps incident into evidence, root cause, guarded patch preview, validation, and a PR-style report. Kube Copilot and Haul Truck Planner support the same story from Kubernetes validation and EE/mining route-planning angles. EvidenceOps Scorecard is the evidence layer that checks whether the public artifacts are present and reviewable.
+> My ESIPS portfolio is built around AI software engineering with validation. AegisOps Agent is the main SDLC agent demo: it turns a reproducible DevOps incident into evidence, root cause, guarded patch preview, validation, and a PR-style report. Kube Copilot and Haul Truck Planner support the same story from Kubernetes validation and EE/mining route-planning angles. EvidenceOps Scorecard is the quality gate that labels public artifacts as PASS, WEAK, or MISSING and reports whether the evidence package is reviewable.
 
 60-second pitch:
 
@@ -88,7 +88,7 @@ One-line demo explanations:
 - AegisOps: incident evidence -> runbook retrieval -> root cause -> patch preview -> validation -> report.
 - Kube Copilot: generated Docker/Kubernetes/CI files are blocked until policy checks pass.
 - Haul Truck Planner: feasible electric haul routes depend on battery state, charging, grade, and risk, not only distance.
-- EvidenceOps Scorecard: reviewer evidence is checked as artifacts, not just described in prose.
+- EvidenceOps Scorecard: reviewer evidence is scored as artifacts, not just described in prose.
 
 Limitations:
 
@@ -166,7 +166,7 @@ make -C haul-truck-planner demo
 
 ### EvidenceOps Scorecard
 
-A portfolio evidence-readiness layer. It checks whether the public repository has the expected reports, claims matrix, portfolio status files, and project evidence for reviewer inspection.
+A portfolio evidence quality gate. It checks whether the public repository has the expected reports, claims matrix, portfolio status files, and project evidence for reviewer inspection, then reports PASS, WEAK, or MISSING evidence plus a quality score.
 
 Useful commands:
 

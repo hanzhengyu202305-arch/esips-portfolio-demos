@@ -2,7 +2,7 @@
 
 EvidenceOps Scorecard is the fourth portfolio demo layer. It checks whether the public ESIPS portfolio has reviewable evidence for the three project lines and whether the public repository remains inside a safe evidence boundary.
 
-It does not replace official application checks. It only reports whether public portfolio artifacts are present, generated, and ready for reviewer inspection.
+It does not replace official application checks. It reports whether public portfolio artifacts are present, generated, strong enough for reviewer inspection, and separated from items that still need official confirmation.
 
 ## What It Checks
 
@@ -12,6 +12,16 @@ It does not replace official application checks. It only reports whether public 
 | Kube Copilot evidence | risk comparison and policy matrix |
 | Haul Truck Planner evidence | route experiment and algorithm comparison |
 | Whole portfolio evidence | README, claims matrix, portfolio status files |
+
+Each evidence item is classified as:
+
+| status | meaning |
+| --- | --- |
+| `PASS` | artifact exists and meets minimum quality checks |
+| `WEAK` | artifact exists but is too thin or missing expected keywords |
+| `MISSING` | artifact is absent |
+
+The generated report includes a `0-100` quality score, weak evidence list, missing evidence list, and specific quality-fix hints.
 
 ## Commands
 

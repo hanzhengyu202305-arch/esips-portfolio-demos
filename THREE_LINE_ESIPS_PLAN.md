@@ -75,7 +75,7 @@ make -C haul-truck-planner report
 make -C haul-truck-planner demo
 ```
 
-## 4. EvidenceOps Scorecard -> Portfolio Evidence Readiness
+## 4. EvidenceOps Scorecard -> Portfolio Evidence Quality Gate
 
 目标 brief: 不是第四个 ESIPS preference，而是前三条线的公开证据审计层。
 
@@ -83,7 +83,7 @@ make -C haul-truck-planner demo
 
 核心说法:
 
-> 我不只是做了 demo，还做了一个 evidence scorecard，用来检查公开仓库里的 claim、报告、portfolio status 和人工审核边界是否齐全。
+> 我不只是做了 demo，还做了一个 evidence quality gate，用来检查公开仓库里的 claim、报告、portfolio status 和人工审核边界是否齐全、是否足够强。
 
 主要证据:
 
@@ -102,7 +102,7 @@ make -C evidenceops-scorecard report
 
 一句话版本:
 
-> 三条线不是三家高频公司，而是三个申请证据面：第一条用 AegisOps 对 Accenture SDLC Agents 做主作品；第二条用 Kube Copilot 补 Accenture Kubernetes DevOps；第三条用 Haul Truck Planner 补 RTSIH 的电动矿卡路径规划，同时借 ELEC5308 的 perception + path planning 语言。EvidenceOps 是第四层，用来证明这些公开证据不是只写在嘴上，而是有报告、测试和边界检查。
+> 三条线不是三家高频公司，而是三个申请证据面：第一条用 AegisOps 对 Accenture SDLC Agents 做主作品；第二条用 Kube Copilot 补 Accenture Kubernetes DevOps；第三条用 Haul Truck Planner 补 RTSIH 的电动矿卡路径规划，同时借 ELEC5308 的 perception + path planning 语言。EvidenceOps 是第四层，用 PASS/WEAK/MISSING 和 quality score 证明这些公开证据不是只写在嘴上，而是有报告、测试和边界检查。
 
 更短版本:
 

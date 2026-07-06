@@ -1,6 +1,6 @@
 {
   "overall_portfolio_status": "PASS",
-  "generated_at_utc": "2026-07-06T15:08:23+00:00",
+  "generated_at_utc": "2026-07-06T15:28:13+00:00",
   "checks": [
     {
       "name": "top-level tests",
@@ -11,7 +11,7 @@
         "test",
         "AEGISOPS_PY=/opt/anaconda3/bin/python3.13"
       ],
-      "output_tail": "/Library/Developer/CommandLineTools/usr/bin/make -C evidenceops-scorecard test\npython3 -m unittest discover -s tests -v\ntest_builds_passing_scorecard_from_required_public_evidence (test_scorecard.EvidenceOpsScorecardTests.test_builds_passing_scorecard_from_required_public_evidence) ... ok\ntest_display_report_path_is_repository_relative (test_scorecard.EvidenceOpsScorecardTests.test_display_report_path_is_repository_relative) ... ok\ntest_missing_required_evidence_fails_scorecard (test_scorecard.EvidenceOpsScorecardTests.test_missing_required_evidence_fails_scorecard) ... ok\ntest_renders_markdown_with_boundaries_and_next_steps (test_scorecard.EvidenceOpsScorecardTests.test_renders_markdown_with_boundaries_and_next_steps) ... ok\ntest_stale_failed_portfolio_status_does_not_fail_evidence_inventory (test_scorecard.EvidenceOpsScorecardTests.test_stale_failed_portfolio_status_does_not_fail_evidence_inventory) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.011s\n\nOK"
+      "output_tail": "python3 -m unittest discover -s tests -v\ntest_builds_passing_scorecard_from_required_public_evidence (test_scorecard.EvidenceOpsScorecardTests.test_builds_passing_scorecard_from_required_public_evidence) ... ok\ntest_display_report_path_is_repository_relative (test_scorecard.EvidenceOpsScorecardTests.test_display_report_path_is_repository_relative) ... ok\ntest_missing_required_evidence_fails_scorecard (test_scorecard.EvidenceOpsScorecardTests.test_missing_required_evidence_fails_scorecard) ... ok\ntest_renders_markdown_with_boundaries_and_next_steps (test_scorecard.EvidenceOpsScorecardTests.test_renders_markdown_with_boundaries_and_next_steps) ... ok\ntest_stale_failed_portfolio_status_does_not_fail_evidence_inventory (test_scorecard.EvidenceOpsScorecardTests.test_stale_failed_portfolio_status_does_not_fail_evidence_inventory) ... ok\ntest_weak_evidence_is_reported_without_becoming_missing (test_scorecard.EvidenceOpsScorecardTests.test_weak_evidence_is_reported_without_becoming_missing) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.015s\n\nOK"
     },
     {
       "name": "AegisOps acceptance",
