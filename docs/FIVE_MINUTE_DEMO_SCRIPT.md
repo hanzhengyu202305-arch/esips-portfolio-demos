@@ -6,7 +6,7 @@ Use this when presenting the portfolio live. Keep the demo focused on evidence, 
 
 Say:
 
-> My ESIPS portfolio is built around AI software engineering with validation. AegisOps is the main SDLC agent demo, Kube Copilot supports the Kubernetes DevOps line, and Haul Truck Planner keeps the EE/mining route-planning angle visible.
+> My ESIPS portfolio is built around AI software engineering with validation. AegisOps is the main SDLC agent demo, Kube Copilot supports the Kubernetes DevOps line, Haul Truck Planner keeps the EE/mining route-planning angle visible, and EvidenceOps Scorecard checks whether the public evidence is present and bounded.
 
 Open:
 
@@ -72,11 +72,30 @@ Say:
 
 > The shortest path violates reserve. Battery-state Dijkstra and A* use the charging lane and avoid risk cells. This keeps the EE/mining-system story visible without claiming production dispatch.
 
-## 4:30-5:00 - Boundary
+## 4:30-4:50 - EvidenceOps Scorecard
+
+Run:
+
+```bash
+make -C evidenceops-scorecard report
+```
+
+Open:
+
+```text
+evidenceops-scorecard/reports/evidence-scorecard.md
+evidenceops-scorecard/reports/submission-readiness.md
+```
 
 Say:
 
-> These are local, synthetic, reproducible demos. The value is workflow design, validation, reporting, and clear limitations. I do not claim production automation, production Kubernetes enforcement, or production mine dispatch.
+> EvidenceOps is the evidence layer. It checks whether the reports, claims, status files, and manual-review boundaries are present. This means the portfolio is not only a set of demos; it is a reviewable evidence package.
+
+## 4:50-5:00 - Boundary
+
+Say:
+
+> These are local, synthetic, reproducible demos. The value is workflow design, validation, reporting, and clear limitations. I do not claim production automation, production Kubernetes enforcement, production mine dispatch, or official application approval.
 
 Final command:
 

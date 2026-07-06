@@ -2,11 +2,11 @@
 
 [![portfolio-check](https://github.com/hanzhengyu202305-arch/esips-portfolio-demos/actions/workflows/portfolio-check.yml/badge.svg)](https://github.com/hanzhengyu202305-arch/esips-portfolio-demos/actions/workflows/portfolio-check.yml)
 
-This repository contains three small, reproducible portfolio demos for ESIPS-style industry placement interviews.
+This repository contains three small, reproducible portfolio demos plus one evidence scorecard layer for ESIPS-style industry placement interviews.
 
 Portfolio thesis: **AI software engineering with validation: turning industry briefs into reproducible, testable, reviewable engineering demos.**
 
-The three demos share the same product story: generate or plan something, validate it, report it, and keep the human-review boundary visible.
+The demos share the same product story: generate or plan something, validate it, report it, and keep the human-review boundary visible. EvidenceOps Scorecard then checks whether the portfolio evidence is present and reviewable.
 
 ## Reviewer Fast Path
 
@@ -17,6 +17,7 @@ The three demos share the same product story: generate or plan something, valida
 | 1 | `Accenture_02 SDLC_Agents` | `aegisops-agent` | Main line: RAG/runbook retrieval -> root cause -> patch preview -> validation -> report |
 | 2 | `Accenture_01 Kubernetes_DevOps` | `kube-copilot` | Kubernetes and CI/CD generation is useful only after policy validation and human review |
 | 3 | `RTSIH electric haul truck trajectory planning` | `haul-truck-planner` | Battery reserve, grade, charging access, perception risk, and energy-aware planning matter more than shortest path alone |
+| evidence layer | portfolio readiness | `evidenceops-scorecard` | Checks whether public evidence, claims, generated reports, and submission-readiness boundaries are present |
 
 ### 3-Minute Read
 
@@ -32,6 +33,7 @@ The three demos share the same product story: generate or plan something, valida
 | AegisOps Agent | SDLC agent RCA workflow | `make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=/opt/anaconda3/bin/python3.13` | [`aegisops-agent/reports/S4/multi/demo-report.md`](aegisops-agent/reports/S4/multi/demo-report.md), [`aegisops-agent/reports/S4/multi/pr-summary.md`](aegisops-agent/reports/S4/multi/pr-summary.md) |
 | Kube Copilot | Kubernetes validation boundary | `make -C kube-copilot report` | [`kube-copilot/reports/risk-comparison.md`](kube-copilot/reports/risk-comparison.md) |
 | Haul Truck Planner | Energy-aware route planning | `make -C haul-truck-planner demo` | [`haul-truck-planner/reports/route-experiment.md`](haul-truck-planner/reports/route-experiment.md) |
+| EvidenceOps Scorecard | Portfolio evidence readiness | `make -C evidenceops-scorecard report` | [`evidenceops-scorecard/reports/evidence-scorecard.md`](evidenceops-scorecard/reports/evidence-scorecard.md) |
 
 ### Full Validation
 
@@ -53,6 +55,7 @@ For claim-by-claim boundaries, read [`CLAIMS_MATRIX.md`](CLAIMS_MATRIX.md).
 | Agentic SDLC remediation | `Accenture_02 SDLC_Agents.pdf` | `aegisops-agent` | `aegisops-agent/reports/final-portfolio-report.md` |
 | Kubernetes DevOps validation | `Accenture_01 Kubernetes_DevOps.pdf` | `kube-copilot` | `kube-copilot/reports/risk-comparison.md` |
 | Electric haul truck trajectory planning | `RTSIH - Opt-OO - Trajectory planning for electric haul trucks.pdf` | `haul-truck-planner` | `haul-truck-planner/reports/route-experiment.md` |
+| Evidence readiness | Portfolio validation layer | `evidenceops-scorecard` | `evidenceops-scorecard/reports/evidence-scorecard.md` |
 
 Read `BEGINNER_GUIDE.zh-CN.md` first if you are new to the workspace, then read `THREE_LINE_ESIPS_PLAN.md` for the short application and interview framing.
 
@@ -67,23 +70,25 @@ Portfolio status: PASS
 S4 AegisOps: issue -> evidence -> RCA -> patch preview -> validation -> PR summary
 Kube Copilot: safe PASS / partial PARTIAL / risky FAIL with blocking-warning-review categories
 Haul Truck Planner: shortest path infeasible; Dijkstra and A* feasible with charging lane
+EvidenceOps Scorecard: public evidence PASS; application submission still needs official confirmation
 ```
 
 ## Interview Fast Path
 
 30-second pitch:
 
-> My ESIPS portfolio is built around AI software engineering with validation. AegisOps Agent is the main SDLC agent demo: it turns a reproducible DevOps incident into evidence, root cause, guarded patch preview, validation, and a PR-style report. Kube Copilot and Haul Truck Planner support the same story from Kubernetes validation and EE/mining route-planning angles.
+> My ESIPS portfolio is built around AI software engineering with validation. AegisOps Agent is the main SDLC agent demo: it turns a reproducible DevOps incident into evidence, root cause, guarded patch preview, validation, and a PR-style report. Kube Copilot and Haul Truck Planner support the same story from Kubernetes validation and EE/mining route-planning angles. EvidenceOps Scorecard is the evidence layer that checks whether the public artifacts are present and reviewable.
 
 60-second pitch:
 
-> The repository contains three local, reproducible demos. AegisOps Agent maps to Accenture SDLC Agents by showing an auditable RCA workflow for CI/CD, Docker, Kubernetes, security, and latency incidents. Kube Copilot maps to Accenture Kubernetes DevOps by showing that AI can draft infrastructure files, but policy validation and human review define trust. Haul Truck Planner maps to RTSIH by comparing shortest path against energy-aware routing under battery reserve, grade, charging access, and perception-risk constraints. The common claim is not production readiness; it is that I can turn industry briefs into testable engineering evidence with clear limitations.
+> The repository contains three local, reproducible demos plus one evidence layer. AegisOps Agent maps to Accenture SDLC Agents by showing an auditable RCA workflow for CI/CD, Docker, Kubernetes, security, and latency incidents. Kube Copilot maps to Accenture Kubernetes DevOps by showing that AI can draft infrastructure files, but policy validation and human review define trust. Haul Truck Planner maps to RTSIH by comparing shortest path against energy-aware routing under battery reserve, grade, charging access, and perception-risk constraints. EvidenceOps Scorecard checks claims, reports, portfolio status, and manual-review boundaries. The common claim is not production readiness; it is that I can turn industry briefs into testable engineering evidence with clear limitations.
 
 One-line demo explanations:
 
 - AegisOps: incident evidence -> runbook retrieval -> root cause -> patch preview -> validation -> report.
 - Kube Copilot: generated Docker/Kubernetes/CI files are blocked until policy checks pass.
 - Haul Truck Planner: feasible electric haul routes depend on battery state, charging, grade, and risk, not only distance.
+- EvidenceOps Scorecard: reviewer evidence is checked as artifacts, not just described in prose.
 
 Limitations:
 
@@ -157,6 +162,17 @@ Useful commands:
 make -C haul-truck-planner test
 make -C haul-truck-planner report
 make -C haul-truck-planner demo
+```
+
+### EvidenceOps Scorecard
+
+A portfolio evidence-readiness layer. It checks whether the public repository has the expected reports, claims matrix, portfolio status files, and project evidence for reviewer inspection.
+
+Useful commands:
+
+```bash
+make -C evidenceops-scorecard test
+make -C evidenceops-scorecard report
 ```
 
 ## Boundaries

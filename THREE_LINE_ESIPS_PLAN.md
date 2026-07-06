@@ -75,15 +75,38 @@ make -C haul-truck-planner report
 make -C haul-truck-planner demo
 ```
 
+## 4. EvidenceOps Scorecard -> Portfolio Evidence Readiness
+
+目标 brief: 不是第四个 ESIPS preference，而是前三条线的公开证据审计层。
+
+本地项目: `evidenceops-scorecard`
+
+核心说法:
+
+> 我不只是做了 demo，还做了一个 evidence scorecard，用来检查公开仓库里的 claim、报告、portfolio status 和人工审核边界是否齐全。
+
+主要证据:
+
+- `evidenceops-scorecard/reports/evidence-scorecard.md`
+- `evidenceops-scorecard/reports/submission-readiness.md`
+- `evidenceops-scorecard/tests/test_scorecard.py`
+
+推荐现场命令:
+
+```bash
+make -C evidenceops-scorecard test
+make -C evidenceops-scorecard report
+```
+
 ## How To Explain The Three Lines In One Minute
 
 一句话版本:
 
-> 三条线不是三家高频公司，而是三个申请证据面：第一条用 AegisOps 对 Accenture SDLC Agents 做主作品；第二条用 Kube Copilot 补 Accenture Kubernetes DevOps；第三条用 Haul Truck Planner 补 RTSIH 的电动矿卡路径规划，同时借 ELEC5308 的 perception + path planning 语言。
+> 三条线不是三家高频公司，而是三个申请证据面：第一条用 AegisOps 对 Accenture SDLC Agents 做主作品；第二条用 Kube Copilot 补 Accenture Kubernetes DevOps；第三条用 Haul Truck Planner 补 RTSIH 的电动矿卡路径规划，同时借 ELEC5308 的 perception + path planning 语言。EvidenceOps 是第四层，用来证明这些公开证据不是只写在嘴上，而是有报告、测试和边界检查。
 
 更短版本:
 
-> 主线是 AI software/DevOps agent，Kube 是 DevOps 配置验证补强，Haul Truck 是 EE/矿业系统补强。
+> 主线是 AI software/DevOps agent，Kube 是 DevOps 配置验证补强，Haul Truck 是 EE/矿业系统补强，EvidenceOps 是证据审计层。
 
 ## SCDL3991 Boundary
 

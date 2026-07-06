@@ -38,6 +38,15 @@ Reviewed on 2026-07-06. This file links the portfolio demos to public, authorita
 | [Google OR-Tools routing documentation](https://developers.google.com/optimization/routing) | Vehicle routing and constrained route optimisation vocabulary. | The next-step language can mention richer EV routing constraints such as time windows and charging. | Current demo is not an OR-Tools solver. |
 | [EVRPTW-PR-ALNS](https://github.com/wornSweater/EVRPTW-PR-ALNS) | Electric-vehicle routing with partial recharge strategy. | Supports the idea that charging access and battery state matter operationally. | Not a fleet dispatch or industrial optimiser. |
 
+## EvidenceOps Scorecard: Evidence Readiness References
+
+| source | useful pattern | how EvidenceOps uses the idea | boundary |
+| --- | --- | --- | --- |
+| [OpenSSF Scorecard](https://github.com/ossf/scorecard) | Automated checks can summarize repository health and review risk. | EvidenceOps applies the scorecard pattern to portfolio evidence artifacts. | Not the OpenSSF tool and not a formal repository rating. |
+| [SLSA](https://slsa.dev/) | Evidence, provenance, and release-gate vocabulary. | EvidenceOps uses the same style of traceable public artifacts and validation gates. | Not a SLSA compliance implementation. |
+| [OpenTelemetry documentation](https://opentelemetry.io/docs/) | Observability vocabulary for traces, metrics, and logs. | EvidenceOps treats reports and status files as visible evidence signals. | Does not instrument a live distributed system. |
+| [Google SRE monitoring chapter](https://sre.google/sre-book/monitoring-distributed-systems/) | Reliability work should use visible, actionable signals. | EvidenceOps keeps public portfolio evidence explicit and inspectable. | Not production SRE monitoring. |
+
 ## Interview Use
 
 Use these references to show that the three demos sit in mature engineering ecosystems:
@@ -45,5 +54,6 @@ Use these references to show that the three demos sit in mature engineering ecos
 - AegisOps: agentic software engineering and issue-to-patch workflow.
 - Kube Copilot: Kubernetes policy validation and generated-IaC trust boundaries.
 - Haul Truck Planner: path planning plus EV routing constraints.
+- EvidenceOps Scorecard: public evidence readiness, release gates, and claim boundaries.
 
 Do not say the portfolio matches or replaces any of these projects. The safe claim is that the portfolio implements smaller, deterministic, reviewable demos inspired by the same engineering patterns.
