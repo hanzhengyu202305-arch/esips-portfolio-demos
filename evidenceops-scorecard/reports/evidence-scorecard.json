@@ -4,28 +4,40 @@
   "summary": {
     "passed_projects": 3,
     "total_projects": 3,
-    "portfolio_status_file": "FAIL"
+    "portfolio_status_file": "PASS",
+    "quality_score": 100,
+    "passed_evidence": 10,
+    "weak_evidence": 0,
+    "missing_evidence": 0
   },
   "portfolio_evidence": [
     {
       "path": "README.md",
       "exists": true,
-      "bytes": 9886
+      "status": "PASS",
+      "bytes": 10018,
+      "quality_issues": []
     },
     {
       "path": "CLAIMS_MATRIX.md",
       "exists": true,
-      "bytes": 3384
+      "status": "PASS",
+      "bytes": 3383,
+      "quality_issues": []
     },
     {
       "path": "PORTFOLIO_STATUS.md",
       "exists": true,
-      "bytes": 839
+      "status": "PASS",
+      "bytes": 839,
+      "quality_issues": []
     },
     {
       "path": "PORTFOLIO_STATUS.json",
       "exists": true,
-      "bytes": 2783
+      "status": "PASS",
+      "bytes": 2935,
+      "quality_issues": []
     }
   ],
   "projects": [
@@ -38,12 +50,16 @@
         {
           "path": "aegisops-agent/reports/final-portfolio-report.md",
           "exists": true,
-          "bytes": 5150
+          "status": "PASS",
+          "bytes": 5150,
+          "quality_issues": []
         },
         {
           "path": "aegisops-agent/reports/S4/multi/pr-summary.md",
           "exists": true,
-          "bytes": 901
+          "status": "PASS",
+          "bytes": 901,
+          "quality_issues": []
         }
       ]
     },
@@ -56,12 +72,16 @@
         {
           "path": "kube-copilot/reports/risk-comparison.md",
           "exists": true,
-          "bytes": 1902
+          "status": "PASS",
+          "bytes": 1902,
+          "quality_issues": []
         },
         {
           "path": "kube-copilot/reports/policy-matrix.md",
           "exists": true,
-          "bytes": 1547
+          "status": "PASS",
+          "bytes": 1547,
+          "quality_issues": []
         }
       ]
     },
@@ -74,17 +94,23 @@
         {
           "path": "haul-truck-planner/reports/route-experiment.md",
           "exists": true,
-          "bytes": 2829
+          "status": "PASS",
+          "bytes": 2829,
+          "quality_issues": []
         },
         {
           "path": "haul-truck-planner/reports/algorithm-comparison.md",
           "exists": true,
-          "bytes": 1159
+          "status": "PASS",
+          "bytes": 1159,
+          "quality_issues": []
         }
       ]
     }
   ],
   "missing_evidence": [],
+  "weak_evidence": [],
+  "quality_fixes": [],
   "manual_review_items": [
     "current official application deadline",
     "active form fields and upload requirements",

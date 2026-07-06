@@ -20,7 +20,11 @@ class EvidenceOpsScorecardTests(unittest.TestCase):
             self.assertEqual(scorecard["application_submission_status"], "NEEDS_OFFICIAL_CONFIRMATION")
             self.assertEqual(scorecard["summary"]["passed_projects"], 3)
             self.assertEqual(scorecard["summary"]["total_projects"], 3)
+            self.assertEqual(scorecard["summary"]["quality_score"], 100)
+            self.assertEqual(scorecard["summary"]["weak_evidence"], 0)
+            self.assertEqual(scorecard["summary"]["missing_evidence"], 0)
             self.assertEqual(scorecard["missing_evidence"], [])
+            self.assertEqual(scorecard["weak_evidence"], [])
             project_names = {project["name"] for project in scorecard["projects"]}
             self.assertEqual(project_names, {"AegisOps Agent", "Kube Copilot", "Haul Truck Planner"})
 
@@ -36,6 +40,28 @@ class EvidenceOpsScorecardTests(unittest.TestCase):
             self.assertIn("kube-copilot/reports/risk-comparison.md", scorecard["missing_evidence"])
             kube = next(project for project in scorecard["projects"] if project["id"] == "kube-copilot")
             self.assertEqual(kube["status"], "FAIL")
+
+    def test_weak_evidence_is_reported_without_becoming_missing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            self._write_required_public_evidence(repo)
+            (repo / "haul-truck-planner/reports/route-experiment.md").write_text(
+                "route exists\n",
+                encoding="utf-8",
+            )
+
+            scorecard = build_scorecard(repo)
+
+            self.assertEqual(scorecard["portfolio_evidence_status"], "WEAK")
+            self.assertEqual(scorecard["missing_evidence"], [])
+            self.assertIn("haul-truck-planner/reports/route-experiment.md", scorecard["weak_evidence"])
+            self.assertLess(scorecard["summary"]["quality_score"], 100)
+            haul = next(project for project in scorecard["projects"] if project["id"] == "haul-truck-planner")
+            self.assertEqual(haul["status"], "WEAK")
+            weak_item = next(item for item in haul["evidence"] if item["path"].endswith("route-experiment.md"))
+            self.assertEqual(weak_item["status"], "WEAK")
+            self.assertIn("missing keyword: battery", weak_item["quality_issues"])
+            self.assertIn("below minimum size", weak_item["quality_issues"][0])
 
     def test_stale_failed_portfolio_status_does_not_fail_evidence_inventory(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -61,9 +87,11 @@ class EvidenceOpsScorecardTests(unittest.TestCase):
             self.assertIn("# EvidenceOps Scorecard", markdown)
             self.assertIn("Portfolio evidence status: **PASS**", markdown)
             self.assertIn("Application submission status: **NEEDS_OFFICIAL_CONFIRMATION**", markdown)
+            self.assertIn("Quality score: **100/100**", markdown)
             self.assertIn("| AegisOps Agent | PASS |", markdown)
             self.assertIn("| Kube Copilot | PASS |", markdown)
             self.assertIn("| Haul Truck Planner | PASS |", markdown)
+            self.assertIn("## Weak Evidence", markdown)
             self.assertIn("public repository uses synthetic fixtures only", markdown)
 
     def test_display_report_path_is_repository_relative(self):
@@ -77,25 +105,25 @@ class EvidenceOpsScorecardTests(unittest.TestCase):
             )
 
     def _write_required_public_evidence(self, repo: Path) -> None:
-        required_files = [
-            "README.md",
-            "CLAIMS_MATRIX.md",
-            "PORTFOLIO_STATUS.md",
-            "PORTFOLIO_STATUS.json",
-            "aegisops-agent/reports/final-portfolio-report.md",
-            "aegisops-agent/reports/S4/multi/pr-summary.md",
-            "kube-copilot/reports/risk-comparison.md",
-            "kube-copilot/reports/policy-matrix.md",
-            "haul-truck-planner/reports/route-experiment.md",
-            "haul-truck-planner/reports/algorithm-comparison.md",
-        ]
-        for relative_path in required_files:
+        required_files = {
+            "README.md": "AI software engineering with validation. EvidenceOps portfolio evidence and reviewer guide.\n",
+            "CLAIMS_MATRIX.md": "Claims Matrix with evidence, verified Boundary notes, and safe claims.\n",
+            "PORTFOLIO_STATUS.md": "Overall status PASS with portfolio-check validation and boundary notes.\n",
+            "PORTFOLIO_STATUS.json": json.dumps({"overall_portfolio_status": "PASS"}) + "\n",
+            "aegisops-agent/reports/final-portfolio-report.md": "AegisOps Agent evidence: root cause, validation, report, and patch preview.\n",
+            "aegisops-agent/reports/S4/multi/pr-summary.md": "S4 PR summary with evidence, root cause, validation, and human review.\n",
+            "kube-copilot/reports/risk-comparison.md": "Kube Copilot Kubernetes risk comparison with PASS FAIL policy validation and manual review.\n",
+            "kube-copilot/reports/policy-matrix.md": "Policy matrix with image, resources, probes, securityContext, and CI validation.\n",
+            "haul-truck-planner/reports/route-experiment.md": "Route experiment with battery reserve, charging, grade, risk, Dijkstra, and A*.\n",
+            "haul-truck-planner/reports/algorithm-comparison.md": "Algorithm comparison for shortest path, Dijkstra, A*, energy, and charging.\n",
+        }
+        for relative_path, contents in required_files.items():
             path = repo / relative_path
             path.parent.mkdir(parents=True, exist_ok=True)
             if path.suffix == ".json":
-                path.write_text(json.dumps({"overall_portfolio_status": "PASS"}) + "\n", encoding="utf-8")
+                path.write_text(contents, encoding="utf-8")
             else:
-                path.write_text(f"# {path.name}\n", encoding="utf-8")
+                path.write_text(contents * 4, encoding="utf-8")
 
 
 if __name__ == "__main__":

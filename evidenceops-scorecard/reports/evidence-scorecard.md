@@ -2,9 +2,11 @@
 
 Portfolio evidence status: **PASS**
 
+Quality score: **100/100**
+
 Application submission status: **NEEDS_OFFICIAL_CONFIRMATION**
 
-EvidenceOps is the fourth demo layer: it checks whether the public portfolio has reviewable evidence for each project line.
+EvidenceOps is the fourth demo layer: it checks whether public portfolio evidence is present, strong enough for review, and safely bounded.
 
 ## Project Evidence
 
@@ -24,6 +26,14 @@ EvidenceOps is the fourth demo layer: it checks whether the public portfolio has
 | `PORTFOLIO_STATUS.json` | PASS |
 
 ## Missing Evidence
+
+- none
+
+## Weak Evidence
+
+- none
+
+## Quality Fixes
 
 - none
 

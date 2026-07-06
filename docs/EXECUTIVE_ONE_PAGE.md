@@ -10,7 +10,7 @@ This portfolio is one coherent story, not three unrelated mini-projects. The com
 industry brief -> scoped prototype -> deterministic validation -> report -> human-review boundary
 ```
 
-EvidenceOps Scorecard adds the fourth layer: public evidence readiness.
+EvidenceOps Scorecard adds the fourth layer: public evidence quality.
 
 ## Three Lines
 
@@ -19,7 +19,7 @@ EvidenceOps Scorecard adds the fourth layer: public evidence readiness.
 | `Accenture_02 SDLC_Agents` | AegisOps Agent | RAG/runbook retrieval -> RCA -> patch preview -> validation -> report | [`aegisops-agent/reports/final-portfolio-report.md`](../aegisops-agent/reports/final-portfolio-report.md), [`aegisops-agent/reports/S4/multi/pr-summary.md`](../aegisops-agent/reports/S4/multi/pr-summary.md) |
 | `Accenture_01 Kubernetes_DevOps` | Kube Copilot | Docker/Kubernetes/GitHub Actions generation plus deterministic validation | [`kube-copilot/reports/risk-comparison.md`](../kube-copilot/reports/risk-comparison.md), [`kube-copilot/reports/policy-matrix.md`](../kube-copilot/reports/policy-matrix.md) |
 | `RTSIH electric haul truck trajectory planning` | Haul Truck Planner | Battery reserve, grade, charging access, perception risk, and energy-aware planning | [`haul-truck-planner/reports/route-experiment.md`](../haul-truck-planner/reports/route-experiment.md), [`haul-truck-planner/reports/algorithm-comparison.md`](../haul-truck-planner/reports/algorithm-comparison.md) |
-| Portfolio evidence readiness | EvidenceOps Scorecard | Checks public evidence artifacts, reports, status files, and manual-review boundaries | [`evidenceops-scorecard/reports/evidence-scorecard.md`](../evidenceops-scorecard/reports/evidence-scorecard.md), [`evidenceops-scorecard/reports/submission-readiness.md`](../evidenceops-scorecard/reports/submission-readiness.md) |
+| Portfolio evidence quality | EvidenceOps Scorecard | Labels public evidence as PASS, WEAK, or MISSING and reports a quality score | [`evidenceops-scorecard/reports/evidence-scorecard.md`](../evidenceops-scorecard/reports/evidence-scorecard.md), [`evidenceops-scorecard/reports/submission-readiness.md`](../evidenceops-scorecard/reports/submission-readiness.md) |
 
 ## Main Project And Supporting Lines
 
