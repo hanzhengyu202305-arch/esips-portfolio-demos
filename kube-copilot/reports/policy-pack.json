@@ -1,0 +1,105 @@
+{
+  "pack_id": "kube-copilot-predeploy",
+  "public_references": [
+    "kube-linter",
+    "kubeconform",
+    "kube-score",
+    "Polaris",
+    "Kyverno",
+    "Gatekeeper",
+    "Datree"
+  ],
+  "rules": [
+    {
+      "category": "reproducibility",
+      "fixture_evidence": "fixtures/safe passes; fixtures/risky fails",
+      "id": "KC001_IMAGE_TAG_PINNED",
+      "severity": "blocking",
+      "title": "Image tag is pinned",
+      "validator_finding": "image tag must not be latest"
+    },
+    {
+      "category": "scheduler reliability",
+      "fixture_evidence": "fixtures/safe passes; fixtures/risky fails",
+      "id": "KC002_CPU_REQUEST",
+      "severity": "warning",
+      "title": "CPU request is set",
+      "validator_finding": "cpu request is required"
+    },
+    {
+      "category": "scheduler reliability",
+      "fixture_evidence": "fixtures/safe passes; fixtures/risky fails",
+      "id": "KC003_MEMORY_REQUEST",
+      "severity": "warning",
+      "title": "Memory request is set",
+      "validator_finding": "memory request is required"
+    },
+    {
+      "category": "blast-radius control",
+      "fixture_evidence": "fixtures/safe passes; fixtures/risky fails",
+      "id": "KC004_CPU_LIMIT",
+      "severity": "warning",
+      "title": "CPU limit is set",
+      "validator_finding": "cpu limit is required"
+    },
+    {
+      "category": "OOM risk control",
+      "fixture_evidence": "fixtures/safe passes; fixtures/risky fails",
+      "id": "KC005_MEMORY_LIMIT",
+      "severity": "warning",
+      "title": "Memory limit is set",
+      "validator_finding": "memory limit is required"
+    },
+    {
+      "category": "rollout safety",
+      "fixture_evidence": "fixtures/safe passes; fixtures/partial fails liveness",
+      "id": "KC006_PROBES_PRESENT",
+      "severity": "warning",
+      "title": "Readiness and liveness probes are present",
+      "validator_finding": "readiness probe is required; liveness probe is required"
+    },
+    {
+      "category": "container security",
+      "fixture_evidence": "fixtures/safe passes; fixtures/risky fails",
+      "id": "KC007_RUN_AS_NON_ROOT",
+      "severity": "blocking",
+      "title": "Pod runs as non-root",
+      "validator_finding": "runAsNonRoot must be true"
+    },
+    {
+      "category": "privilege boundary",
+      "fixture_evidence": "fixtures/safe passes; fixtures/risky fails",
+      "id": "KC008_NO_PRIVILEGED_CONTAINER",
+      "severity": "blocking",
+      "title": "Privileged containers are rejected",
+      "validator_finding": "privileged containers are not allowed"
+    },
+    {
+      "category": "least privilege",
+      "fixture_evidence": "fixtures/safe passes; fixtures/risky fails",
+      "id": "KC009_NO_PRIVILEGE_ESCALATION",
+      "severity": "blocking",
+      "title": "Privilege escalation is disabled",
+      "validator_finding": "privilege escalation must be disabled"
+    },
+    {
+      "category": "scheduler reliability",
+      "fixture_evidence": "fixtures/safe passes; fixtures/risky fails",
+      "id": "KC010_RESOURCE_REQUESTS",
+      "severity": "warning",
+      "title": "Resource requests block exists",
+      "validator_finding": "resource requests are required"
+    },
+    {
+      "category": "CI validation gate",
+      "fixture_evidence": "fixtures/safe passes; fixtures/partial fails",
+      "id": "KC011_CI_WORKFLOW_PRESENT",
+      "severity": "blocking",
+      "title": "CI workflow validates generated artifacts",
+      "validator_finding": "ci workflow is required"
+    }
+  ],
+  "scope": "pre-deployment generated Kubernetes and CI artifacts",
+  "trust_boundary": "Generated Kubernetes and CI files remain draft artifacts. The policy pack helps reviewers decide what to reject, what to fix, and what still requires human review.",
+  "version": "0.1.0"
+}

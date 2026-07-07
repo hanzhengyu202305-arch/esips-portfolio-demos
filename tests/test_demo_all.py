@@ -16,6 +16,14 @@ class DemoAllTests(unittest.TestCase):
         self.assertIn("demo-all:", makefile)
         self.assertIn("scripts/demo_all.py", makefile)
 
+    def test_portfolio_check_generates_kube_policy_pack_before_scorecard(self):
+        script = (ROOT / "scripts" / "portfolio_check.py").read_text(encoding="utf-8")
+
+        policy_pack_position = script.index('"Kube Policy Pack"')
+        scorecard_position = script.index('"EvidenceOps scorecard"')
+        self.assertLess(policy_pack_position, scorecard_position)
+        self.assertIn('"policy-pack"', script)
+
     def test_demo_all_includes_aegisops_triage_queue(self):
         runs = build_demo_runs("python3")
         triage = next(run for run in runs if run.name == "AegisOps Triage Queue")
@@ -29,6 +37,14 @@ class DemoAllTests(unittest.TestCase):
 
         self.assertEqual(patch_risk.display_command, "make -C aegisops-agent patch-risk SCENARIO=S4 MODE=multi PYTHON=<python>")
         self.assertIn("aegisops-agent/reports/S4/multi/patch-risk-diff.md", patch_risk.reports)
+
+    def test_demo_all_includes_kube_policy_pack_exporter(self):
+        runs = build_demo_runs("python3")
+        policy_pack = next(run for run in runs if run.name == "Kube Policy Pack")
+
+        self.assertEqual(policy_pack.display_command, "make -C kube-copilot policy-pack")
+        self.assertIn("kube-copilot/reports/policy-pack.json", policy_pack.reports)
+        self.assertIn("kube-copilot/reports/policy-pack.md", policy_pack.reports)
 
     def test_render_index_lists_all_public_evidence_paths(self):
         markdown = render_index(

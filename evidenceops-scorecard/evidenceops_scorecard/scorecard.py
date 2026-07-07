@@ -26,6 +26,8 @@ PROJECTS = [
         "evidence": [
             "kube-copilot/reports/risk-comparison.md",
             "kube-copilot/reports/policy-matrix.md",
+            "kube-copilot/reports/policy-pack.json",
+            "kube-copilot/reports/policy-pack.md",
         ],
     },
     {
@@ -55,6 +57,8 @@ QUALITY_RULES = {
     "aegisops-agent/reports/S4/multi/pr-summary.md": {"min_bytes": 120, "keywords": ["root cause", "validation"]},
     "kube-copilot/reports/risk-comparison.md": {"min_bytes": 120, "keywords": ["Kube Copilot", "manual review"]},
     "kube-copilot/reports/policy-matrix.md": {"min_bytes": 120, "keywords": ["policy", "validation"]},
+    "kube-copilot/reports/policy-pack.json": {"min_bytes": 120, "keywords": ["kube-copilot-predeploy", "rules", "trust_boundary"]},
+    "kube-copilot/reports/policy-pack.md": {"min_bytes": 120, "keywords": ["Policy Pack", "validation", "human review"]},
     "haul-truck-planner/reports/route-experiment.md": {"min_bytes": 120, "keywords": ["battery", "charging"]},
     "haul-truck-planner/reports/algorithm-comparison.md": {"min_bytes": 120, "keywords": ["Dijkstra", "A*"]},
 }

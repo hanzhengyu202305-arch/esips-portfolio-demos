@@ -6,7 +6,7 @@
     "total_projects": 3,
     "portfolio_status_file": "PASS",
     "quality_score": 100,
-    "passed_evidence": 10,
+    "passed_evidence": 12,
     "weak_evidence": 0,
     "missing_evidence": 0
   },
@@ -15,14 +15,14 @@
       "path": "README.md",
       "exists": true,
       "status": "PASS",
-      "bytes": 10746,
+      "bytes": 11028,
       "quality_issues": []
     },
     {
       "path": "CLAIMS_MATRIX.md",
       "exists": true,
       "status": "PASS",
-      "bytes": 3383,
+      "bytes": 3461,
       "quality_issues": []
     },
     {
@@ -81,6 +81,20 @@
           "exists": true,
           "status": "PASS",
           "bytes": 1547,
+          "quality_issues": []
+        },
+        {
+          "path": "kube-copilot/reports/policy-pack.json",
+          "exists": true,
+          "status": "PASS",
+          "bytes": 3767,
+          "quality_issues": []
+        },
+        {
+          "path": "kube-copilot/reports/policy-pack.md",
+          "exists": true,
+          "status": "PASS",
+          "bytes": 2392,
           "quality_issues": []
         }
       ]

@@ -94,6 +94,16 @@ def build_demo_runs(aegisops_python: str) -> list[DemoRun]:
             ),
         ),
         DemoRun(
+            name="Kube Policy Pack",
+            command=["make", "-C", "kube-copilot", "policy-pack"],
+            display_command="make -C kube-copilot policy-pack",
+            purpose="Kubernetes validation rules -> reusable reviewer policy pack",
+            reports=(
+                "kube-copilot/reports/policy-pack.json",
+                "kube-copilot/reports/policy-pack.md",
+            ),
+        ),
+        DemoRun(
             name="Haul Truck Planner",
             command=["make", "-C", "haul-truck-planner", "report"],
             display_command="make -C haul-truck-planner report",

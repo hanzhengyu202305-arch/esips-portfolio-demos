@@ -22,6 +22,7 @@ evidenceops-test:
 reports:
 	$(MAKE) -C aegisops-agent report PYTHON=$(AEGISOPS_PY)
 	$(MAKE) -C kube-copilot report
+	$(MAKE) -C kube-copilot policy-pack
 	$(MAKE) -C haul-truck-planner report
 	$(MAKE) -C evidenceops-scorecard report
 

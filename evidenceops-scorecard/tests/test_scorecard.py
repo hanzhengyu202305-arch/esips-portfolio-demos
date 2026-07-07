@@ -41,6 +41,19 @@ class EvidenceOpsScorecardTests(unittest.TestCase):
             kube = next(project for project in scorecard["projects"] if project["id"] == "kube-copilot")
             self.assertEqual(kube["status"], "FAIL")
 
+    def test_missing_kube_policy_pack_fails_kube_evidence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            self._write_required_public_evidence(repo)
+            (repo / "kube-copilot/reports/policy-pack.json").unlink()
+
+            scorecard = build_scorecard(repo)
+
+            self.assertEqual(scorecard["portfolio_evidence_status"], "FAIL")
+            self.assertIn("kube-copilot/reports/policy-pack.json", scorecard["missing_evidence"])
+            kube = next(project for project in scorecard["projects"] if project["id"] == "kube-copilot")
+            self.assertEqual(kube["status"], "FAIL")
+
     def test_weak_evidence_is_reported_without_becoming_missing(self):
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)
@@ -91,6 +104,7 @@ class EvidenceOpsScorecardTests(unittest.TestCase):
             self.assertIn("| AegisOps Agent | PASS |", markdown)
             self.assertIn("| Kube Copilot | PASS |", markdown)
             self.assertIn("| Haul Truck Planner | PASS |", markdown)
+            self.assertIn("kube-copilot/reports/policy-pack.json", markdown)
             self.assertIn("## Weak Evidence", markdown)
             self.assertIn("public repository uses synthetic fixtures only", markdown)
 
@@ -114,6 +128,15 @@ class EvidenceOpsScorecardTests(unittest.TestCase):
             "aegisops-agent/reports/S4/multi/pr-summary.md": "S4 PR summary with evidence, root cause, validation, and human review.\n",
             "kube-copilot/reports/risk-comparison.md": "Kube Copilot Kubernetes risk comparison with PASS FAIL policy validation and manual review.\n",
             "kube-copilot/reports/policy-matrix.md": "Policy matrix with image, resources, probes, securityContext, and CI validation.\n",
+            "kube-copilot/reports/policy-pack.json": json.dumps(
+                {
+                    "pack_id": "kube-copilot-predeploy",
+                    "rules": [{"id": "KC001_IMAGE_TAG_PINNED", "severity": "blocking"}],
+                    "trust_boundary": "generated Kubernetes artifacts still require human review",
+                }
+            )
+            + "\n",
+            "kube-copilot/reports/policy-pack.md": "Kube Copilot Policy Pack with policy rules, validation, evidence, and human review boundary.\n",
             "haul-truck-planner/reports/route-experiment.md": "Route experiment with battery reserve, charging, grade, risk, Dijkstra, and A*.\n",
             "haul-truck-planner/reports/algorithm-comparison.md": "Algorithm comparison for shortest path, Dijkstra, A*, energy, and charging.\n",
         }

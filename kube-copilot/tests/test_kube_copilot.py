@@ -1,6 +1,9 @@
 import unittest
+import json
+from pathlib import Path
 
 from kube_copilot.generator import generate_workspace
+from kube_copilot.policy_pack import build_policy_pack, render_policy_pack_markdown, write_policy_pack
 from kube_copilot.risk_report import (
     compare_safe_and_risky_workspace,
     partial_remediation_workspace,
@@ -186,6 +189,58 @@ class KubeCopilotTests(unittest.TestCase):
             self.assertIn(expected, markdown)
         self.assertIn("pre-deployment validation", markdown)
         self.assertIn("fixtures/partial", markdown)
+
+    def test_policy_pack_exports_machine_readable_rules(self):
+        policy_pack = build_policy_pack()
+
+        self.assertEqual(policy_pack["pack_id"], "kube-copilot-predeploy")
+        self.assertEqual(policy_pack["version"], "0.1.0")
+        self.assertEqual(policy_pack["scope"], "pre-deployment generated Kubernetes and CI artifacts")
+        rule_ids = {rule["id"] for rule in policy_pack["rules"]}
+        self.assertIn("KC001_IMAGE_TAG_PINNED", rule_ids)
+        self.assertIn("KC007_RUN_AS_NON_ROOT", rule_ids)
+        self.assertIn("KC011_CI_WORKFLOW_PRESENT", rule_ids)
+        image_rule = next(rule for rule in policy_pack["rules"] if rule["id"] == "KC001_IMAGE_TAG_PINNED")
+        self.assertEqual(image_rule["severity"], "blocking")
+        self.assertEqual(image_rule["validator_finding"], "image tag must not be latest")
+        self.assertIn("fixtures/risky", image_rule["fixture_evidence"])
+        self.assertIn("human review", policy_pack["trust_boundary"])
+
+    def test_policy_pack_markdown_is_reviewer_readable(self):
+        markdown = render_policy_pack_markdown(build_policy_pack())
+
+        self.assertTrue(markdown.startswith("# Kube Copilot Policy Pack"))
+        self.assertIn("| id | severity | category | rule | validator finding | evidence |", markdown)
+        self.assertIn("KC001_IMAGE_TAG_PINNED", markdown)
+        self.assertIn("KC011_CI_WORKFLOW_PRESENT", markdown)
+        self.assertIn("not a replacement for kube-linter, kubeconform, Gatekeeper, Kyverno, or admission control", markdown)
+
+    def test_write_policy_pack_outputs_json_and_markdown(self):
+        from tempfile import TemporaryDirectory
+
+        with TemporaryDirectory() as directory:
+            self._assert_write_policy_pack(Path(directory))
+
+    def _assert_write_policy_pack(self, output_dir: Path):
+        json_path = write_policy_pack(output_dir)
+        markdown_path = output_dir / "policy-pack.md"
+
+        self.assertEqual(json_path, output_dir / "policy-pack.json")
+        self.assertTrue(json_path.is_file())
+        self.assertTrue(markdown_path.is_file())
+        data = json.loads(json_path.read_text(encoding="utf-8"))
+        self.assertEqual(data["pack_id"], "kube-copilot-predeploy")
+        self.assertIn("KC007_RUN_AS_NON_ROOT", {rule["id"] for rule in data["rules"]})
+
+    def test_makefile_and_readme_expose_policy_pack_exporter(self):
+        root = Path(__file__).resolve().parents[1]
+        makefile = (root / "Makefile").read_text(encoding="utf-8")
+        readme = (root / "README.md").read_text(encoding="utf-8")
+
+        self.assertIn("policy-pack:", makefile)
+        self.assertIn("make policy-pack", readme)
+        self.assertIn("reports/policy-pack.json", readme)
+        self.assertIn("reports/policy-pack.md", readme)
 
 
 if __name__ == "__main__":
