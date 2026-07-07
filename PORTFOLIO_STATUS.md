@@ -2,12 +2,13 @@
 
 Overall status: **PASS**
 
-Generated at: `2026-07-07T02:18:12+00:00`
+Generated at: `2026-07-07T03:01:29+00:00`
 
 | check | status | command |
 | --- | --- | --- |
 | top-level tests | PASS | `make test AEGISOPS_PY=/opt/anaconda3/bin/python3.13` |
 | AegisOps acceptance | PASS | `make -C aegisops-agent acceptance PYTHON=/opt/anaconda3/bin/python3.13` |
+| AegisOps patch review queue | PASS | `make -C aegisops-agent patch-review-queue PYTHON=/opt/anaconda3/bin/python3.13` |
 | Kube Copilot report | PASS | `make -C kube-copilot report` |
 | Kube Policy Pack | PASS | `make -C kube-copilot policy-pack` |
 | Haul Truck Planner report | PASS | `make -C haul-truck-planner report` |

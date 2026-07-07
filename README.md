@@ -32,6 +32,7 @@ The demos share the same product story: generate or plan something, validate it,
 | demo | what to inspect | command | report |
 | --- | --- | --- | --- |
 | AegisOps Agent | SDLC agent RCA workflow | `make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=/opt/anaconda3/bin/python3.13` | [`aegisops-agent/reports/S4/multi/demo-report.md`](aegisops-agent/reports/S4/multi/demo-report.md), [`aegisops-agent/reports/S4/multi/pr-summary.md`](aegisops-agent/reports/S4/multi/pr-summary.md) |
+| AegisOps Patch Review Queue | Multi-scenario patch review priority | `make -C aegisops-agent patch-review-queue PYTHON=/opt/anaconda3/bin/python3.13` | [`aegisops-agent/reports/patch-review-queue.md`](aegisops-agent/reports/patch-review-queue.md) |
 | Kube Copilot | Kubernetes validation boundary | `make -C kube-copilot report` | [`kube-copilot/reports/risk-comparison.md`](kube-copilot/reports/risk-comparison.md) |
 | Kube Policy Pack | Reusable policy rule export | `make -C kube-copilot policy-pack` | [`kube-copilot/reports/policy-pack.md`](kube-copilot/reports/policy-pack.md), [`kube-copilot/reports/policy-pack.json`](kube-copilot/reports/policy-pack.json) |
 | Haul Truck Planner | Energy-aware route planning | `make -C haul-truck-planner demo` | [`haul-truck-planner/reports/route-experiment.md`](haul-truck-planner/reports/route-experiment.md) |
@@ -146,6 +147,7 @@ Useful commands:
 ```bash
 make -C aegisops-agent test PYTHON=/opt/anaconda3/bin/python3.13
 make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=/opt/anaconda3/bin/python3.13
+make -C aegisops-agent patch-review-queue PYTHON=/opt/anaconda3/bin/python3.13
 make -C aegisops-agent acceptance PYTHON=/opt/anaconda3/bin/python3.13
 ```
 

@@ -14,6 +14,7 @@
 | project | inspect first | why |
 | --- | --- | --- |
 | AegisOps Agent | [`aegisops-agent/reports/S4/multi/issue-to-pr-report.md`](../aegisops-agent/reports/S4/multi/issue-to-pr-report.md) | Shows issue -> evidence -> RCA -> patch -> validation -> PR summary. |
+| AegisOps Patch Review Queue | [`aegisops-agent/reports/patch-review-queue.md`](../aegisops-agent/reports/patch-review-queue.md) | Shows how patch reviews are ranked across scenarios before human review. |
 | Kube Copilot | [`kube-copilot/reports/policy-matrix.md`](../kube-copilot/reports/policy-matrix.md) | Shows deterministic Kubernetes policy checks. |
 | Haul Truck Planner | [`haul-truck-planner/reports/algorithm-comparison.md`](../haul-truck-planner/reports/algorithm-comparison.md) | Shows shortest path vs Dijkstra vs A* under energy constraints. |
 | EvidenceOps Scorecard | [`evidenceops-scorecard/reports/evidence-scorecard.md`](../evidenceops-scorecard/reports/evidence-scorecard.md) | Shows PASS/WEAK/MISSING evidence, quality score, and manual-review boundary. |

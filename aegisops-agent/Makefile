@@ -4,7 +4,7 @@ MODE ?= multi
 QUERY ?= CrashLoopBackOff invalid environment variable
 RUNS ?= 3
 
-.PHONY: help setup quickstart acceptance test test-app lint build-index retrieve scenario collect-evidence demo validate patch-risk eval-mock matrix doctor triage scorecard poc-repro poc docker-build kind-setup report issue-to-pr-report serve-app
+.PHONY: help setup quickstart acceptance test test-app lint build-index retrieve scenario collect-evidence demo validate patch-risk patch-review-queue eval-mock matrix doctor triage scorecard poc-repro poc docker-build kind-setup report issue-to-pr-report serve-app
 
 help:
 	@$(PYTHON) -m agent.main help
@@ -50,6 +50,9 @@ validate:
 
 patch-risk:
 	$(PYTHON) -m agent.main patch-risk --scenario $(SCENARIO) --mode $(MODE)
+
+patch-review-queue:
+	$(PYTHON) -m agent.main patch-review-queue
 
 eval-mock:
 	$(PYTHON) -m agent.main eval-mock

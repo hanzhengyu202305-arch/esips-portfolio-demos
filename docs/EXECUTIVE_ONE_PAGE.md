@@ -43,6 +43,7 @@ EvidenceOps Scorecard adds the fourth layer: public evidence quality and release
 | demo | command | report |
 | --- | --- | --- |
 | AegisOps Agent | `make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=/opt/anaconda3/bin/python3.13` | [`aegisops-agent/reports/S4/multi/issue-to-pr-report.md`](../aegisops-agent/reports/S4/multi/issue-to-pr-report.md) |
+| AegisOps Patch Review Queue | `make -C aegisops-agent patch-review-queue PYTHON=/opt/anaconda3/bin/python3.13` | [`aegisops-agent/reports/patch-review-queue.md`](../aegisops-agent/reports/patch-review-queue.md) |
 | Kube Copilot | `make -C kube-copilot report` | [`kube-copilot/reports/risk-comparison.md`](../kube-copilot/reports/risk-comparison.md) |
 | Haul Truck Planner | `make -C haul-truck-planner report` | [`haul-truck-planner/reports/algorithm-comparison.md`](../haul-truck-planner/reports/algorithm-comparison.md) |
 | EvidenceOps Scorecard | `make -C evidenceops-scorecard report` | [`evidenceops-scorecard/reports/evidence-scorecard.md`](../evidenceops-scorecard/reports/evidence-scorecard.md) |

@@ -18,6 +18,7 @@ make doctor
 make triage
 make demo SCENARIO=S4 MODE=multi
 make patch-risk SCENARIO=S4 MODE=multi
+make patch-review-queue
 make report
 ```
 
@@ -68,6 +69,7 @@ The MVP includes:
 - pytest, compile-lint, and DevOps dry-run validation
 - Evaluation reports for accuracy, fix success, latency, cost, and tool calls
 - Triage queue report for severity, evidence, ownership, and next action
+- Patch review queue report for multi-scenario risk ranking before merge review
 - Scenario matrix and environment doctor reports for portfolio review
 
 ## Current Results
@@ -184,6 +186,7 @@ make build-index
 make retrieve QUERY="CrashLoopBackOff invalid environment variable"
 make validate SCENARIO=S1 MODE=single
 make patch-risk SCENARIO=S4 MODE=multi
+make patch-review-queue
 make eval-mock
 make scorecard
 make poc RUNS=3
@@ -227,6 +230,7 @@ reports/eval-summary.md
 reports/final-portfolio-report.md
 reports/S4/multi/pr-summary.md
 reports/S4/multi/patch-risk-diff.md
+reports/patch-review-queue.md
 ```
 
 ## Interview Materials

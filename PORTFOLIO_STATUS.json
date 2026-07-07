@@ -1,6 +1,6 @@
 {
   "overall_portfolio_status": "PASS",
-  "generated_at_utc": "2026-07-07T02:18:12+00:00",
+  "generated_at_utc": "2026-07-07T03:01:29+00:00",
   "checks": [
     {
       "name": "top-level tests",
@@ -11,7 +11,7 @@
         "test",
         "AEGISOPS_PY=/opt/anaconda3/bin/python3.13"
       ],
-      "output_tail": "test_release_gate_cli_exits_nonzero_when_blocked (test_scorecard.EvidenceOpsScorecardTests.test_release_gate_cli_exits_nonzero_when_blocked) ... ok\ntest_release_gate_markdown_is_reviewer_readable (test_scorecard.EvidenceOpsScorecardTests.test_release_gate_markdown_is_reviewer_readable) ... ok\ntest_release_gate_passes_when_public_evidence_and_validation_are_ready (test_scorecard.EvidenceOpsScorecardTests.test_release_gate_passes_when_public_evidence_and_validation_are_ready) ... ok\ntest_renders_markdown_with_boundaries_and_next_steps (test_scorecard.EvidenceOpsScorecardTests.test_renders_markdown_with_boundaries_and_next_steps) ... ok\ntest_stale_failed_portfolio_status_does_not_fail_evidence_inventory (test_scorecard.EvidenceOpsScorecardTests.test_stale_failed_portfolio_status_does_not_fail_evidence_inventory) ... ok\ntest_weak_evidence_is_reported_without_becoming_missing (test_scorecard.EvidenceOpsScorecardTests.test_weak_evidence_is_reported_without_becoming_missing) ... ok\ntest_write_reports_outputs_release_gate_artifacts (test_scorecard.EvidenceOpsScorecardTests.test_write_reports_outputs_release_gate_artifacts) ... ok\n\n----------------------------------------------------------------------\nRan 14 tests in 0.096s\n\nOK"
+      "output_tail": "test_release_gate_cli_exits_nonzero_when_blocked (test_scorecard.EvidenceOpsScorecardTests.test_release_gate_cli_exits_nonzero_when_blocked) ... ok\ntest_release_gate_markdown_is_reviewer_readable (test_scorecard.EvidenceOpsScorecardTests.test_release_gate_markdown_is_reviewer_readable) ... ok\ntest_release_gate_passes_when_public_evidence_and_validation_are_ready (test_scorecard.EvidenceOpsScorecardTests.test_release_gate_passes_when_public_evidence_and_validation_are_ready) ... ok\ntest_renders_markdown_with_boundaries_and_next_steps (test_scorecard.EvidenceOpsScorecardTests.test_renders_markdown_with_boundaries_and_next_steps) ... ok\ntest_stale_failed_portfolio_status_does_not_fail_evidence_inventory (test_scorecard.EvidenceOpsScorecardTests.test_stale_failed_portfolio_status_does_not_fail_evidence_inventory) ... ok\ntest_weak_evidence_is_reported_without_becoming_missing (test_scorecard.EvidenceOpsScorecardTests.test_weak_evidence_is_reported_without_becoming_missing) ... ok\ntest_write_reports_outputs_release_gate_artifacts (test_scorecard.EvidenceOpsScorecardTests.test_write_reports_outputs_release_gate_artifacts) ... ok\n\n----------------------------------------------------------------------\nRan 14 tests in 0.083s\n\nOK"
     },
     {
       "name": "AegisOps acceptance",
@@ -25,6 +25,19 @@
         "PYTHON=/opt/anaconda3/bin/python3.13"
       ],
       "output_tail": "/opt/anaconda3/bin/python3.13 -m agent.main acceptance\nreports/acceptance-checklist.md"
+    },
+    {
+      "name": "AegisOps patch review queue",
+      "status": "PASS",
+      "returncode": 0,
+      "command": [
+        "make",
+        "-C",
+        "aegisops-agent",
+        "patch-review-queue",
+        "PYTHON=/opt/anaconda3/bin/python3.13"
+      ],
+      "output_tail": "/opt/anaconda3/bin/python3.13 -m agent.main patch-review-queue\nreports/patch-review-queue.md"
     },
     {
       "name": "Kube Copilot report",

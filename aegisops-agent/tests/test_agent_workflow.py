@@ -8,6 +8,7 @@ from agent.graph.multi_agent import run_multi_agent
 from agent.graph.single_agent import run_single_agent
 from agent.scenarios import get_scenario
 from agent.tools.file_tools import PatchSafetyError, validate_patch_targets
+from agent.tools.test_tools import run_validation
 
 
 def test_patch_safety_rejects_blocked_targets() -> None:
@@ -67,6 +68,16 @@ def test_demo_writes_pr_summary_for_validated_fix(tmp_path: Path) -> None:
     risk_report = risk_path.read_text()
     assert "Patch Risk Diff" in risk_report
     assert "image tag still uses latest" in risk_report
+
+
+def test_stable_validation_logs_normalize_pytest_duration(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setenv("AEGISOPS_STABLE_REPORTS", "1")
+
+    result = run_validation("S1", reports_dir=tmp_path)
+
+    text = result.log_path.read_text(encoding="utf-8")
+    assert "5 passed in <stable>s" in text
+    assert "passed in 0." not in text
 
 
 def test_eval_mock_generates_summary_and_metrics(tmp_path: Path) -> None:

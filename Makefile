@@ -21,6 +21,7 @@ evidenceops-test:
 
 reports:
 	$(MAKE) -C aegisops-agent report PYTHON=$(AEGISOPS_PY)
+	$(MAKE) -C aegisops-agent patch-review-queue PYTHON=$(AEGISOPS_PY)
 	$(MAKE) -C kube-copilot report
 	$(MAKE) -C kube-copilot policy-pack
 	$(MAKE) -C haul-truck-planner report

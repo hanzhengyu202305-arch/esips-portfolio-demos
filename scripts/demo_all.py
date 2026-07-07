@@ -84,6 +84,19 @@ def build_demo_runs(aegisops_python: str) -> list[DemoRun]:
             reports=("aegisops-agent/reports/S4/multi/patch-risk-diff.md",),
         ),
         DemoRun(
+            name="AegisOps Patch Review Queue",
+            command=[
+                "make",
+                "-C",
+                "aegisops-agent",
+                "patch-review-queue",
+                f"PYTHON={aegisops_python}",
+            ],
+            display_command="make -C aegisops-agent patch-review-queue PYTHON=<python>",
+            purpose="multiple patch previews -> risk ranking -> reviewer owner and next action",
+            reports=("aegisops-agent/reports/patch-review-queue.md",),
+        ),
+        DemoRun(
             name="Kube Copilot",
             command=["make", "-C", "kube-copilot", "report"],
             display_command="make -C kube-copilot report",

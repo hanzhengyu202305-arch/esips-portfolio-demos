@@ -21,6 +21,7 @@ Current evidence:
 
 - `aegisops-agent/fixtures/issues/S4_crashloopbackoff_issue.md` starts from a GitHub-style issue fixture.
 - `aegisops-agent/reports/S4/multi/issue-to-pr-report.md` shows issue -> evidence -> diagnosis -> patch preview -> validation -> PR summary.
+- `aegisops-agent/reports/patch-review-queue.md` ranks patch reviews across scenarios by status, risk score, reviewer owner, and next action.
 - Keep deterministic fixtures as the default so validation is reproducible without credentials or API keys.
 - Compare agent modes on accuracy, fix success, latency, and tool-call count.
 

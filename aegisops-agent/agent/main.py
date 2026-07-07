@@ -9,7 +9,7 @@ from agent.evaluation.evaluator import run_eval
 from agent.graph.multi_agent import run_multi_agent
 from agent.graph.single_agent import run_single_agent
 from agent.memory.retriever import build_index, retrieve
-from agent.patch_risk_diff import write_patch_risk_report
+from agent.patch_risk_diff import write_patch_review_queue, write_patch_risk_report
 from agent.poc import create_scorecard, run_poc_repro
 from agent.reporting import create_final_report, create_scenario_matrix
 from agent.scenario_runner import run_scenario
@@ -53,6 +53,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("doctor")
     sub.add_parser("acceptance")
     sub.add_parser("triage")
+    sub.add_parser("patch-review-queue")
     sub.add_parser("report")
     sub.add_parser("list-scenarios")
     sub.add_parser("scorecard")
@@ -108,6 +109,9 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "triage":
         print(write_triage_report())
         return 0
+    if args.command == "patch-review-queue":
+        print(write_patch_review_queue())
+        return 0
     if args.command == "report":
         print(create_final_report())
         return 0
@@ -141,6 +145,7 @@ def _print_help() -> None:
   make demo SCENARIO=S4 MODE=multi
   make validate SCENARIO=S1
   make patch-risk SCENARIO=S4 MODE=multi
+  make patch-review-queue
   make eval-mock
   make matrix
   make doctor

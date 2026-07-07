@@ -24,6 +24,14 @@ class DemoAllTests(unittest.TestCase):
         self.assertLess(policy_pack_position, scorecard_position)
         self.assertIn('"policy-pack"', script)
 
+    def test_portfolio_check_generates_patch_review_queue_before_scorecard(self):
+        script = (ROOT / "scripts" / "portfolio_check.py").read_text(encoding="utf-8")
+
+        review_queue_position = script.index('"AegisOps patch review queue"')
+        scorecard_position = script.index('"EvidenceOps scorecard"')
+        self.assertLess(review_queue_position, scorecard_position)
+        self.assertIn('"patch-review-queue"', script)
+
     def test_portfolio_check_runs_release_gate_after_status_write(self):
         script = (ROOT / "scripts" / "portfolio_check.py").read_text(encoding="utf-8")
 
@@ -57,6 +65,13 @@ class DemoAllTests(unittest.TestCase):
 
         self.assertEqual(patch_risk.display_command, "make -C aegisops-agent patch-risk SCENARIO=S4 MODE=multi PYTHON=<python>")
         self.assertIn("aegisops-agent/reports/S4/multi/patch-risk-diff.md", patch_risk.reports)
+
+    def test_demo_all_includes_aegisops_patch_review_queue(self):
+        runs = build_demo_runs("python3")
+        review_queue = next(run for run in runs if run.name == "AegisOps Patch Review Queue")
+
+        self.assertEqual(review_queue.display_command, "make -C aegisops-agent patch-review-queue PYTHON=<python>")
+        self.assertIn("aegisops-agent/reports/patch-review-queue.md", review_queue.reports)
 
     def test_demo_all_includes_kube_policy_pack_exporter(self):
         runs = build_demo_runs("python3")

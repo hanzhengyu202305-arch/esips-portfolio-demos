@@ -15,28 +15,28 @@
       "path": "README.md",
       "exists": true,
       "status": "PASS",
-      "bytes": 11279,
+      "bytes": 11609,
       "quality_issues": []
     },
     {
       "path": "CLAIMS_MATRIX.md",
       "exists": true,
       "status": "PASS",
-      "bytes": 3559,
+      "bytes": 3935,
       "quality_issues": []
     },
     {
       "path": "PORTFOLIO_STATUS.md",
       "exists": true,
       "status": "PASS",
-      "bytes": 904,
+      "bytes": 1026,
       "quality_issues": []
     },
     {
       "path": "PORTFOLIO_STATUS.json",
       "exists": true,
       "status": "PASS",
-      "bytes": 3437,
+      "bytes": 3820,
       "quality_issues": []
     }
   ],

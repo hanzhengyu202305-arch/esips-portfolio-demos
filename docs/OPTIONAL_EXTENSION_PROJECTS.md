@@ -8,6 +8,7 @@ These are optional extensions, not new primary portfolio lines. The current port
 | --- | --- | --- | --- | --- |
 | AegisOps Triage Queue | Take several synthetic incidents and rank what should be fixed first. | AegisOps Agent | [`aegisops-agent/reports/triage-queue.md`](../aegisops-agent/reports/triage-queue.md) | Shows the agent workflow can move from one incident to a queue of engineering work. |
 | Patch Risk Diff | Compare a proposed patch against risk checks before review. | AegisOps Agent and Kube Copilot | [`aegisops-agent/reports/S4/multi/patch-risk-diff.md`](../aegisops-agent/reports/S4/multi/patch-risk-diff.md) | Makes the human-review boundary stronger and easier to inspect. |
+| AegisOps Patch Review Queue | Rank proposed patch reviews across several synthetic scenarios. | AegisOps Agent | [`aegisops-agent/reports/patch-review-queue.md`](../aegisops-agent/reports/patch-review-queue.md) | Shows the patch-risk idea can scale from one report to a reviewer queue with owner and next action. |
 | Kube Policy Pack Exporter | Export the current Kubernetes checks as a small policy pack. | Kube Copilot | [`kube-copilot/reports/policy-pack.md`](../kube-copilot/reports/policy-pack.md) and [`policy-pack.json`](../kube-copilot/reports/policy-pack.json) | Makes the validator easier to compare with mature policy-as-code workflows. |
 | Mine Route Sensitivity Lab | Re-run the haul route planner under different reserve, charging, and risk settings. | Haul Truck Planner | [`haul-truck-planner/reports/sensitivity-lab.md`](../haul-truck-planner/reports/sensitivity-lab.md) | Shows planning is about constraint tradeoffs, not one hard-coded route. |
 | EvidenceOps Release Gate | Turn the evidence scorecard into a release checklist. | EvidenceOps Scorecard | [`evidenceops-scorecard/reports/release-gate.md`](../evidenceops-scorecard/reports/release-gate.md) | Connects portfolio evidence to a professional release habit. |
@@ -16,7 +17,7 @@ These are optional extensions, not new primary portfolio lines. The current port
 
 Safe wording:
 
-> The completed portfolio has three demo lines and one evidence layer. These optional extensions are the next backlog: triage more incidents, risk-check patches, export policy rules, run route sensitivity analysis, and turn EvidenceOps into a release gate.
+> The completed portfolio has three demo lines and one evidence layer. These optional extensions are the next backlog: triage more incidents, risk-check patches, rank patch reviews, export policy rules, run route sensitivity analysis, and turn EvidenceOps into a release gate.
 
 Avoid wording:
 
@@ -28,9 +29,10 @@ Avoid wording:
 
 1. **Mine Route Sensitivity Lab**: implemented as a small extension; keep improving it if the EE and planning angle needs more depth.
 2. **AegisOps Triage Queue**: implemented as a small extension; deepen it next if the SDLC agent line needs more realism.
-3. **Patch Risk Diff**: implemented as a small extension; deepen it next if patch review needs richer policy checks.
-4. **Kube Policy Pack Exporter**: implemented as a small extension; deepen it next if policy-as-code comparison needs more detail.
-5. **EvidenceOps Release Gate**: implemented as a small extension; deepen it next if release notes or changelog automation are needed.
+3. **Patch Risk Diff**: implemented as a small extension; deepened with a patch review queue.
+4. **AegisOps Patch Review Queue**: implemented as a small extension; deepen it next with richer reviewer labels or GitHub issue metadata.
+5. **Kube Policy Pack Exporter**: implemented as a small extension; deepen it next if policy-as-code comparison needs more detail.
+6. **EvidenceOps Release Gate**: implemented as a small extension; deepen it next if release notes or changelog automation are needed.
 
 ## Minimal Acceptance Criteria
 
