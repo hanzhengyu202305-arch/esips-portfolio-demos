@@ -33,6 +33,7 @@ def main() -> int:
         ("top-level tests", ["make", "test", f"AEGISOPS_PY={args.aegisops_python}"]),
         ("AegisOps acceptance", ["make", "-C", "aegisops-agent", "acceptance", f"PYTHON={args.aegisops_python}"]),
         ("Kube Copilot report", ["make", "-C", "kube-copilot", "report"]),
+        ("Kube Policy Pack", ["make", "-C", "kube-copilot", "policy-pack"]),
         ("Haul Truck Planner report", ["make", "-C", "haul-truck-planner", "report"]),
         ("EvidenceOps scorecard", ["make", "-C", "evidenceops-scorecard", "report"]),
         ("public boundary check", [sys.executable, "scripts/public_boundary_check.py"]),

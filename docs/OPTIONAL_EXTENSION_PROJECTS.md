@@ -8,7 +8,7 @@ These are optional extensions, not new primary portfolio lines. The current port
 | --- | --- | --- | --- | --- |
 | AegisOps Triage Queue | Take several synthetic incidents and rank what should be fixed first. | AegisOps Agent | [`aegisops-agent/reports/triage-queue.md`](../aegisops-agent/reports/triage-queue.md) | Shows the agent workflow can move from one incident to a queue of engineering work. |
 | Patch Risk Diff | Compare a proposed patch against risk checks before review. | AegisOps Agent and Kube Copilot | [`aegisops-agent/reports/S4/multi/patch-risk-diff.md`](../aegisops-agent/reports/S4/multi/patch-risk-diff.md) | Makes the human-review boundary stronger and easier to inspect. |
-| Kube Policy Pack Exporter | Export the current Kubernetes checks as a small policy pack. | Kube Copilot | JSON or YAML policy table plus generated policy matrix | Makes the validator easier to compare with mature policy-as-code workflows. |
+| Kube Policy Pack Exporter | Export the current Kubernetes checks as a small policy pack. | Kube Copilot | [`kube-copilot/reports/policy-pack.md`](../kube-copilot/reports/policy-pack.md) and [`policy-pack.json`](../kube-copilot/reports/policy-pack.json) | Makes the validator easier to compare with mature policy-as-code workflows. |
 | Mine Route Sensitivity Lab | Re-run the haul route planner under different reserve, charging, and risk settings. | Haul Truck Planner | [`haul-truck-planner/reports/sensitivity-lab.md`](../haul-truck-planner/reports/sensitivity-lab.md) | Shows planning is about constraint tradeoffs, not one hard-coded route. |
 | EvidenceOps Release Gate | Turn the evidence scorecard into a release checklist. | EvidenceOps Scorecard | release gate report with pass/fail checks and reviewer links | Connects portfolio evidence to a professional release habit. |
 
@@ -29,7 +29,7 @@ Avoid wording:
 1. **Mine Route Sensitivity Lab**: implemented as a small extension; keep improving it if the EE and planning angle needs more depth.
 2. **AegisOps Triage Queue**: implemented as a small extension; deepen it next if the SDLC agent line needs more realism.
 3. **Patch Risk Diff**: implemented as a small extension; deepen it next if patch review needs richer policy checks.
-4. **Kube Policy Pack Exporter**: good if the reviewer cares about platform engineering.
+4. **Kube Policy Pack Exporter**: implemented as a small extension; deepen it next if policy-as-code comparison needs more detail.
 5. **EvidenceOps Release Gate**: good polish after the technical extensions are stable.
 
 ## Minimal Acceptance Criteria

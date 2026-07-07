@@ -13,7 +13,7 @@ EvidenceOps is the fourth demo layer: it checks whether public portfolio evidenc
 | project | status | role | evidence |
 | --- | --- | --- | --- |
 | AegisOps Agent | PASS | Main SDLC agent evidence | `aegisops-agent/reports/final-portfolio-report.md`: PASS<br>`aegisops-agent/reports/S4/multi/pr-summary.md`: PASS |
-| Kube Copilot | PASS | Kubernetes validation support | `kube-copilot/reports/risk-comparison.md`: PASS<br>`kube-copilot/reports/policy-matrix.md`: PASS |
+| Kube Copilot | PASS | Kubernetes validation support | `kube-copilot/reports/risk-comparison.md`: PASS<br>`kube-copilot/reports/policy-matrix.md`: PASS<br>`kube-copilot/reports/policy-pack.json`: PASS<br>`kube-copilot/reports/policy-pack.md`: PASS |
 | Haul Truck Planner | PASS | EE and mining planning support | `haul-truck-planner/reports/route-experiment.md`: PASS<br>`haul-truck-planner/reports/algorithm-comparison.md`: PASS |
 
 ## Portfolio Evidence

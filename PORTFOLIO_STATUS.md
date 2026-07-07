@@ -2,13 +2,14 @@
 
 Overall status: **PASS**
 
-Generated at: `2026-07-07T01:42:55+00:00`
+Generated at: `2026-07-07T01:58:12+00:00`
 
 | check | status | command |
 | --- | --- | --- |
 | top-level tests | PASS | `make test AEGISOPS_PY=/opt/anaconda3/bin/python3.13` |
 | AegisOps acceptance | PASS | `make -C aegisops-agent acceptance PYTHON=/opt/anaconda3/bin/python3.13` |
 | Kube Copilot report | PASS | `make -C kube-copilot report` |
+| Kube Policy Pack | PASS | `make -C kube-copilot policy-pack` |
 | Haul Truck Planner report | PASS | `make -C haul-truck-planner report` |
 | EvidenceOps scorecard | PASS | `make -C evidenceops-scorecard report` |
 | public boundary check | PASS | `/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 scripts/public_boundary_check.py` |
