@@ -69,6 +69,21 @@ def build_demo_runs(aegisops_python: str) -> list[DemoRun]:
             reports=("aegisops-agent/reports/triage-queue.md",),
         ),
         DemoRun(
+            name="Patch Risk Diff",
+            command=[
+                "make",
+                "-C",
+                "aegisops-agent",
+                "patch-risk",
+                "SCENARIO=S4",
+                "MODE=multi",
+                f"PYTHON={aegisops_python}",
+            ],
+            display_command="make -C aegisops-agent patch-risk SCENARIO=S4 MODE=multi PYTHON=<python>",
+            purpose="proposed patch -> target guardrails -> Kubernetes/security review findings",
+            reports=("aegisops-agent/reports/S4/multi/patch-risk-diff.md",),
+        ),
+        DemoRun(
             name="Kube Copilot",
             command=["make", "-C", "kube-copilot", "report"],
             display_command="make -C kube-copilot report",

@@ -7,6 +7,7 @@ from pathlib import Path
 
 from agent.llm.mock_client import MockLLM
 from agent.memory.retriever import build_index, retrieve
+from agent.patch_risk_diff import write_patch_risk_report
 from agent.scenario_runner import run_scenario
 from agent.scenarios import get_scenario
 from agent.schemas import AgentRunResult, Diagnosis, EvalResult, PatchResult
@@ -86,6 +87,7 @@ def run_agent_flow(
     )
     _write_json(run_dir / "patch-result.json", patch.to_dict())
     _write_json(run_dir / "metrics.json", metrics.to_dict())
+    write_patch_risk_report(reports_path, scenario.scenario_id, mode)
     _write_demo_report(run_dir, scenario.title, diagnosis.root_cause_id, metrics)
     _write_pr_summary(run_dir, scenario.title, diagnosis, patch, metrics)
 
