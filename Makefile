@@ -1,8 +1,11 @@
 AEGISOPS_PY ?= /opt/anaconda3/bin/python3.13
 
-.PHONY: test reports public-boundary-check portfolio-check aegisops-test kube-test haul-test evidenceops-test
+.PHONY: test root-test reports demo-all public-boundary-check portfolio-check aegisops-test kube-test haul-test evidenceops-test
 
-test: aegisops-test kube-test haul-test evidenceops-test
+test: root-test aegisops-test kube-test haul-test evidenceops-test
+
+root-test:
+	python3 -m unittest discover -s tests -v
 
 aegisops-test:
 	$(MAKE) -C aegisops-agent test PYTHON=$(AEGISOPS_PY)
@@ -21,6 +24,9 @@ reports:
 	$(MAKE) -C kube-copilot report
 	$(MAKE) -C haul-truck-planner report
 	$(MAKE) -C evidenceops-scorecard report
+
+demo-all:
+	python3 scripts/demo_all.py --aegisops-python "$(AEGISOPS_PY)"
 
 public-boundary-check:
 	python3 scripts/public_boundary_check.py

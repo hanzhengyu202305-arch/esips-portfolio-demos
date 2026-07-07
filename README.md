@@ -24,7 +24,8 @@ The demos share the same product story: generate or plan something, validate it,
 1. Read this section for the thesis and three-line map.
 2. Open [`docs/EXECUTIVE_ONE_PAGE.md`](docs/EXECUTIVE_ONE_PAGE.md) for the one-page overview.
 3. Open [`THREE_LINE_ESIPS_PLAN.md`](THREE_LINE_ESIPS_PLAN.md) for the application framing.
-4. Open [`docs/REVIEWER_GUIDE.md`](docs/REVIEWER_GUIDE.md) for the interview/reviewer script.
+4. Open [`docs/REVIEWER_CLAIM_TRACE.md`](docs/REVIEWER_CLAIM_TRACE.md) for claim-by-claim evidence.
+5. Open [`docs/REVIEWER_GUIDE.md`](docs/REVIEWER_GUIDE.md) for the interview/reviewer script.
 
 ### 10-Minute Evidence Path
 
@@ -38,9 +39,12 @@ The demos share the same product story: generate or plan something, validate it,
 ### Full Validation
 
 ```bash
+make demo-all
 make test
 make portfolio-check
 ```
+
+`make demo-all` regenerates the public demo reports and writes [`docs/DEMO_OUTPUT_INDEX.md`](docs/DEMO_OUTPUT_INDEX.md).
 
 `make portfolio-check` refreshes [`PORTFOLIO_STATUS.md`](PORTFOLIO_STATUS.md) and [`PORTFOLIO_STATUS.json`](PORTFOLIO_STATUS.json).
 
@@ -61,7 +65,7 @@ Read `BEGINNER_GUIDE.zh-CN.md` first if you are new to the workspace, then read 
 
 For public open-source references behind the three demo lines, read `REFERENCES.md`.
 
-For a single-page reviewer overview, read [`docs/EXECUTIVE_ONE_PAGE.md`](docs/EXECUTIVE_ONE_PAGE.md). For a concise reviewer command path, read [`docs/REVIEWER_FAST_PATH.md`](docs/REVIEWER_FAST_PATH.md). For a live presentation script, read [`docs/FIVE_MINUTE_DEMO_SCRIPT.md`](docs/FIVE_MINUTE_DEMO_SCRIPT.md). For source-backed external references, read [`docs/EXTERNAL_REFERENCE_MAP.md`](docs/EXTERNAL_REFERENCE_MAP.md).
+For a single-page reviewer overview, read [`docs/EXECUTIVE_ONE_PAGE.md`](docs/EXECUTIVE_ONE_PAGE.md). For a concise reviewer command path, read [`docs/REVIEWER_FAST_PATH.md`](docs/REVIEWER_FAST_PATH.md). For claim traceability, read [`docs/REVIEWER_CLAIM_TRACE.md`](docs/REVIEWER_CLAIM_TRACE.md). For architecture and roadmap context, read [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/PROJECT_COMPARISON.md`](docs/PROJECT_COMPARISON.md), [`docs/RISK_REGISTER.md`](docs/RISK_REGISTER.md), and [`docs/ROADMAP.md`](docs/ROADMAP.md). For a live presentation script, read [`docs/FIVE_MINUTE_DEMO_SCRIPT.md`](docs/FIVE_MINUTE_DEMO_SCRIPT.md). For source-backed external references, read [`docs/EXTERNAL_REFERENCE_MAP.md`](docs/EXTERNAL_REFERENCE_MAP.md).
 
 ## Visual Evidence
 
@@ -106,6 +110,7 @@ Likely reviewer questions:
 
 ```bash
 make test
+make demo-all
 ```
 
 This runs:
@@ -113,6 +118,7 @@ This runs:
 - AegisOps pytest suite with the configured Python interpreter.
 - Kube Copilot unit tests.
 - Haul Truck Planner unit tests.
+- Public demo/report regeneration with a reviewer output index.
 
 If your Python paths differ, override them:
 
