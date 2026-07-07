@@ -21,6 +21,8 @@ The roadmap keeps future work aligned with the same thesis: AI software engineer
 | Haul Planner EV routing extension | add charge time, queueing, payload mass, and time-window constraints | algorithm-comparison report |
 | Release checklist automation | make reviewer packages reproducible across releases | changelog and portfolio status artifacts |
 
+For a fuller optional backlog, read [`docs/OPTIONAL_EXTENSION_PROJECTS.md`](OPTIONAL_EXTENSION_PROJECTS.md).
+
 ## Not In Scope For This Portfolio
 
 - Live production remediation.
@@ -38,4 +40,3 @@ Every public release should include:
 3. Passing `make portfolio-check`.
 4. Passing `make public-boundary-check`.
 5. A short release note that states what improved and what remains bounded.
-
