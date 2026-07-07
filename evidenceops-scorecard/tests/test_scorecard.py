@@ -1,11 +1,20 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
-from evidenceops_scorecard.scorecard import build_scorecard, display_report_path, render_markdown
+from evidenceops_scorecard.scorecard import (
+    build_release_gate,
+    build_scorecard,
+    display_report_path,
+    render_markdown,
+    render_release_gate_markdown,
+    write_reports,
+)
 
 
 class EvidenceOpsScorecardTests(unittest.TestCase):
@@ -108,6 +117,133 @@ class EvidenceOpsScorecardTests(unittest.TestCase):
             self.assertIn("## Weak Evidence", markdown)
             self.assertIn("public repository uses synthetic fixtures only", markdown)
 
+    def test_release_gate_passes_when_public_evidence_and_validation_are_ready(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            self._write_required_public_evidence(repo)
+            self._write_release_gate_artifacts(repo)
+
+            gate = build_release_gate(repo)
+
+            self.assertEqual(gate["release_gate_status"], "PASS")
+            self.assertEqual(gate["required_checks_passed"], 6)
+            self.assertEqual(gate["required_checks_total"], 6)
+            self.assertEqual(gate["blockers"], [])
+            check_names = {check["name"] for check in gate["checks"]}
+            self.assertIn("portfolio evidence scorecard", check_names)
+            self.assertIn("demo output index", check_names)
+            self.assertIn("claim trace", check_names)
+            self.assertIn("public boundary check", check_names)
+
+    def test_release_gate_blocks_failed_portfolio_status(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            self._write_required_public_evidence(repo)
+            self._write_release_gate_artifacts(repo)
+            (repo / "PORTFOLIO_STATUS.json").write_text(
+                json.dumps(
+                    {
+                        "overall_portfolio_status": "FAIL",
+                        "checks": [
+                            {"name": "top-level tests", "status": "PASS"},
+                            {"name": "public boundary check", "status": "FAIL"},
+                        ],
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+
+            gate = build_release_gate(repo)
+
+            self.assertEqual(gate["release_gate_status"], "BLOCKED")
+            self.assertIn("portfolio status file is FAIL", gate["blockers"])
+            self.assertIn("public boundary check did not pass", gate["blockers"])
+
+    def test_release_gate_blocks_missing_demo_index(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            self._write_required_public_evidence(repo)
+            self._write_release_gate_artifacts(repo)
+            (repo / "docs/DEMO_OUTPUT_INDEX.md").unlink()
+
+            gate = build_release_gate(repo)
+
+            self.assertEqual(gate["release_gate_status"], "BLOCKED")
+            self.assertIn("docs/DEMO_OUTPUT_INDEX.md is missing", gate["blockers"])
+
+    def test_release_gate_accepts_lowercase_claim_trace_boundary_column(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            self._write_required_public_evidence(repo)
+            self._write_release_gate_artifacts(repo)
+            (repo / "docs/REVIEWER_CLAIM_TRACE.md").write_text(
+                "# Reviewer Claim Trace\n\n| claim | boundary |\n| --- | --- |\n| demo | synthetic fixtures only |\n",
+                encoding="utf-8",
+            )
+
+            gate = build_release_gate(repo)
+
+            self.assertEqual(gate["release_gate_status"], "PASS")
+
+    def test_release_gate_markdown_is_reviewer_readable(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            self._write_required_public_evidence(repo)
+            self._write_release_gate_artifacts(repo)
+
+            markdown = render_release_gate_markdown(build_release_gate(repo))
+
+            self.assertTrue(markdown.startswith("# EvidenceOps Release Gate"))
+            self.assertIn("Release gate status: **PASS**", markdown)
+            self.assertIn("| check | status | evidence |", markdown)
+            self.assertIn("## Boundary", markdown)
+            self.assertIn("not official application approval", markdown)
+
+    def test_write_reports_outputs_release_gate_artifacts(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            self._write_required_public_evidence(repo)
+            self._write_release_gate_artifacts(repo)
+
+            paths = write_reports(repo)
+
+            self.assertIn("release_gate_json", paths)
+            self.assertIn("release_gate_markdown", paths)
+            self.assertTrue(paths["release_gate_json"].is_file())
+            self.assertTrue(paths["release_gate_markdown"].is_file())
+            payload = json.loads(paths["release_gate_json"].read_text(encoding="utf-8"))
+            self.assertEqual(payload["release_gate_status"], "PASS")
+
+    def test_release_gate_cli_exits_nonzero_when_blocked(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            self._write_required_public_evidence(repo)
+            out_dir = repo / "out"
+
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "evidenceops_scorecard.scorecard",
+                    "--root",
+                    str(repo),
+                    "--out-dir",
+                    str(out_dir),
+                    "--release-gate",
+                ],
+                cwd=Path(__file__).resolve().parents[1],
+                check=False,
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+            )
+
+            self.assertNotEqual(completed.returncode, 0)
+            self.assertIn("release-gate.md", completed.stdout)
+            payload = json.loads((out_dir / "release-gate.json").read_text(encoding="utf-8"))
+            self.assertEqual(payload["release_gate_status"], "BLOCKED")
+
     def test_display_report_path_is_repository_relative(self):
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)
@@ -147,6 +283,35 @@ class EvidenceOpsScorecardTests(unittest.TestCase):
                 path.write_text(contents, encoding="utf-8")
             else:
                 path.write_text(contents * 4, encoding="utf-8")
+
+    def _write_release_gate_artifacts(self, repo: Path) -> None:
+        (repo / "docs").mkdir(parents=True, exist_ok=True)
+        (repo / "docs/DEMO_OUTPUT_INDEX.md").write_text(
+            "Overall demo status: **PASS**\nKube Policy Pack\nEvidenceOps Scorecard\n",
+            encoding="utf-8",
+        )
+        (repo / "docs/REVIEWER_CLAIM_TRACE.md").write_text(
+            "# Reviewer Claim Trace\nverified by `make demo-all` and `make portfolio-check`\nBoundary\n",
+            encoding="utf-8",
+        )
+        (repo / "PORTFOLIO_STATUS.json").write_text(
+            json.dumps(
+                {
+                    "overall_portfolio_status": "PASS",
+                    "checks": [
+                        {"name": "top-level tests", "status": "PASS"},
+                        {"name": "AegisOps acceptance", "status": "PASS"},
+                        {"name": "Kube Copilot report", "status": "PASS"},
+                        {"name": "Kube Policy Pack", "status": "PASS"},
+                        {"name": "Haul Truck Planner report", "status": "PASS"},
+                        {"name": "EvidenceOps scorecard", "status": "PASS"},
+                        {"name": "public boundary check", "status": "PASS"},
+                    ],
+                }
+            )
+            + "\n",
+            encoding="utf-8",
+        )
 
 
 if __name__ == "__main__":

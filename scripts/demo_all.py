@@ -124,6 +124,16 @@ def build_demo_runs(aegisops_python: str) -> list[DemoRun]:
                 "evidenceops-scorecard/reports/submission-readiness.md",
             ),
         ),
+        DemoRun(
+            name="EvidenceOps Release Gate",
+            command=["make", "-C", "evidenceops-scorecard", "release-gate"],
+            display_command="make -C evidenceops-scorecard release-gate",
+            purpose="public evidence status -> release/share gate with blockers",
+            reports=(
+                "evidenceops-scorecard/reports/release-gate.md",
+                "evidenceops-scorecard/reports/release-gate.json",
+            ),
+        ),
     ]
 
 
@@ -197,7 +207,13 @@ def main() -> int:
 
     env = os.environ.copy()
     env["AEGISOPS_STABLE_REPORTS"] = "1"
-    results = [run_demo(demo, env) for demo in build_demo_runs(args.aegisops_python)]
+    demos = build_demo_runs(args.aegisops_python)
+    release_gate_runs = [demo for demo in demos if demo.name == "EvidenceOps Release Gate"]
+    regular_runs = [demo for demo in demos if demo.name != "EvidenceOps Release Gate"]
+    results = [run_demo(demo, env) for demo in regular_runs]
+    write_index(results)
+    release_gate_results = [run_demo(demo, env) for demo in release_gate_runs]
+    results.extend(release_gate_results)
     write_index(results)
     print(display_path(INDEX_PATH))
     return 0 if all(result.returncode == 0 for result in results) else 1

@@ -36,6 +36,7 @@ The demos share the same product story: generate or plan something, validate it,
 | Kube Policy Pack | Reusable policy rule export | `make -C kube-copilot policy-pack` | [`kube-copilot/reports/policy-pack.md`](kube-copilot/reports/policy-pack.md), [`kube-copilot/reports/policy-pack.json`](kube-copilot/reports/policy-pack.json) |
 | Haul Truck Planner | Energy-aware route planning | `make -C haul-truck-planner demo` | [`haul-truck-planner/reports/route-experiment.md`](haul-truck-planner/reports/route-experiment.md) |
 | EvidenceOps Scorecard | Portfolio evidence quality gate | `make -C evidenceops-scorecard report` | [`evidenceops-scorecard/reports/evidence-scorecard.md`](evidenceops-scorecard/reports/evidence-scorecard.md) |
+| EvidenceOps Release Gate | Public release/share readiness | `make -C evidenceops-scorecard release-gate` | [`evidenceops-scorecard/reports/release-gate.md`](evidenceops-scorecard/reports/release-gate.md) |
 
 ### Full Validation
 
@@ -181,6 +182,7 @@ Useful commands:
 ```bash
 make -C evidenceops-scorecard test
 make -C evidenceops-scorecard report
+make -C evidenceops-scorecard release-gate
 ```
 
 ## Boundaries

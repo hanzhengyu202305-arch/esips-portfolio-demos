@@ -24,6 +24,26 @@ class DemoAllTests(unittest.TestCase):
         self.assertLess(policy_pack_position, scorecard_position)
         self.assertIn('"policy-pack"', script)
 
+    def test_portfolio_check_runs_release_gate_after_status_write(self):
+        script = (ROOT / "scripts" / "portfolio_check.py").read_text(encoding="utf-8")
+
+        first_status_write = script.index("write_status(results, preliminary_passed)")
+        release_gate_position = script.index('"EvidenceOps release gate"')
+        final_status_write = script.index("write_status(results, overall_passed)")
+        self.assertLess(first_status_write, release_gate_position)
+        self.assertLess(release_gate_position, final_status_write)
+
+    def test_demo_all_writes_index_before_release_gate(self):
+        script = (ROOT / "scripts" / "demo_all.py").read_text(encoding="utf-8")
+
+        release_gate_split = script.index('demo.name == "EvidenceOps Release Gate"')
+        first_index_write = script.index("write_index(results)")
+        release_gate_run = script.index("release_gate_results")
+        final_index_write = script.index("write_index(results)", first_index_write + 1)
+        self.assertLess(release_gate_split, first_index_write)
+        self.assertLess(first_index_write, release_gate_run)
+        self.assertLess(release_gate_run, final_index_write)
+
     def test_demo_all_includes_aegisops_triage_queue(self):
         runs = build_demo_runs("python3")
         triage = next(run for run in runs if run.name == "AegisOps Triage Queue")
@@ -45,6 +65,14 @@ class DemoAllTests(unittest.TestCase):
         self.assertEqual(policy_pack.display_command, "make -C kube-copilot policy-pack")
         self.assertIn("kube-copilot/reports/policy-pack.json", policy_pack.reports)
         self.assertIn("kube-copilot/reports/policy-pack.md", policy_pack.reports)
+
+    def test_demo_all_includes_evidenceops_release_gate(self):
+        runs = build_demo_runs("python3")
+        release_gate = next(run for run in runs if run.name == "EvidenceOps Release Gate")
+
+        self.assertEqual(release_gate.display_command, "make -C evidenceops-scorecard release-gate")
+        self.assertIn("evidenceops-scorecard/reports/release-gate.md", release_gate.reports)
+        self.assertIn("evidenceops-scorecard/reports/release-gate.json", release_gate.reports)
 
     def test_render_index_lists_all_public_evidence_paths(self):
         markdown = render_index(

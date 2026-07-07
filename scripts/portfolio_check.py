@@ -40,6 +40,15 @@ def main() -> int:
     ]
 
     results = [run_check(name, command, env=env) for name, command in commands]
+    preliminary_passed = all(result.passed for result in results)
+    write_status(results, preliminary_passed)
+    results.append(
+        run_check(
+            "EvidenceOps release gate",
+            ["make", "-C", "evidenceops-scorecard", "release-gate"],
+            env=env,
+        )
+    )
     overall_passed = all(result.passed for result in results)
     write_status(results, overall_passed)
     print("PASS portfolio-check" if overall_passed else "FAIL portfolio-check")

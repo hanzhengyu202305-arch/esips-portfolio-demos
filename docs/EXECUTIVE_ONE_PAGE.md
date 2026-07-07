@@ -10,7 +10,7 @@ This portfolio is one coherent story, not three unrelated mini-projects. The com
 industry brief -> scoped prototype -> deterministic validation -> report -> human-review boundary
 ```
 
-EvidenceOps Scorecard adds the fourth layer: public evidence quality.
+EvidenceOps Scorecard adds the fourth layer: public evidence quality and release/share readiness.
 
 ## Three Lines
 
@@ -19,7 +19,7 @@ EvidenceOps Scorecard adds the fourth layer: public evidence quality.
 | `Accenture_02 SDLC_Agents` | AegisOps Agent | RAG/runbook retrieval -> RCA -> patch preview -> validation -> report | [`aegisops-agent/reports/final-portfolio-report.md`](../aegisops-agent/reports/final-portfolio-report.md), [`aegisops-agent/reports/S4/multi/pr-summary.md`](../aegisops-agent/reports/S4/multi/pr-summary.md) |
 | `Accenture_01 Kubernetes_DevOps` | Kube Copilot | Docker/Kubernetes/GitHub Actions generation plus deterministic validation | [`kube-copilot/reports/risk-comparison.md`](../kube-copilot/reports/risk-comparison.md), [`kube-copilot/reports/policy-matrix.md`](../kube-copilot/reports/policy-matrix.md) |
 | `RTSIH electric haul truck trajectory planning` | Haul Truck Planner | Battery reserve, grade, charging access, perception risk, and energy-aware planning | [`haul-truck-planner/reports/route-experiment.md`](../haul-truck-planner/reports/route-experiment.md), [`haul-truck-planner/reports/algorithm-comparison.md`](../haul-truck-planner/reports/algorithm-comparison.md) |
-| Portfolio evidence quality | EvidenceOps Scorecard | Labels public evidence as PASS, WEAK, or MISSING and reports a quality score | [`evidenceops-scorecard/reports/evidence-scorecard.md`](../evidenceops-scorecard/reports/evidence-scorecard.md), [`evidenceops-scorecard/reports/submission-readiness.md`](../evidenceops-scorecard/reports/submission-readiness.md) |
+| Portfolio evidence quality | EvidenceOps Scorecard | Labels public evidence as PASS, WEAK, or MISSING and gates public release/share readiness | [`evidenceops-scorecard/reports/evidence-scorecard.md`](../evidenceops-scorecard/reports/evidence-scorecard.md), [`evidenceops-scorecard/reports/release-gate.md`](../evidenceops-scorecard/reports/release-gate.md) |
 
 ## Main Project And Supporting Lines
 
@@ -28,7 +28,7 @@ EvidenceOps Scorecard adds the fourth layer: public evidence quality.
 | Main story | AegisOps Agent | Best fit for SDLC agents and the strongest evidence for AI-assisted software engineering workflow. |
 | DevOps/platform support | Kube Copilot | Shows Kubernetes and CI/CD generation is useful only when policy validation and human review are explicit. |
 | EE/mining support | Haul Truck Planner | Keeps the Electrical Engineering and mining-systems angle visible through constrained route planning. |
-| Evidence layer | EvidenceOps Scorecard | Shows the public portfolio can be audited by generated evidence, not only narrative. |
+| Evidence layer | EvidenceOps Scorecard | Shows the public portfolio can be audited and release-gated by generated evidence, not only narrative. |
 
 ## 2-Minute Reviewer Path
 
@@ -46,6 +46,7 @@ EvidenceOps Scorecard adds the fourth layer: public evidence quality.
 | Kube Copilot | `make -C kube-copilot report` | [`kube-copilot/reports/risk-comparison.md`](../kube-copilot/reports/risk-comparison.md) |
 | Haul Truck Planner | `make -C haul-truck-planner report` | [`haul-truck-planner/reports/algorithm-comparison.md`](../haul-truck-planner/reports/algorithm-comparison.md) |
 | EvidenceOps Scorecard | `make -C evidenceops-scorecard report` | [`evidenceops-scorecard/reports/evidence-scorecard.md`](../evidenceops-scorecard/reports/evidence-scorecard.md) |
+| EvidenceOps Release Gate | `make -C evidenceops-scorecard release-gate` | [`evidenceops-scorecard/reports/release-gate.md`](../evidenceops-scorecard/reports/release-gate.md) |
 | Whole demo index | `make demo-all` | [`docs/DEMO_OUTPUT_INDEX.md`](DEMO_OUTPUT_INDEX.md) |
 | Whole portfolio | `make portfolio-check` | [`PORTFOLIO_STATUS.md`](../PORTFOLIO_STATUS.md) |
 
