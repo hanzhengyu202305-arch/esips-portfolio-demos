@@ -11,6 +11,7 @@ make doctor
 make test
 make demo SCENARIO=S4 MODE=multi
 make eval-mock
+make triage
 make report
 ```
 
@@ -25,6 +26,7 @@ make quickstart
 - `reports/S4/multi/pr-summary.md`
 - `reports/S4/multi/patch.diff`
 - `reports/S4/multi/validation.log`
+- `reports/triage-queue.md`
 - `reports/eval-summary.md`
 - `reports/final-portfolio-report.md`
 

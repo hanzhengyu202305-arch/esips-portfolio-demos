@@ -56,6 +56,19 @@ def build_demo_runs(aegisops_python: str) -> list[DemoRun]:
             ),
         ),
         DemoRun(
+            name="AegisOps Triage Queue",
+            command=[
+                "make",
+                "-C",
+                "aegisops-agent",
+                "triage",
+                f"PYTHON={aegisops_python}",
+            ],
+            display_command="make -C aegisops-agent triage PYTHON=<python>",
+            purpose="multiple synthetic incidents -> severity/evidence ranking -> owner and next action",
+            reports=("aegisops-agent/reports/triage-queue.md",),
+        ),
+        DemoRun(
             name="Kube Copilot",
             command=["make", "-C", "kube-copilot", "report"],
             display_command="make -C kube-copilot report",

@@ -91,6 +91,7 @@ Single-agent mode is the cheaper baseline. Multi-agent mode uses the same tools 
 ## Deliverables
 
 - GitHub-ready repository scaffold
+- Incident triage queue with deterministic priority scoring
 - FastAPI demo service
 - 8 reproducible failure scenarios
 - RAG runbooks and incident memory
@@ -103,6 +104,7 @@ Single-agent mode is the cheaper baseline. Multi-agent mode uses the same tools 
 
 - Newcomer guide: `docs/NEWCOMER_GUIDE.zh-CN.md`
 - Scenario matrix: `reports/scenario-matrix.md`
+- Triage queue: `reports/triage-queue.md` (generated at `reports/triage-queue.md`)
 - Evaluation summary: `reports/eval-summary.md`
 - Demo script: `docs/demo-script.md`
 - ESIPS mapping: `docs/esips-accenture-mapping.md`

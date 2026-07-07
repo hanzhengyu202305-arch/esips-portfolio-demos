@@ -15,6 +15,7 @@ from agent.scenario_runner import run_scenario
 from agent.scenarios import list_scenarios
 from agent.tools.evidence_tools import collect_evidence
 from agent.tools.test_tools import run_validation
+from agent.triage_queue import write_triage_report
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -46,6 +47,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("matrix")
     sub.add_parser("doctor")
     sub.add_parser("acceptance")
+    sub.add_parser("triage")
     sub.add_parser("report")
     sub.add_parser("list-scenarios")
     sub.add_parser("scorecard")
@@ -95,6 +97,9 @@ def main(argv: list[str] | None = None) -> int:
         result = run_acceptance()
         print(result.markdown_path)
         return 0 if result.passed else 1
+    if args.command == "triage":
+        print(write_triage_report())
+        return 0
     if args.command == "report":
         print(create_final_report())
         return 0
@@ -131,6 +136,7 @@ def _print_help() -> None:
   make matrix
   make doctor
   make acceptance
+  make triage
   make scorecard
   make poc RUNS=3
   make docker-build

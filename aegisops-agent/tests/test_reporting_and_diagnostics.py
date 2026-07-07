@@ -49,3 +49,14 @@ def test_final_report_has_single_top_level_heading(tmp_path: Path) -> None:
     assert "## AegisOps Evaluation Summary" in report
     assert "reports/S4/multi/pr-summary.md" in report
     assert "## Evaluation\n\n## AegisOps Evaluation Summary" not in report
+
+
+def test_final_report_writes_and_links_triage_queue(tmp_path: Path) -> None:
+    run_eval(reports_dir=tmp_path, scenarios=["S1"])
+    report_path = create_final_report(reports_dir=tmp_path)
+    report = report_path.read_text(encoding="utf-8")
+    triage_path = tmp_path / "triage-queue.md"
+
+    assert triage_path.exists()
+    assert "reports/triage-queue.md" in report
+    assert "AegisOps Triage Queue" in triage_path.read_text(encoding="utf-8")
