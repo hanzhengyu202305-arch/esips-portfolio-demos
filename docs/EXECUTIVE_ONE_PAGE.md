@@ -35,7 +35,8 @@ EvidenceOps Scorecard adds the fourth layer: public evidence quality.
 1. Read this page.
 2. Open [`README.md`](../README.md) and scan the Reviewer Fast Path.
 3. Open [`THREE_LINE_ESIPS_PLAN.md`](../THREE_LINE_ESIPS_PLAN.md) for the application framing.
-4. Inspect the S4 AegisOps PR-style summary: [`aegisops-agent/reports/S4/multi/pr-summary.md`](../aegisops-agent/reports/S4/multi/pr-summary.md).
+4. Open [`docs/REVIEWER_CLAIM_TRACE.md`](REVIEWER_CLAIM_TRACE.md) for claim-by-claim evidence.
+5. Inspect the S4 AegisOps PR-style summary: [`aegisops-agent/reports/S4/multi/pr-summary.md`](../aegisops-agent/reports/S4/multi/pr-summary.md).
 
 ## 10-Minute Evidence Path
 
@@ -45,6 +46,7 @@ EvidenceOps Scorecard adds the fourth layer: public evidence quality.
 | Kube Copilot | `make -C kube-copilot report` | [`kube-copilot/reports/risk-comparison.md`](../kube-copilot/reports/risk-comparison.md) |
 | Haul Truck Planner | `make -C haul-truck-planner report` | [`haul-truck-planner/reports/algorithm-comparison.md`](../haul-truck-planner/reports/algorithm-comparison.md) |
 | EvidenceOps Scorecard | `make -C evidenceops-scorecard report` | [`evidenceops-scorecard/reports/evidence-scorecard.md`](../evidenceops-scorecard/reports/evidence-scorecard.md) |
+| Whole demo index | `make demo-all` | [`docs/DEMO_OUTPUT_INDEX.md`](DEMO_OUTPUT_INDEX.md) |
 | Whole portfolio | `make portfolio-check` | [`PORTFOLIO_STATUS.md`](../PORTFOLIO_STATUS.md) |
 
 ## Boundaries
