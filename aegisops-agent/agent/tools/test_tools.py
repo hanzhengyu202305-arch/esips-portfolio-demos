@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+import re
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -55,10 +57,16 @@ def run_validation(
             check=False,
         )
         outputs.append(f"$ {' '.join(command)}")
-        outputs.append(completed.stdout)
-        outputs.append(completed.stderr)
+        outputs.append(_stable_output(completed.stdout))
+        outputs.append(_stable_output(completed.stderr))
         if completed.returncode != 0:
             passed = False
 
     log_path.write_text("\n".join(outputs), encoding="utf-8")
     return ValidationResult(passed=passed, log_path=log_path, commands_run=commands_run)
+
+
+def _stable_output(output: str) -> str:
+    if os.environ.get("AEGISOPS_STABLE_REPORTS") != "1":
+        return output
+    return re.sub(r"(\d+) passed in \d+\.\d+s", r"\1 passed in <stable>s", output)

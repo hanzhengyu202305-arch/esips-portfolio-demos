@@ -32,6 +32,10 @@ def main() -> int:
     commands = [
         ("top-level tests", ["make", "test", f"AEGISOPS_PY={args.aegisops_python}"]),
         ("AegisOps acceptance", ["make", "-C", "aegisops-agent", "acceptance", f"PYTHON={args.aegisops_python}"]),
+        (
+            "AegisOps patch review queue",
+            ["make", "-C", "aegisops-agent", "patch-review-queue", f"PYTHON={args.aegisops_python}"],
+        ),
         ("Kube Copilot report", ["make", "-C", "kube-copilot", "report"]),
         ("Kube Policy Pack", ["make", "-C", "kube-copilot", "policy-pack"]),
         ("Haul Truck Planner report", ["make", "-C", "haul-truck-planner", "report"]),

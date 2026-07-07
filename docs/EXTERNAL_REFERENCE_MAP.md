@@ -18,6 +18,8 @@ Reviewed on 2026-07-06. This file links the portfolio demos to public, authorita
 | [LangGraph](https://langchain-ai.github.io/langgraph/) | Graph-style agent workflows and multi-step stateful orchestration. | AegisOps frames single-agent and multi-agent RCA as workflow design, not a chatbot answer. | No dependency on LangGraph in the default demo. |
 | [OpenSSF Scorecard](https://github.com/ossf/scorecard) | Public repository security-posture checks. | Useful next-step language for repository hardening beyond the portfolio demo. | Not currently part of the validation gate. |
 
+Current AegisOps patch review evidence now includes [`aegisops-agent/reports/patch-review-queue.md`](../aegisops-agent/reports/patch-review-queue.md), which keeps the issue-to-patch inspiration but limits the claim to deterministic local fixtures and human-review prioritisation.
+
 ## Kube Copilot: Kubernetes Validation References
 
 | source | useful pattern | how Kube Copilot uses the idea | boundary |
