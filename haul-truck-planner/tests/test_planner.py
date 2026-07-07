@@ -1,6 +1,8 @@
+import tempfile
 import unittest
+from pathlib import Path
 
-from haul_truck_planner.experiments import compare_shortest_and_energy_aware
+from haul_truck_planner.experiments import compare_shortest_and_energy_aware, render_sensitivity_lab, run_sensitivity_lab, write_report
 from haul_truck_planner.planner import MineMap, Truck, plan_route, plan_route_astar
 
 
@@ -113,6 +115,42 @@ class HaulTruckPlannerTests(unittest.TestCase):
         self.assertIn("ELEC5308-style", markdown)
         self.assertIn("RTSIH electric haul truck", markdown)
         self.assertIn("perception risk", markdown)
+
+    def test_sensitivity_lab_surfaces_feasible_changed_and_infeasible_cases(self):
+        outcomes = run_sensitivity_lab()
+        by_name = {outcome.name: outcome for outcome in outcomes}
+
+        self.assertEqual(set(by_name), {"baseline", "reserve raised", "charger offline", "south charger added", "risk-aware south detour"})
+        self.assertTrue(by_name["baseline"].feasible)
+        self.assertFalse(by_name["baseline"].path_changed)
+        self.assertFalse(by_name["reserve raised"].feasible)
+        self.assertFalse(by_name["charger offline"].feasible)
+        self.assertTrue(by_name["south charger added"].feasible)
+        self.assertTrue(by_name["south charger added"].path_changed)
+        self.assertTrue(by_name["risk-aware south detour"].feasible)
+        self.assertTrue(by_name["risk-aware south detour"].path_changed)
+        self.assertGreater(
+            by_name["south charger added"].minimum_energy_margin_kwh,
+            by_name["baseline"].minimum_energy_margin_kwh,
+        )
+
+        markdown = render_sensitivity_lab(outcomes)
+        self.assertIn("# Mine Route Sensitivity Lab", markdown)
+        self.assertIn("Reserve thresholds can turn a route from feasible to infeasible", markdown)
+        self.assertIn("Charging points are operational constraints", markdown)
+        self.assertIn("not a production mine dispatch optimiser", markdown)
+
+    def test_report_generation_writes_sensitivity_lab(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            report_path = Path(tmp) / "route-experiment.md"
+
+            write_report(str(report_path))
+
+            sensitivity_path = Path(tmp) / "sensitivity-lab.md"
+            self.assertTrue(report_path.is_file())
+            self.assertTrue((Path(tmp) / "algorithm-comparison.md").is_file())
+            self.assertTrue(sensitivity_path.is_file())
+            self.assertIn("Mine Route Sensitivity Lab", sensitivity_path.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

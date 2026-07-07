@@ -9,7 +9,7 @@ The roadmap keeps future work aligned with the same thesis: AI software engineer
 | Keep `make demo-all` stable | one command regenerates reviewer-facing evidence | [`docs/DEMO_OUTPUT_INDEX.md`](DEMO_OUTPUT_INDEX.md) |
 | Add more AegisOps scenarios | broaden SDLC coverage beyond the current strongest S4 path | scenario matrix and PR-style reports |
 | Expand Kube Copilot policy fixtures | show clearer safe, partial, and risky manifest differences | risk comparison and policy matrix |
-| Add route sensitivity analysis | show how reserve threshold, grade, risk cost, and charging access change route choice | route experiment report |
+| Extend route sensitivity analysis | show how reserve threshold, risk cost, and charging access change route choice | [`haul-truck-planner/reports/sensitivity-lab.md`](../haul-truck-planner/reports/sensitivity-lab.md) |
 | Tighten EvidenceOps scoring rules | make weak evidence more visible before sharing | scorecard JSON and markdown reports |
 
 ## Medium Term

@@ -73,6 +73,7 @@ def build_demo_runs(aegisops_python: str) -> list[DemoRun]:
             reports=(
                 "haul-truck-planner/reports/route-experiment.md",
                 "haul-truck-planner/reports/algorithm-comparison.md",
+                "haul-truck-planner/reports/sensitivity-lab.md",
             ),
         ),
         DemoRun(
