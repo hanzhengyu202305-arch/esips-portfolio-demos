@@ -40,7 +40,10 @@ class DemoAllTests(unittest.TestCase):
                     name="Haul Truck Planner",
                     display_command="make -C haul-truck-planner report",
                     purpose="energy-aware planning",
-                    reports=("haul-truck-planner/reports/route-experiment.md",),
+                    reports=(
+                        "haul-truck-planner/reports/route-experiment.md",
+                        "haul-truck-planner/reports/sensitivity-lab.md",
+                    ),
                     returncode=0,
                 ),
                 DemoResult(
@@ -61,6 +64,7 @@ class DemoAllTests(unittest.TestCase):
         self.assertIn("aegisops-agent/reports/S4/multi/pr-summary.md", markdown)
         self.assertIn("kube-copilot/reports/risk-comparison.md", markdown)
         self.assertIn("haul-truck-planner/reports/route-experiment.md", markdown)
+        self.assertIn("haul-truck-planner/reports/sensitivity-lab.md", markdown)
         self.assertIn("evidenceops-scorecard/reports/evidence-scorecard.md", markdown)
         self.assertIn("does not prove production readiness", markdown)
 

@@ -31,4 +31,5 @@ make report
 - Gives a visual story: map -> constraints -> feasible route -> energy trace.
 - `make report` writes `reports/route-experiment.md`, comparing geometric shortest path, battery-state Dijkstra, and A* energy-aware planning.
 - Algorithm comparison notes are in [`docs/algorithm-comparison.md`](docs/algorithm-comparison.md) and `reports/algorithm-comparison.md`.
+- Sensitivity analysis is in `reports/sensitivity-lab.md`, showing how reserve, charging, and risk assumptions change feasibility and route choice.
 - Current claim is a small synthetic planning prototype, not a production mine dispatch optimizer.

@@ -188,6 +188,27 @@ class RouteComparison:
         return "\n".join(rows)
 
 
+@dataclass(frozen=True)
+class SensitivityCase:
+    name: str
+    mine: MineMap
+    truck: Truck
+    change: str
+    expected_takeaway: str
+
+
+@dataclass(frozen=True)
+class SensitivityOutcome:
+    name: str
+    change: str
+    feasible: bool
+    path_changed: bool | None
+    minimum_energy_margin_kwh: float | None
+    charging_used: bool | None
+    path: list[Point]
+    takeaway: str
+
+
 def compare_shortest_and_energy_aware(
     mine: MineMap,
     start: Point,
@@ -221,6 +242,115 @@ def compare_shortest_and_energy_aware(
     )
 
 
+def run_sensitivity_lab() -> list[SensitivityOutcome]:
+    baseline_mine = _default_mine()
+    baseline_truck = _default_truck()
+    baseline = compare_shortest_and_energy_aware(baseline_mine, (0, 0), (4, 3), baseline_truck)
+    baseline_path = baseline.energy_aware.path
+    cases = [
+        SensitivityCase(
+            name="baseline",
+            mine=baseline_mine,
+            truck=baseline_truck,
+            change="default reserve, grade, charging, and perception-risk settings",
+            expected_takeaway="route is feasible only because it uses the charging lane",
+        ),
+        SensitivityCase(
+            name="reserve raised",
+            mine=baseline_mine,
+            truck=Truck(capacity_kwh=10.0, initial_kwh=6.2, reserve_kwh=2.0),
+            change="increase reserve from 1.0 kWh to 2.0 kWh",
+            expected_takeaway="the same mine map becomes infeasible under a stricter safety reserve",
+        ),
+        SensitivityCase(
+            name="charger offline",
+            mine=MineMap(
+                width=5,
+                height=4,
+                blocked={(1, 1), (1, 2), (3, 1)},
+                charging=set(),
+                grades={(2, 1): 0.16, (2, 2): -0.05},
+                risk_zones={(4, 1): 2.5, (4, 2): 2.5},
+            ),
+            truck=baseline_truck,
+            change="remove the only charging point from the map",
+            expected_takeaway="charging infrastructure is a feasibility constraint, not a cosmetic route feature",
+        ),
+        SensitivityCase(
+            name="south charger added",
+            mine=MineMap(
+                width=5,
+                height=4,
+                blocked={(1, 1), (1, 2), (3, 1)},
+                charging={(2, 2), (0, 3)},
+                grades={(2, 1): 0.16, (2, 2): -0.05},
+                risk_zones={(4, 1): 2.5, (4, 2): 2.5},
+            ),
+            truck=baseline_truck,
+            change="add a second charging point on the south lane",
+            expected_takeaway="extra charging access can change the preferred route and improve energy margin",
+        ),
+        SensitivityCase(
+            name="risk-aware south detour",
+            mine=MineMap(
+                width=5,
+                height=4,
+                blocked={(1, 1), (1, 2), (3, 1)},
+                charging={(2, 2), (0, 3)},
+                grades={(2, 1): 0.16, (2, 2): -0.05},
+                risk_zones={(2, 0): 8.0, (2, 1): 8.0, (2, 2): 8.0, (4, 1): 2.5, (4, 2): 2.5},
+            ),
+            truck=baseline_truck,
+            change="raise perception risk on the middle charging lane while keeping a south charger available",
+            expected_takeaway="the planner can choose a safer detour when charging alternatives exist",
+        ),
+    ]
+    return [_run_sensitivity_case(case, baseline_path) for case in cases]
+
+
+def render_sensitivity_lab(outcomes: list[SensitivityOutcome]) -> str:
+    lines = [
+        "# Mine Route Sensitivity Lab",
+        "",
+        "This report extends the haul-truck planner from one route result into a small sensitivity analysis. It varies reserve, charging access, and perception-risk assumptions to show when the route remains feasible, changes path, or fails.",
+        "",
+        "| scenario | feasible | path_changed | min_energy_margin_kwh | charging_used | route | takeaway |",
+        "| --- | --- | --- | ---: | --- | --- | --- |",
+    ]
+    for outcome in outcomes:
+        margin = "n/a" if outcome.minimum_energy_margin_kwh is None else f"{outcome.minimum_energy_margin_kwh:.2f}"
+        changed = "n/a" if outcome.path_changed is None else str(outcome.path_changed)
+        charging = "n/a" if outcome.charging_used is None else str(outcome.charging_used)
+        path = "n/a" if not outcome.path else f"`{outcome.path}`"
+        lines.append(
+            f"| {outcome.name} | {outcome.feasible} | {changed} | {margin} | {charging} | {path} | {outcome.takeaway} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## Scenario Changes",
+            "",
+        ]
+    )
+    lines.extend(f"- **{outcome.name}**: {outcome.change}" for outcome in outcomes)
+    lines.extend(
+        [
+            "",
+            "## Engineering Takeaways",
+            "",
+            "- Reserve thresholds can turn a route from feasible to infeasible without changing the map geometry.",
+            "- Charging points are operational constraints; removing one can remove all feasible routes.",
+            "- Adding a charger can change the selected path and improve the energy margin.",
+            "- Perception-risk costs are useful when there is a feasible alternative route.",
+            "",
+            "## Boundary",
+            "",
+            "This is a deterministic synthetic sensitivity lab. It supports engineering discussion about constraints and tradeoffs, but it is not a production mine dispatch optimiser.",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
 def shortest_path(mine: MineMap, start: Point, goal: Point) -> list[Point]:
     queue: deque[Point] = deque([start])
     previous: dict[Point, Point | None] = {start: None}
@@ -241,20 +371,14 @@ def shortest_path(mine: MineMap, start: Point, goal: Point) -> list[Point]:
 
 
 def write_report(path: str = "reports/route-experiment.md") -> Path:
-    mine = MineMap(
-        width=5,
-        height=4,
-        blocked={(1, 1), (1, 2), (3, 1)},
-        charging={(2, 2)},
-        grades={(2, 1): 0.16, (2, 2): -0.05},
-        risk_zones={(4, 1): 2.5, (4, 2): 2.5},
-    )
-    truck = Truck(capacity_kwh=10.0, initial_kwh=6.2, reserve_kwh=1.0)
+    mine = _default_mine()
+    truck = _default_truck()
     comparison = compare_shortest_and_energy_aware(mine, (0, 0), (4, 3), truck)
     output_path = Path(path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(comparison.to_markdown(), encoding="utf-8")
     write_algorithm_report(output_path.parent / "algorithm-comparison.md", comparison)
+    write_sensitivity_report(output_path.parent / "sensitivity-lab.md")
     return output_path
 
 
@@ -263,15 +387,8 @@ def write_algorithm_report(
     comparison: RouteComparison | None = None,
 ) -> Path:
     if comparison is None:
-        mine = MineMap(
-            width=5,
-            height=4,
-            blocked={(1, 1), (1, 2), (3, 1)},
-            charging={(2, 2)},
-            grades={(2, 1): 0.16, (2, 2): -0.05},
-            risk_zones={(4, 1): 2.5, (4, 2): 2.5},
-        )
-        truck = Truck(capacity_kwh=10.0, initial_kwh=6.2, reserve_kwh=1.0)
+        mine = _default_mine()
+        truck = _default_truck()
         comparison = compare_shortest_and_energy_aware(mine, (0, 0), (4, 3), truck)
     output_path = Path(path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -316,6 +433,13 @@ def write_algorithm_report(
     return output_path
 
 
+def write_sensitivity_report(path: str | Path = "reports/sensitivity-lab.md") -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(render_sensitivity_lab(run_sensitivity_lab()), encoding="utf-8")
+    return output_path
+
+
 def _path_is_energy_feasible(mine: MineMap, path: list[Point], truck: Truck) -> bool:
     return _minimum_energy_margin(mine, path, truck) >= 0.0
 
@@ -332,6 +456,47 @@ def _minimum_energy_margin(mine: MineMap, path: list[Point], truck: Truck) -> fl
             energy = min(truck.capacity_kwh, energy + 6.0)
             minimum_margin = min(minimum_margin, energy - truck.reserve_kwh)
     return round(minimum_margin, 2)
+
+
+def _run_sensitivity_case(case: SensitivityCase, baseline_path: list[Point]) -> SensitivityOutcome:
+    try:
+        comparison = compare_shortest_and_energy_aware(case.mine, (0, 0), (4, 3), case.truck)
+    except ValueError:
+        return SensitivityOutcome(
+            name=case.name,
+            change=case.change,
+            feasible=False,
+            path_changed=None,
+            minimum_energy_margin_kwh=None,
+            charging_used=None,
+            path=[],
+            takeaway=case.expected_takeaway,
+        )
+    return SensitivityOutcome(
+        name=case.name,
+        change=case.change,
+        feasible=True,
+        path_changed=comparison.energy_aware.path != baseline_path,
+        minimum_energy_margin_kwh=comparison.minimum_energy_margin_kwh,
+        charging_used=comparison.dijkstra_uses_charging,
+        path=comparison.energy_aware.path,
+        takeaway=case.expected_takeaway,
+    )
+
+
+def _default_mine() -> MineMap:
+    return MineMap(
+        width=5,
+        height=4,
+        blocked={(1, 1), (1, 2), (3, 1)},
+        charging={(2, 2)},
+        grades={(2, 1): 0.16, (2, 2): -0.05},
+        risk_zones={(4, 1): 2.5, (4, 2): 2.5},
+    )
+
+
+def _default_truck() -> Truck:
+    return Truck(capacity_kwh=10.0, initial_kwh=6.2, reserve_kwh=1.0)
 
 
 if __name__ == "__main__":
