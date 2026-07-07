@@ -17,6 +17,7 @@ make matrix
 make doctor
 make triage
 make demo SCENARIO=S4 MODE=multi
+make patch-risk SCENARIO=S4 MODE=multi
 make report
 ```
 
@@ -142,6 +143,7 @@ reports/S4/multi/validation.log
 reports/S4/multi/metrics.json
 reports/S4/multi/demo-report.md
 reports/S4/multi/pr-summary.md
+reports/S4/multi/patch-risk-diff.md
 reports/S4/multi/issue-to-pr-report.md
 ```
 
@@ -181,6 +183,7 @@ make collect-evidence SCENARIO=S1
 make build-index
 make retrieve QUERY="CrashLoopBackOff invalid environment variable"
 make validate SCENARIO=S1 MODE=single
+make patch-risk SCENARIO=S4 MODE=multi
 make eval-mock
 make scorecard
 make poc RUNS=3
@@ -223,6 +226,7 @@ reports/acceptance-checklist.md
 reports/eval-summary.md
 reports/final-portfolio-report.md
 reports/S4/multi/pr-summary.md
+reports/S4/multi/patch-risk-diff.md
 ```
 
 ## Interview Materials

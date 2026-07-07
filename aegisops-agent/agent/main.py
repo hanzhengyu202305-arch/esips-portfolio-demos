@@ -9,6 +9,7 @@ from agent.evaluation.evaluator import run_eval
 from agent.graph.multi_agent import run_multi_agent
 from agent.graph.single_agent import run_single_agent
 from agent.memory.retriever import build_index, retrieve
+from agent.patch_risk_diff import write_patch_risk_report
 from agent.poc import create_scorecard, run_poc_repro
 from agent.reporting import create_final_report, create_scenario_matrix
 from agent.scenario_runner import run_scenario
@@ -42,6 +43,10 @@ def main(argv: list[str] | None = None) -> int:
     validate_parser = sub.add_parser("validate")
     validate_parser.add_argument("--scenario", required=True)
     validate_parser.add_argument("--mode", choices=["single", "multi"], default="multi")
+
+    patch_risk_parser = sub.add_parser("patch-risk")
+    patch_risk_parser.add_argument("--scenario", required=True)
+    patch_risk_parser.add_argument("--mode", choices=["single", "multi"], default="multi")
 
     sub.add_parser("eval-mock")
     sub.add_parser("matrix")
@@ -81,6 +86,9 @@ def main(argv: list[str] | None = None) -> int:
         result = run_validation(args.scenario, mode=args.mode)
         print(result.log_path)
         return 0 if result.passed else 1
+    if args.command == "patch-risk":
+        print(write_patch_risk_report(scenario_id=args.scenario, mode=args.mode))
+        return 0
     if args.command == "eval-mock":
         print(run_eval())
         return 0
@@ -132,6 +140,7 @@ def _print_help() -> None:
   make collect-evidence SCENARIO=S1
   make demo SCENARIO=S4 MODE=multi
   make validate SCENARIO=S1
+  make patch-risk SCENARIO=S4 MODE=multi
   make eval-mock
   make matrix
   make doctor

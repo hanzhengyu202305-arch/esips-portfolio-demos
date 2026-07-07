@@ -55,6 +55,7 @@ def test_demo_writes_pr_summary_for_validated_fix(tmp_path: Path) -> None:
     run_multi_agent("S4", reports_dir=tmp_path)
 
     summary_path = tmp_path / "S4" / "multi" / "pr-summary.md"
+    risk_path = tmp_path / "S4" / "multi" / "patch-risk-diff.md"
     summary = summary_path.read_text()
 
     assert summary.startswith("# PR Summary")
@@ -62,6 +63,10 @@ def test_demo_writes_pr_summary_for_validated_fix(tmp_path: Path) -> None:
     assert "k8s/overlays/broken-env/deployment.yaml" in summary
     assert "Validation: passed" in summary
     assert "Human review required before merge" in summary
+    assert risk_path.exists()
+    risk_report = risk_path.read_text()
+    assert "Patch Risk Diff" in risk_report
+    assert "image tag still uses latest" in risk_report
 
 
 def test_eval_mock_generates_summary_and_metrics(tmp_path: Path) -> None:

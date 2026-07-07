@@ -60,3 +60,11 @@ def test_final_report_writes_and_links_triage_queue(tmp_path: Path) -> None:
     assert triage_path.exists()
     assert "reports/triage-queue.md" in report
     assert "AegisOps Triage Queue" in triage_path.read_text(encoding="utf-8")
+
+
+def test_final_report_links_patch_risk_diff(tmp_path: Path) -> None:
+    run_eval(reports_dir=tmp_path, scenarios=["S1"])
+    report_path = create_final_report(reports_dir=tmp_path)
+    report = report_path.read_text(encoding="utf-8")
+
+    assert "reports/S4/multi/patch-risk-diff.md" in report

@@ -23,6 +23,13 @@ class DemoAllTests(unittest.TestCase):
         self.assertEqual(triage.display_command, "make -C aegisops-agent triage PYTHON=<python>")
         self.assertIn("aegisops-agent/reports/triage-queue.md", triage.reports)
 
+    def test_demo_all_includes_patch_risk_diff(self):
+        runs = build_demo_runs("python3")
+        patch_risk = next(run for run in runs if run.name == "Patch Risk Diff")
+
+        self.assertEqual(patch_risk.display_command, "make -C aegisops-agent patch-risk SCENARIO=S4 MODE=multi PYTHON=<python>")
+        self.assertIn("aegisops-agent/reports/S4/multi/patch-risk-diff.md", patch_risk.reports)
+
     def test_render_index_lists_all_public_evidence_paths(self):
         markdown = render_index(
             [

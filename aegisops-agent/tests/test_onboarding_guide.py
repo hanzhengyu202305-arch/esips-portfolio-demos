@@ -28,6 +28,7 @@ def test_newcomer_guide_exists_and_covers_beginner_path() -> None:
         "make demo SCENARIO=S4 MODE=multi",
         "make eval-mock",
         "make triage",
+        "make patch-risk SCENARIO=S4 MODE=multi",
         "make report",
     ]:
         assert command in text
@@ -40,9 +41,11 @@ def test_readme_links_to_newcomer_guide_and_quickstart() -> None:
     assert "docs/NEWCOMER_GUIDE.zh-CN.md" in readme
     assert "make quickstart" in readme
     assert "make triage" in readme
+    assert "make patch-risk" in readme
     assert "issue-to-pr-report.md" in readme
     assert "quickstart:" in makefile
     assert "triage:" in makefile
+    assert "patch-risk:" in makefile
     assert "issue-to-pr-report:" in makefile
 
 

@@ -24,6 +24,7 @@ Key demo artifacts:
 - `reports/S4/multi/demo-report.md`
 - `reports/S4/multi/issue-to-pr-report.md`
 - `reports/S4/multi/pr-summary.md`
+- `reports/S4/multi/patch-risk-diff.md`
 - `reports/S4/multi/patch.diff`
 - `reports/S4/multi/validation.log`
 - `reports/eval-summary.md`
@@ -97,6 +98,7 @@ Single-agent mode is the cheaper baseline. Multi-agent mode uses the same tools 
 - RAG runbooks and incident memory
 - Single-agent and multi-agent workflows
 - Patch safety guardrails
+- Patch risk diff report before human review
 - Deterministic MockLLM evaluation
 - Accenture/ESIPS application narrative
 
