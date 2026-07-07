@@ -10,7 +10,7 @@ These are optional extensions, not new primary portfolio lines. The current port
 | Patch Risk Diff | Compare a proposed patch against risk checks before review. | AegisOps Agent and Kube Copilot | [`aegisops-agent/reports/S4/multi/patch-risk-diff.md`](../aegisops-agent/reports/S4/multi/patch-risk-diff.md) | Makes the human-review boundary stronger and easier to inspect. |
 | Kube Policy Pack Exporter | Export the current Kubernetes checks as a small policy pack. | Kube Copilot | [`kube-copilot/reports/policy-pack.md`](../kube-copilot/reports/policy-pack.md) and [`policy-pack.json`](../kube-copilot/reports/policy-pack.json) | Makes the validator easier to compare with mature policy-as-code workflows. |
 | Mine Route Sensitivity Lab | Re-run the haul route planner under different reserve, charging, and risk settings. | Haul Truck Planner | [`haul-truck-planner/reports/sensitivity-lab.md`](../haul-truck-planner/reports/sensitivity-lab.md) | Shows planning is about constraint tradeoffs, not one hard-coded route. |
-| EvidenceOps Release Gate | Turn the evidence scorecard into a release checklist. | EvidenceOps Scorecard | release gate report with pass/fail checks and reviewer links | Connects portfolio evidence to a professional release habit. |
+| EvidenceOps Release Gate | Turn the evidence scorecard into a release checklist. | EvidenceOps Scorecard | [`evidenceops-scorecard/reports/release-gate.md`](../evidenceops-scorecard/reports/release-gate.md) | Connects portfolio evidence to a professional release habit. |
 
 ## How To Talk About Them
 
@@ -30,7 +30,7 @@ Avoid wording:
 2. **AegisOps Triage Queue**: implemented as a small extension; deepen it next if the SDLC agent line needs more realism.
 3. **Patch Risk Diff**: implemented as a small extension; deepen it next if patch review needs richer policy checks.
 4. **Kube Policy Pack Exporter**: implemented as a small extension; deepen it next if policy-as-code comparison needs more detail.
-5. **EvidenceOps Release Gate**: good polish after the technical extensions are stable.
+5. **EvidenceOps Release Gate**: implemented as a small extension; deepen it next if release notes or changelog automation are needed.
 
 ## Minimal Acceptance Criteria
 

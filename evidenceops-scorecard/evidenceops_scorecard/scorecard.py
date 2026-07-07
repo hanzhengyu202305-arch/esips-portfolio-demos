@@ -218,19 +218,91 @@ def render_submission_readiness(scorecard: dict[str, Any]) -> str:
     )
 
 
+def build_release_gate(root: Path | str = ROOT) -> dict[str, Any]:
+    repo_root = Path(root).resolve()
+    scorecard = build_scorecard(repo_root)
+    status_payload = _read_portfolio_status(repo_root)
+    checks = [
+        _release_check(
+            "portfolio evidence scorecard",
+            scorecard["portfolio_evidence_status"] == "PASS",
+            "evidenceops-scorecard/reports/evidence-scorecard.md",
+            f"portfolio evidence status is {scorecard['portfolio_evidence_status']}",
+            "portfolio evidence scorecard is not PASS",
+        ),
+        _release_check(
+            "portfolio status file",
+            status_payload.get("overall_portfolio_status") == "PASS",
+            "PORTFOLIO_STATUS.json",
+            f"portfolio status file is {status_payload.get('overall_portfolio_status', 'MISSING_OR_INVALID')}",
+            f"portfolio status file is {status_payload.get('overall_portfolio_status', 'MISSING_OR_INVALID')}",
+        ),
+        _demo_index_check(repo_root),
+        _claim_trace_check(repo_root),
+        _portfolio_named_check(status_payload, "public boundary check", "public boundary check did not pass"),
+        _validation_suite_check(status_payload),
+    ]
+    blockers = [check["blocker"] for check in checks if check["status"] != "PASS"]
+    return {
+        "release_gate_status": "PASS" if not blockers else "BLOCKED",
+        "required_checks_passed": sum(1 for check in checks if check["status"] == "PASS"),
+        "required_checks_total": len(checks),
+        "checks": checks,
+        "blockers": blockers,
+        "boundary": "Release gate checks public portfolio evidence only; it is not official application approval.",
+    }
+
+
+def render_release_gate_markdown(gate: dict[str, Any]) -> str:
+    lines = [
+        "# EvidenceOps Release Gate",
+        "",
+        f"Release gate status: **{gate['release_gate_status']}**",
+        "",
+        f"Required checks: **{gate['required_checks_passed']}/{gate['required_checks_total']}**",
+        "",
+        "## Checks",
+        "",
+        "| check | status | evidence |",
+        "| --- | --- | --- |",
+    ]
+    for check in gate["checks"]:
+        lines.append(f"| {check['name']} | {check['status']} | `{check['evidence']}` |")
+    lines.extend(["", "## Blockers", ""])
+    if gate["blockers"]:
+        lines.extend(f"- {blocker}" for blocker in gate["blockers"])
+    else:
+        lines.append("- none")
+    lines.extend(
+        [
+            "",
+            "## Boundary",
+            "",
+            gate["boundary"],
+            "Passing this gate means the public repo is ready for review as a portfolio artifact, not official application approval.",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
 def write_reports(root: Path | str = ROOT, out_dir: Path | str | None = None) -> dict[str, Path]:
     repo_root = Path(root).resolve()
     output_dir = Path(out_dir) if out_dir is not None else repo_root / "evidenceops-scorecard" / "reports"
     output_dir.mkdir(parents=True, exist_ok=True)
     scorecard = build_scorecard(repo_root)
+    release_gate = build_release_gate(repo_root)
     paths = {
         "json": output_dir / "evidence-scorecard.json",
         "markdown": output_dir / "evidence-scorecard.md",
         "submission": output_dir / "submission-readiness.md",
+        "release_gate_json": output_dir / "release-gate.json",
+        "release_gate_markdown": output_dir / "release-gate.md",
     }
     paths["json"].write_text(json.dumps(scorecard, indent=2) + "\n", encoding="utf-8")
     paths["markdown"].write_text(render_markdown(scorecard), encoding="utf-8")
     paths["submission"].write_text(render_submission_readiness(scorecard), encoding="utf-8")
+    paths["release_gate_json"].write_text(json.dumps(release_gate, indent=2) + "\n", encoding="utf-8")
+    paths["release_gate_markdown"].write_text(render_release_gate_markdown(release_gate), encoding="utf-8")
     return paths
 
 
@@ -238,9 +310,14 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Generate EvidenceOps portfolio evidence scorecards.")
     parser.add_argument("--root", default=str(ROOT), help="Repository root to inspect.")
     parser.add_argument("--out-dir", default=None, help="Directory where reports should be written.")
+    parser.add_argument("--release-gate", action="store_true", help="Exit based on release gate status instead of scorecard status.")
     args = parser.parse_args()
 
     paths = write_reports(args.root, args.out_dir)
+    if args.release_gate:
+        print(display_report_path(Path(args.root).resolve(), paths["release_gate_markdown"]))
+        release_gate = json.loads(paths["release_gate_json"].read_text(encoding="utf-8"))
+        return 0 if release_gate["release_gate_status"] == "PASS" else 1
     print(display_report_path(Path(args.root).resolve(), paths["markdown"]))
     scorecard = json.loads(paths["json"].read_text(encoding="utf-8"))
     return 0 if scorecard["portfolio_evidence_status"] == "PASS" else 1
@@ -346,6 +423,98 @@ def _quality_fixes(evidence: list[dict[str, Any]]) -> list[str]:
         issues = "; ".join(item["quality_issues"])
         fixes.append(f"`{item['path']}`: {issues}")
     return fixes
+
+
+def _release_check(name: str, passed: bool, evidence: str, detail: str, blocker: str) -> dict[str, str]:
+    return {
+        "name": name,
+        "status": "PASS" if passed else "BLOCKED",
+        "evidence": evidence,
+        "detail": detail,
+        "blocker": "" if passed else blocker,
+    }
+
+
+def _demo_index_check(repo_root: Path) -> dict[str, str]:
+    path = repo_root / "docs/DEMO_OUTPUT_INDEX.md"
+    if not path.is_file():
+        return _release_check(
+            "demo output index",
+            False,
+            "docs/DEMO_OUTPUT_INDEX.md",
+            "missing demo output index",
+            "docs/DEMO_OUTPUT_INDEX.md is missing",
+        )
+    text = path.read_text(encoding="utf-8")
+    passed = "Overall demo status: **PASS**" in text
+    return _release_check(
+        "demo output index",
+        passed,
+        "docs/DEMO_OUTPUT_INDEX.md",
+        "demo output index reports PASS" if passed else "demo output index does not report PASS",
+        "demo output index is not PASS",
+    )
+
+
+def _claim_trace_check(repo_root: Path) -> dict[str, str]:
+    path = repo_root / "docs/REVIEWER_CLAIM_TRACE.md"
+    if not path.is_file():
+        return _release_check(
+            "claim trace",
+            False,
+            "docs/REVIEWER_CLAIM_TRACE.md",
+            "missing reviewer claim trace",
+            "docs/REVIEWER_CLAIM_TRACE.md is missing",
+        )
+    text = path.read_text(encoding="utf-8")
+    lower_text = text.lower()
+    passed = "reviewer claim trace" in lower_text and "boundary" in lower_text
+    return _release_check(
+        "claim trace",
+        passed,
+        "docs/REVIEWER_CLAIM_TRACE.md",
+        "claim trace includes boundaries" if passed else "claim trace is missing boundary language",
+        "claim trace is incomplete",
+    )
+
+
+def _portfolio_named_check(status_payload: dict[str, Any], name: str, blocker: str) -> dict[str, str]:
+    named = _portfolio_check_status(status_payload, name)
+    return _release_check(
+        name,
+        named == "PASS",
+        "PORTFOLIO_STATUS.json",
+        f"{name} is {named}",
+        blocker,
+    )
+
+
+def _validation_suite_check(status_payload: dict[str, Any]) -> dict[str, str]:
+    required = [
+        "top-level tests",
+        "AegisOps acceptance",
+        "Kube Copilot report",
+        "Kube Policy Pack",
+        "Haul Truck Planner report",
+        "EvidenceOps scorecard",
+    ]
+    missing_or_failed = [name for name in required if _portfolio_check_status(status_payload, name) != "PASS"]
+    return _release_check(
+        "required validation suite",
+        not missing_or_failed,
+        "PORTFOLIO_STATUS.json",
+        "required validation suite passed"
+        if not missing_or_failed
+        else f"missing or failed checks: {', '.join(missing_or_failed)}",
+        f"required validation suite did not pass: {', '.join(missing_or_failed)}",
+    )
+
+
+def _portfolio_check_status(status_payload: dict[str, Any], name: str) -> str:
+    for check in status_payload.get("checks", []):
+        if check.get("name") == name:
+            return str(check.get("status", "MISSING"))
+    return "MISSING"
 
 
 if __name__ == "__main__":

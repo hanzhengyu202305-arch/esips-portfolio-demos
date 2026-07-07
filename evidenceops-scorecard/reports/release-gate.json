@@ -1,0 +1,51 @@
+{
+  "release_gate_status": "PASS",
+  "required_checks_passed": 6,
+  "required_checks_total": 6,
+  "checks": [
+    {
+      "name": "portfolio evidence scorecard",
+      "status": "PASS",
+      "evidence": "evidenceops-scorecard/reports/evidence-scorecard.md",
+      "detail": "portfolio evidence status is PASS",
+      "blocker": ""
+    },
+    {
+      "name": "portfolio status file",
+      "status": "PASS",
+      "evidence": "PORTFOLIO_STATUS.json",
+      "detail": "portfolio status file is PASS",
+      "blocker": ""
+    },
+    {
+      "name": "demo output index",
+      "status": "PASS",
+      "evidence": "docs/DEMO_OUTPUT_INDEX.md",
+      "detail": "demo output index reports PASS",
+      "blocker": ""
+    },
+    {
+      "name": "claim trace",
+      "status": "PASS",
+      "evidence": "docs/REVIEWER_CLAIM_TRACE.md",
+      "detail": "claim trace includes boundaries",
+      "blocker": ""
+    },
+    {
+      "name": "public boundary check",
+      "status": "PASS",
+      "evidence": "PORTFOLIO_STATUS.json",
+      "detail": "public boundary check is PASS",
+      "blocker": ""
+    },
+    {
+      "name": "required validation suite",
+      "status": "PASS",
+      "evidence": "PORTFOLIO_STATUS.json",
+      "detail": "required validation suite passed",
+      "blocker": ""
+    }
+  ],
+  "blockers": [],
+  "boundary": "Release gate checks public portfolio evidence only; it is not official application approval."
+}

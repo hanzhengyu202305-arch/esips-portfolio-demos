@@ -23,11 +23,14 @@ Each evidence item is classified as:
 
 The generated report includes a `0-100` quality score, weak evidence list, missing evidence list, and specific quality-fix hints.
 
+The release gate turns the same evidence into a public release/share decision. It checks whether scorecard evidence is PASS, portfolio status is PASS, demo outputs were regenerated, claim trace exists, and public boundary checks passed.
+
 ## Commands
 
 ```bash
 make -C evidenceops-scorecard test
 make -C evidenceops-scorecard report
+make -C evidenceops-scorecard release-gate
 ```
 
 Generated reports:
@@ -36,6 +39,8 @@ Generated reports:
 evidenceops-scorecard/reports/evidence-scorecard.md
 evidenceops-scorecard/reports/evidence-scorecard.json
 evidenceops-scorecard/reports/submission-readiness.md
+evidenceops-scorecard/reports/release-gate.md
+evidenceops-scorecard/reports/release-gate.json
 ```
 
 ## Boundary

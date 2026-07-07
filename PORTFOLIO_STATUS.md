@@ -2,7 +2,7 @@
 
 Overall status: **PASS**
 
-Generated at: `2026-07-07T01:58:12+00:00`
+Generated at: `2026-07-07T02:18:12+00:00`
 
 | check | status | command |
 | --- | --- | --- |
@@ -13,6 +13,7 @@ Generated at: `2026-07-07T01:58:12+00:00`
 | Haul Truck Planner report | PASS | `make -C haul-truck-planner report` |
 | EvidenceOps scorecard | PASS | `make -C evidenceops-scorecard report` |
 | public boundary check | PASS | `/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 scripts/public_boundary_check.py` |
+| EvidenceOps release gate | PASS | `make -C evidenceops-scorecard release-gate` |
 
 ## Boundary
 

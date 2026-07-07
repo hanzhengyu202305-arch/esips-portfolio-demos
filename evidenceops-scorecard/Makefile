@@ -1,4 +1,4 @@
-.PHONY: test report demo
+.PHONY: test report release-gate demo
 
 test:
 	python3 -m unittest discover -s tests -v
@@ -6,5 +6,7 @@ test:
 report:
 	python3 -m evidenceops_scorecard.scorecard
 
-demo: report
+release-gate:
+	python3 -m evidenceops_scorecard.scorecard --release-gate
 
+demo: report release-gate
