@@ -16,7 +16,7 @@ The roadmap keeps future work aligned with the same thesis: AI software engineer
 
 | item | value | evidence target |
 | --- | --- | --- |
-| AegisOps issue queue demo | closer to GitHub issue triage without requiring live accounts | synthetic issue queue fixture and report |
+| Extend AegisOps triage queue | closer to GitHub issue triage without requiring live accounts | [`aegisops-agent/reports/triage-queue.md`](../aegisops-agent/reports/triage-queue.md) |
 | Kube policy pack export | make validation rules easier to compare with policy-as-code tools | generated policy matrix |
 | Haul Planner EV routing extension | add charge time, queueing, payload mass, and time-window constraints | algorithm-comparison report |
 | Release checklist automation | make reviewer packages reproducible across releases | changelog and portfolio status artifacts |

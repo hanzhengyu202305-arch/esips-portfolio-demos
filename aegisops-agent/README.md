@@ -15,6 +15,7 @@ make build-index
 make eval-mock
 make matrix
 make doctor
+make triage
 make demo SCENARIO=S4 MODE=multi
 make report
 ```
@@ -65,6 +66,7 @@ The MVP includes:
 - Whitelisted patch preview generation
 - pytest, compile-lint, and DevOps dry-run validation
 - Evaluation reports for accuracy, fix success, latency, cost, and tool calls
+- Triage queue report for severity, evidence, ownership, and next action
 - Scenario matrix and environment doctor reports for portfolio review
 
 ## Current Results
@@ -184,6 +186,7 @@ make scorecard
 make poc RUNS=3
 make matrix
 make doctor
+make triage
 make docker-build
 make kind-setup
 make report
@@ -215,6 +218,7 @@ These commands refresh:
 reports/scenario-matrix.md
 reports/doctor.json
 reports/doctor.md
+reports/triage-queue.md
 reports/acceptance-checklist.md
 reports/eval-summary.md
 reports/final-portfolio-report.md

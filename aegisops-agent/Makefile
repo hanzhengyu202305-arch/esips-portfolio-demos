@@ -4,7 +4,7 @@ MODE ?= multi
 QUERY ?= CrashLoopBackOff invalid environment variable
 RUNS ?= 3
 
-.PHONY: help setup quickstart acceptance test test-app lint build-index retrieve scenario collect-evidence demo validate eval-mock matrix doctor scorecard poc-repro poc docker-build kind-setup report issue-to-pr-report serve-app
+.PHONY: help setup quickstart acceptance test test-app lint build-index retrieve scenario collect-evidence demo validate eval-mock matrix doctor triage scorecard poc-repro poc docker-build kind-setup report issue-to-pr-report serve-app
 
 help:
 	@$(PYTHON) -m agent.main help
@@ -64,6 +64,9 @@ matrix:
 
 doctor:
 	$(PYTHON) -m agent.main doctor
+
+triage:
+	$(PYTHON) -m agent.main triage
 
 docker-build:
 	$(PYTHON) scripts/docker_build_or_dry_run.py

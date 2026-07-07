@@ -5,6 +5,7 @@ from pathlib import Path
 
 from agent.evaluation.evaluator import run_eval
 from agent.scenarios import list_scenarios
+from agent.triage_queue import write_triage_report
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -38,6 +39,7 @@ def create_final_report(reports_dir: Path | str = Path("reports")) -> Path:
         run_eval(reports_path)
     scenario_matrix = create_scenario_matrix(reports_path / "scenario-matrix.md")
     issue_to_pr_report = create_issue_to_pr_report(reports_path)
+    triage_queue = write_triage_report(reports_path / "triage-queue.md")
 
     scenarios = list_scenarios()
     eval_results = json.loads(eval_results_path.read_text(encoding="utf-8"))
@@ -119,6 +121,7 @@ def create_final_report(reports_dir: Path | str = Path("reports")) -> Path:
         "## Deliverables",
         "",
         "- GitHub-ready repository scaffold",
+        "- Incident triage queue with deterministic priority scoring",
         "- FastAPI demo service",
         "- 8 reproducible failure scenarios",
         "- RAG runbooks and incident memory",
@@ -131,6 +134,7 @@ def create_final_report(reports_dir: Path | str = Path("reports")) -> Path:
         "",
         "- Newcomer guide: `docs/NEWCOMER_GUIDE.zh-CN.md`",
         f"- Scenario matrix: `{scenario_matrix}`",
+        f"- Triage queue: `reports/triage-queue.md` (generated at `{triage_queue}`)",
         "- Evaluation summary: `reports/eval-summary.md`",
         "- Demo script: `docs/demo-script.md`",
         "- ESIPS mapping: `docs/esips-accenture-mapping.md`",

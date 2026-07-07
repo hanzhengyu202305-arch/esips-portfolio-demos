@@ -3,7 +3,7 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-from scripts.demo_all import DemoResult, render_index
+from scripts.demo_all import DemoResult, build_demo_runs, render_index
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -15,6 +15,13 @@ class DemoAllTests(unittest.TestCase):
 
         self.assertIn("demo-all:", makefile)
         self.assertIn("scripts/demo_all.py", makefile)
+
+    def test_demo_all_includes_aegisops_triage_queue(self):
+        runs = build_demo_runs("python3")
+        triage = next(run for run in runs if run.name == "AegisOps Triage Queue")
+
+        self.assertEqual(triage.display_command, "make -C aegisops-agent triage PYTHON=<python>")
+        self.assertIn("aegisops-agent/reports/triage-queue.md", triage.reports)
 
     def test_render_index_lists_all_public_evidence_paths(self):
         markdown = render_index(
