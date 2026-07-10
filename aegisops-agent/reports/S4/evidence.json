@@ -3,6 +3,7 @@
   "title": "Kubernetes CrashLoopBackOff because APP_MODE is invalid",
   "category": "kubernetes",
   "failure_summary": "Pod restarts because APP_MODE is set to an unsupported value.",
+  "raw_log": "kubectl get pods\naegisops-demo-api-7f8c9d   0/1   CrashLoopBackOff   5   4m\nkubectl logs aegisops-demo-api-7f8c9d\nRuntimeError: APP_MODE must be one of demo, test, prod; got 'broken'\n",
   "signals": [
     {
       "id": "k8s:S4:invalid-env",

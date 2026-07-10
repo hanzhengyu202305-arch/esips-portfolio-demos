@@ -2,11 +2,11 @@
 
 [![portfolio-check](https://github.com/hanzhengyu202305-arch/esips-portfolio-demos/actions/workflows/portfolio-check.yml/badge.svg)](https://github.com/hanzhengyu202305-arch/esips-portfolio-demos/actions/workflows/portfolio-check.yml)
 
-This repository contains three small, reproducible portfolio demos plus one evidence scorecard layer for ESIPS-style industry placement interviews.
+This repository contains three small, reproducible portfolio demos plus an adversarial validation and evidence-gating layer for ESIPS-style industry placement interviews.
 
 Portfolio thesis: **AI software engineering with validation: turning industry briefs into reproducible, testable, reviewable engineering demos.**
 
-The demos share the same product story: generate or plan something, validate it, report it, and keep the human-review boundary visible. EvidenceOps Scorecard then checks whether the portfolio evidence is present, strong enough for review, and safely bounded.
+The demos share the same product story: generate or plan something, validate it, report it, and keep the human-review boundary visible. Adversarial Review attacks failure assumptions; EvidenceOps then checks whether the public evidence is present, structurally consistent, and safely bounded.
 
 ## Reviewer Fast Path
 
@@ -17,7 +17,7 @@ The demos share the same product story: generate or plan something, validate it,
 | 1 | `Accenture_02 SDLC_Agents` | `aegisops-agent` | Main line: RAG/runbook retrieval -> root cause -> patch preview -> validation -> report |
 | 2 | `Accenture_01 Kubernetes_DevOps` | `kube-copilot` | Kubernetes and CI/CD generation is useful only after policy validation and human review |
 | 3 | `RTSIH electric haul truck trajectory planning` | `haul-truck-planner` | Battery reserve, grade, charging access, perception risk, and energy-aware planning matter more than shortest path alone |
-| evidence layer | portfolio quality gate | `evidenceops-scorecard` | Labels evidence as PASS, WEAK, or MISSING and reports a 0-100 quality score |
+| evidence layer | portfolio review gate | `adversarial-review` + `evidenceops-scorecard` | Attacks happy-path assumptions, then reports evidence completeness as PASS, WEAK, or MISSING |
 
 ### 3-Minute Read
 
@@ -31,12 +31,13 @@ The demos share the same product story: generate or plan something, validate it,
 
 | demo | what to inspect | command | report |
 | --- | --- | --- | --- |
-| AegisOps Agent | SDLC agent RCA workflow | `make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=/opt/anaconda3/bin/python3.13` | [`aegisops-agent/reports/S4/multi/demo-report.md`](aegisops-agent/reports/S4/multi/demo-report.md), [`aegisops-agent/reports/S4/multi/pr-summary.md`](aegisops-agent/reports/S4/multi/pr-summary.md) |
-| AegisOps Patch Review Queue | Multi-scenario patch review priority | `make -C aegisops-agent patch-review-queue PYTHON=/opt/anaconda3/bin/python3.13` | [`aegisops-agent/reports/patch-review-queue.md`](aegisops-agent/reports/patch-review-queue.md) |
+| AegisOps Agent | SDLC agent RCA workflow | `make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=python3` | [`aegisops-agent/reports/S4/multi/demo-report.md`](aegisops-agent/reports/S4/multi/demo-report.md), [`aegisops-agent/reports/S4/multi/pr-summary.md`](aegisops-agent/reports/S4/multi/pr-summary.md) |
+| AegisOps Patch Review Queue | Multi-scenario patch review priority | `make -C aegisops-agent patch-review-queue PYTHON=python3` | [`aegisops-agent/reports/patch-review-queue.md`](aegisops-agent/reports/patch-review-queue.md) |
 | Kube Copilot | Kubernetes validation boundary | `make -C kube-copilot report` | [`kube-copilot/reports/risk-comparison.md`](kube-copilot/reports/risk-comparison.md) |
 | Kube Policy Pack | Reusable policy rule export | `make -C kube-copilot policy-pack` | [`kube-copilot/reports/policy-pack.md`](kube-copilot/reports/policy-pack.md), [`kube-copilot/reports/policy-pack.json`](kube-copilot/reports/policy-pack.json) |
 | Haul Truck Planner | Energy-aware route planning | `make -C haul-truck-planner demo` | [`haul-truck-planner/reports/route-experiment.md`](haul-truck-planner/reports/route-experiment.md) |
-| EvidenceOps Scorecard | Portfolio evidence quality gate | `make -C evidenceops-scorecard report` | [`evidenceops-scorecard/reports/evidence-scorecard.md`](evidenceops-scorecard/reports/evidence-scorecard.md) |
+| Adversarial Review | Cross-project negative controls | `make adversarial-review` | [`docs/ADVERSARIAL_REVIEW.md`](docs/ADVERSARIAL_REVIEW.md) |
+| EvidenceOps Scorecard | Portfolio evidence completeness gate | `make -C evidenceops-scorecard report` | [`evidenceops-scorecard/reports/evidence-scorecard.md`](evidenceops-scorecard/reports/evidence-scorecard.md) |
 | EvidenceOps Release Gate | Public release/share readiness | `make -C evidenceops-scorecard release-gate` | [`evidenceops-scorecard/reports/release-gate.md`](evidenceops-scorecard/reports/release-gate.md) |
 
 ### Full Validation
@@ -44,6 +45,7 @@ The demos share the same product story: generate or plan something, validate it,
 ```bash
 make demo-all
 make test
+make adversarial-review
 make portfolio-check
 ```
 
@@ -68,7 +70,7 @@ Read `BEGINNER_GUIDE.zh-CN.md` first if you are new to the workspace, then read 
 
 For public open-source references behind the three demo lines, read `REFERENCES.md`.
 
-For a single-page reviewer overview, read [`docs/EXECUTIVE_ONE_PAGE.md`](docs/EXECUTIVE_ONE_PAGE.md). For a concise reviewer command path, read [`docs/REVIEWER_FAST_PATH.md`](docs/REVIEWER_FAST_PATH.md). For claim traceability, read [`docs/REVIEWER_CLAIM_TRACE.md`](docs/REVIEWER_CLAIM_TRACE.md). For architecture and roadmap context, read [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/PROJECT_COMPARISON.md`](docs/PROJECT_COMPARISON.md), [`docs/RISK_REGISTER.md`](docs/RISK_REGISTER.md), [`docs/ROADMAP.md`](docs/ROADMAP.md), and [`docs/OPTIONAL_EXTENSION_PROJECTS.md`](docs/OPTIONAL_EXTENSION_PROJECTS.md). For a live presentation script, read [`docs/FIVE_MINUTE_DEMO_SCRIPT.md`](docs/FIVE_MINUTE_DEMO_SCRIPT.md). For source-backed external references, read [`docs/EXTERNAL_REFERENCE_MAP.md`](docs/EXTERNAL_REFERENCE_MAP.md).
+For a single-page reviewer overview, read [`docs/EXECUTIVE_ONE_PAGE.md`](docs/EXECUTIVE_ONE_PAGE.md). For a concise reviewer command path, read [`docs/REVIEWER_FAST_PATH.md`](docs/REVIEWER_FAST_PATH.md). For the red-team reasoning behind the current design, read [`docs/FIRST_PRINCIPLES_REVIEW.md`](docs/FIRST_PRINCIPLES_REVIEW.md). For claim traceability, read [`docs/REVIEWER_CLAIM_TRACE.md`](docs/REVIEWER_CLAIM_TRACE.md). For architecture and roadmap context, read [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/PROJECT_COMPARISON.md`](docs/PROJECT_COMPARISON.md), [`docs/RISK_REGISTER.md`](docs/RISK_REGISTER.md), [`docs/ROADMAP.md`](docs/ROADMAP.md), and [`docs/OPTIONAL_EXTENSION_PROJECTS.md`](docs/OPTIONAL_EXTENSION_PROJECTS.md). For a live presentation script, read [`docs/FIVE_MINUTE_DEMO_SCRIPT.md`](docs/FIVE_MINUTE_DEMO_SCRIPT.md). For source-backed external references, read [`docs/EXTERNAL_REFERENCE_MAP.md`](docs/EXTERNAL_REFERENCE_MAP.md).
 
 ## Visual Evidence
 
@@ -77,25 +79,27 @@ Portfolio status: PASS
 S4 AegisOps: issue -> evidence -> RCA -> patch preview -> validation -> PR summary
 Kube Copilot: safe PASS / partial PARTIAL / risky FAIL with blocking-warning-review categories
 Haul Truck Planner: shortest path infeasible; Dijkstra and A* feasible with charging lane
-EvidenceOps Scorecard: public evidence PASS; quality score 100/100; application submission still needs official confirmation
+Adversarial Review: expected failures and escalation behavior PASS (12/12 challenges)
+EvidenceOps Scorecard: public evidence PASS; completeness score 100/100; application submission still needs official confirmation
 ```
 
 ## Interview Fast Path
 
 30-second pitch:
 
-> My ESIPS portfolio is built around AI software engineering with validation. AegisOps Agent is the main SDLC agent demo: it turns a reproducible DevOps incident into evidence, root cause, guarded patch preview, validation, and a PR-style report. Kube Copilot and Haul Truck Planner support the same story from Kubernetes validation and EE/mining route-planning angles. EvidenceOps Scorecard is the quality gate that labels public artifacts as PASS, WEAK, or MISSING and reports whether the evidence package is reviewable.
+> My ESIPS portfolio is built around AI software engineering with validation. AegisOps Agent is the main SDLC agent demo: it turns incident evidence into a ranked root-cause decision, guarded patch preview, validation, and a PR-style report, while escalating uncertain cases. Kube Copilot and Haul Truck Planner support the same story from structural Kubernetes validation and constrained EE/mining route planning. A cross-project adversarial gate tests expected failures, and EvidenceOps checks whether the resulting public evidence is complete and reviewable.
 
 60-second pitch:
 
-> The repository contains three local, reproducible demos plus one evidence layer. AegisOps Agent maps to Accenture SDLC Agents by showing an auditable RCA workflow for CI/CD, Docker, Kubernetes, security, and latency incidents. Kube Copilot maps to Accenture Kubernetes DevOps by showing that AI can draft infrastructure files, but policy validation and human review define trust. Haul Truck Planner maps to RTSIH by comparing shortest path against energy-aware routing under battery reserve, grade, charging access, and perception-risk constraints. EvidenceOps Scorecard checks claims, reports, portfolio status, and manual-review boundaries. The common claim is not production readiness; it is that I can turn industry briefs into testable engineering evidence with clear limitations.
+> The repository contains three local, reproducible demos plus adversarial and evidence gates. AegisOps maps to Accenture SDLC Agents with evidence-derived RCA, abstention, guarded patch preview, and validation. Kube Copilot maps to Kubernetes DevOps by structurally checking every YAML document and container before trust. Haul Truck Planner maps to RTSIH by comparing shortest path, battery-state Dijkstra, and A* under explicit energy, grade, charging, and perception-risk assumptions. The common claim is not production readiness; it is that I can turn industry briefs into testable engineering evidence, attack my own assumptions, and state the remaining limits clearly.
 
 One-line demo explanations:
 
 - AegisOps: incident evidence -> runbook retrieval -> root cause -> patch preview -> validation -> report.
 - Kube Copilot: generated Docker/Kubernetes/CI files are blocked until policy checks pass.
 - Haul Truck Planner: feasible electric haul routes depend on battery state, charging, grade, and risk, not only distance.
-- EvidenceOps Scorecard: reviewer evidence is scored as artifacts, not just described in prose.
+- Adversarial Review: negative controls must fail or escalate exactly as expected.
+- EvidenceOps Scorecard: reviewer evidence completeness is checked as structured artifacts, not just described in prose.
 
 Limitations:
 
@@ -145,10 +149,10 @@ An agentic DevOps root-cause-analysis and remediation demo. It uses synthetic CI
 Useful commands:
 
 ```bash
-make -C aegisops-agent test PYTHON=/opt/anaconda3/bin/python3.13
-make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=/opt/anaconda3/bin/python3.13
-make -C aegisops-agent patch-review-queue PYTHON=/opt/anaconda3/bin/python3.13
-make -C aegisops-agent acceptance PYTHON=/opt/anaconda3/bin/python3.13
+make -C aegisops-agent test PYTHON=python3
+make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=python3
+make -C aegisops-agent patch-review-queue PYTHON=python3
+make -C aegisops-agent acceptance PYTHON=python3
 ```
 
 ### Kube Copilot
@@ -177,7 +181,7 @@ make -C haul-truck-planner demo
 
 ### EvidenceOps Scorecard
 
-A portfolio evidence quality gate. It checks whether the public repository has the expected reports, claims matrix, portfolio status files, and project evidence for reviewer inspection, then reports PASS, WEAK, or MISSING evidence plus a quality score.
+A portfolio evidence completeness gate. It checks required reports, structured diagnosis and policy data, adversarial results, claim boundaries, and portfolio status, then reports PASS, WEAK, or MISSING evidence. The score measures completeness, not independent product quality.
 
 Useful commands:
 

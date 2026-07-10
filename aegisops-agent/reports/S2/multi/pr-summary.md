@@ -6,7 +6,9 @@ Docker build failure because a dependency is missing
 
 ## Root Cause
 
-`missing_python_dependency` with confidence `0.97`.
+`missing_python_dependency` with confidence `0.89`.
+
+Decision: `PROPOSE_PATCH` because highest-scoring hypothesis has sufficient evidence and separation.
 
 Docker build imports pydantic but the image requirements omit it.
 
@@ -20,9 +22,9 @@ Validation: passed
 
 Commands run:
 
-- `/opt/anaconda3/bin/python3.13 -m pytest apps/demo-api/tests -q`
-- `/opt/anaconda3/bin/python3.13 scripts/lint.py`
-- `/opt/anaconda3/bin/python3.13 scripts/devops_check.py --scenario S2 --patched-dir reports/S2/multi/patched`
+- `python3 -m pytest apps/demo-api/tests -q`
+- `python3 scripts/lint.py`
+- `python3 scripts/devops_check.py --scenario S2 --patched-dir reports/S2/multi/patched`
 
 ## Risk And Review
 

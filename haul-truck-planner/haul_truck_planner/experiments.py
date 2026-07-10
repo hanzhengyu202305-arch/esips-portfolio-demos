@@ -1,8 +1,16 @@
 from collections import deque
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
 
-from haul_truck_planner.planner import MineMap, Point, RouteResult, Truck, plan_route, plan_route_astar
+from haul_truck_planner.planner import (
+    MineMap,
+    Point,
+    RouteResult,
+    Truck,
+    energy_cost,
+    plan_route,
+    plan_route_astar,
+)
 
 
 @dataclass(frozen=True)
@@ -19,6 +27,7 @@ class RouteComparison:
     mine_width: int
     mine_height: int
     blocked_points: set[Point]
+    model_assumptions: dict[str, float]
 
     @property
     def energy_aware_feasible(self) -> bool:
@@ -89,6 +98,18 @@ class RouteComparison:
                 "",
                 "- battery-state Dijkstra: `" + str(self.energy_aware.energy_trace) + "`",
                 "- A* energy-aware planner: `" + str(self.astar_energy_aware.energy_trace) + "`",
+                "",
+                "## Explicit model assumptions",
+                "",
+                *[
+                    f"- `{name}`: `{value}`"
+                    for name, value in self.model_assumptions.items()
+                ],
+                "",
+                (
+                    "These parameters are synthetic and configurable. They expose the "
+                    "prototype's assumptions; they are not calibrated mine-vehicle data."
+                ),
                 "",
                 "## ASCII map",
                 "",
@@ -239,6 +260,7 @@ def compare_shortest_and_energy_aware(
         mine_width=mine.width,
         mine_height=mine.height,
         blocked_points=set(mine.blocked),
+        model_assumptions=asdict(mine.energy_model),
     )
 
 
@@ -448,12 +470,13 @@ def _minimum_energy_margin(mine: MineMap, path: list[Point], truck: Truck) -> fl
     energy = truck.initial_kwh
     minimum_margin = energy - truck.reserve_kwh
     for point in path[1:]:
-        grade = mine.grades.get(point, 0.0)
-        consumed = max(0.6, 1.0 + max(grade, 0.0) * 5.0 - min(abs(min(grade, 0.0)) * 4.0, 0.4))
-        energy -= consumed
+        energy -= energy_cost(mine, point)
         minimum_margin = min(minimum_margin, energy - truck.reserve_kwh)
         if point in mine.charging:
-            energy = min(truck.capacity_kwh, energy + 6.0)
+            energy = min(
+                truck.capacity_kwh,
+                energy + mine.energy_model.charge_gain_kwh,
+            )
             minimum_margin = min(minimum_margin, energy - truck.reserve_kwh)
     return round(minimum_margin, 2)
 

@@ -1,7 +1,7 @@
 {
   "release_gate_status": "PASS",
-  "required_checks_passed": 6,
-  "required_checks_total": 6,
+  "required_checks_passed": 7,
+  "required_checks_total": 7,
   "checks": [
     {
       "name": "portfolio evidence scorecard",
@@ -29,6 +29,13 @@
       "status": "PASS",
       "evidence": "docs/REVIEWER_CLAIM_TRACE.md",
       "detail": "claim trace includes boundaries",
+      "blocker": ""
+    },
+    {
+      "name": "adversarial review",
+      "status": "PASS",
+      "evidence": "docs/ADVERSARIAL_REVIEW.json",
+      "detail": "all structured adversarial challenges passed",
       "blocker": ""
     },
     {

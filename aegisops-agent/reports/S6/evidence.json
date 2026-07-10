@@ -3,6 +3,7 @@
   "title": "Kubernetes ImagePullBackOff because image tag is missing",
   "category": "kubernetes",
   "failure_summary": "Deployment references an image tag that does not exist in the local registry.",
+  "raw_log": "Failed to pull image \"aegisops/demo-api:canary-missing\"\nBack-off pulling image \"aegisops/demo-api:canary-missing\"\n",
   "signals": [
     {
       "id": "k8s:S6:image-tag",

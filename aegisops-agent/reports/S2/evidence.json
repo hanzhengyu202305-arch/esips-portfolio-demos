@@ -3,6 +3,7 @@
   "title": "Docker build failure because a dependency is missing",
   "category": "docker",
   "failure_summary": "Docker build imports pydantic but the image requirements omit it.",
+  "raw_log": "Step 7/8 : RUN python -c \"import pydantic\"\nModuleNotFoundError: No module named 'pydantic'\nThe command '/bin/sh -c python -c \"import pydantic\"' returned a non-zero code: 1\n",
   "signals": [
     {
       "id": "docker:S2:missing-module",

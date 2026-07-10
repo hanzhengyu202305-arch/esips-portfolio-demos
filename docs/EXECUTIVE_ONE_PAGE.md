@@ -10,7 +10,7 @@ This portfolio is one coherent story, not three unrelated mini-projects. The com
 industry brief -> scoped prototype -> deterministic validation -> report -> human-review boundary
 ```
 
-EvidenceOps Scorecard adds the fourth layer: public evidence quality and release/share readiness.
+Adversarial Review and EvidenceOps add the fourth layer: negative controls, public evidence completeness, and release/share readiness.
 
 ## Three Lines
 
@@ -19,7 +19,7 @@ EvidenceOps Scorecard adds the fourth layer: public evidence quality and release
 | `Accenture_02 SDLC_Agents` | AegisOps Agent | RAG/runbook retrieval -> RCA -> patch preview -> validation -> report | [`aegisops-agent/reports/final-portfolio-report.md`](../aegisops-agent/reports/final-portfolio-report.md), [`aegisops-agent/reports/S4/multi/pr-summary.md`](../aegisops-agent/reports/S4/multi/pr-summary.md) |
 | `Accenture_01 Kubernetes_DevOps` | Kube Copilot | Docker/Kubernetes/GitHub Actions generation plus deterministic validation | [`kube-copilot/reports/risk-comparison.md`](../kube-copilot/reports/risk-comparison.md), [`kube-copilot/reports/policy-matrix.md`](../kube-copilot/reports/policy-matrix.md) |
 | `RTSIH electric haul truck trajectory planning` | Haul Truck Planner | Battery reserve, grade, charging access, perception risk, and energy-aware planning | [`haul-truck-planner/reports/route-experiment.md`](../haul-truck-planner/reports/route-experiment.md), [`haul-truck-planner/reports/algorithm-comparison.md`](../haul-truck-planner/reports/algorithm-comparison.md) |
-| Portfolio evidence quality | EvidenceOps Scorecard | Labels public evidence as PASS, WEAK, or MISSING and gates public release/share readiness | [`evidenceops-scorecard/reports/evidence-scorecard.md`](../evidenceops-scorecard/reports/evidence-scorecard.md), [`evidenceops-scorecard/reports/release-gate.md`](../evidenceops-scorecard/reports/release-gate.md) |
+| Portfolio evidence readiness | Adversarial Review + EvidenceOps Scorecard | Attacks assumptions, labels evidence as PASS/WEAK/MISSING, and gates public release/share readiness | [`docs/ADVERSARIAL_REVIEW.md`](ADVERSARIAL_REVIEW.md), [`evidenceops-scorecard/reports/release-gate.md`](../evidenceops-scorecard/reports/release-gate.md) |
 
 ## Main Project And Supporting Lines
 
@@ -42,8 +42,8 @@ EvidenceOps Scorecard adds the fourth layer: public evidence quality and release
 
 | demo | command | report |
 | --- | --- | --- |
-| AegisOps Agent | `make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=/opt/anaconda3/bin/python3.13` | [`aegisops-agent/reports/S4/multi/issue-to-pr-report.md`](../aegisops-agent/reports/S4/multi/issue-to-pr-report.md) |
-| AegisOps Patch Review Queue | `make -C aegisops-agent patch-review-queue PYTHON=/opt/anaconda3/bin/python3.13` | [`aegisops-agent/reports/patch-review-queue.md`](../aegisops-agent/reports/patch-review-queue.md) |
+| AegisOps Agent | `make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=python3` | [`aegisops-agent/reports/S4/multi/issue-to-pr-report.md`](../aegisops-agent/reports/S4/multi/issue-to-pr-report.md) |
+| AegisOps Patch Review Queue | `make -C aegisops-agent patch-review-queue PYTHON=python3` | [`aegisops-agent/reports/patch-review-queue.md`](../aegisops-agent/reports/patch-review-queue.md) |
 | Kube Copilot | `make -C kube-copilot report` | [`kube-copilot/reports/risk-comparison.md`](../kube-copilot/reports/risk-comparison.md) |
 | Haul Truck Planner | `make -C haul-truck-planner report` | [`haul-truck-planner/reports/algorithm-comparison.md`](../haul-truck-planner/reports/algorithm-comparison.md) |
 | EvidenceOps Scorecard | `make -C evidenceops-scorecard report` | [`evidenceops-scorecard/reports/evidence-scorecard.md`](../evidenceops-scorecard/reports/evidence-scorecard.md) |

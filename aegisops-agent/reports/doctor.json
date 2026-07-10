@@ -1,6 +1,6 @@
 {
   "project": "aegisops-agent",
-  "python_version": "3.13.9",
+  "python_version": "3.14.0",
   "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
   "checks": {
     "project_root": {
@@ -12,8 +12,8 @@
       "detail": "importable"
     },
     "fastapi": {
-      "ok": false,
-      "detail": "not importable: No module named 'fastapi'"
+      "ok": true,
+      "detail": "importable"
     },
     "docker": {
       "ok": true,

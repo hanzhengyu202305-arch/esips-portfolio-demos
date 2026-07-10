@@ -48,7 +48,8 @@ def run_validation(
     commands_run: list[str] = []
     passed = True
     for command in commands:
-        commands_run.append(" ".join(command))
+        display_command = _display_command(command)
+        commands_run.append(display_command)
         completed = subprocess.run(
             command,
             cwd=PROJECT_ROOT,
@@ -56,7 +57,7 @@ def run_validation(
             capture_output=True,
             check=False,
         )
-        outputs.append(f"$ {' '.join(command)}")
+        outputs.append(f"$ {display_command}")
         outputs.append(_stable_output(completed.stdout))
         outputs.append(_stable_output(completed.stderr))
         if completed.returncode != 0:
@@ -70,3 +71,10 @@ def _stable_output(output: str) -> str:
     if os.environ.get("AEGISOPS_STABLE_REPORTS") != "1":
         return output
     return re.sub(r"(\d+) passed in \d+\.\d+s", r"\1 passed in <stable>s", output)
+
+
+def _display_command(command: list[str]) -> str:
+    display = list(command)
+    if os.environ.get("AEGISOPS_STABLE_REPORTS") == "1" and display:
+        display[0] = "python3"
+    return " ".join(display)

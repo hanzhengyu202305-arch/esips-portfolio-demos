@@ -11,6 +11,19 @@
 - battery-state Dijkstra: `[6.2, 5.2, 4.2, 2.4, 7.6, 6.6, 5.6, 4.6]`
 - A* energy-aware planner: `[6.2, 5.2, 4.2, 2.4, 7.6, 6.6, 5.6, 4.6]`
 
+## Explicit model assumptions
+
+- `base_kwh_per_cell`: `1.0`
+- `uphill_kwh_per_grade`: `5.0`
+- `downhill_kwh_credit_per_grade`: `4.0`
+- `max_regen_credit_kwh`: `0.4`
+- `minimum_step_kwh`: `0.6`
+- `charge_gain_kwh`: `6.0`
+- `risk_weight`: `1.0`
+- `energy_quantum_kwh`: `0.1`
+
+These parameters are synthetic and configurable. They expose the prototype's assumptions; they are not calibrated mine-vehicle data.
+
 ## ASCII map
 
 Legend: `S` start, `G` goal, `#` blocked, `C` charging, `R` perception risk, `*` energy-aware route.

@@ -29,7 +29,7 @@ class EvidenceOpsScorecardTests(unittest.TestCase):
             self.assertEqual(scorecard["application_submission_status"], "NEEDS_OFFICIAL_CONFIRMATION")
             self.assertEqual(scorecard["summary"]["passed_projects"], 3)
             self.assertEqual(scorecard["summary"]["total_projects"], 3)
-            self.assertEqual(scorecard["summary"]["quality_score"], 100)
+            self.assertEqual(scorecard["summary"]["evidence_completeness_score"], 100)
             self.assertEqual(scorecard["summary"]["weak_evidence"], 0)
             self.assertEqual(scorecard["summary"]["missing_evidence"], 0)
             self.assertEqual(scorecard["missing_evidence"], [])
@@ -77,7 +77,7 @@ class EvidenceOpsScorecardTests(unittest.TestCase):
             self.assertEqual(scorecard["portfolio_evidence_status"], "WEAK")
             self.assertEqual(scorecard["missing_evidence"], [])
             self.assertIn("haul-truck-planner/reports/route-experiment.md", scorecard["weak_evidence"])
-            self.assertLess(scorecard["summary"]["quality_score"], 100)
+            self.assertLess(scorecard["summary"]["evidence_completeness_score"], 100)
             haul = next(project for project in scorecard["projects"] if project["id"] == "haul-truck-planner")
             self.assertEqual(haul["status"], "WEAK")
             weak_item = next(item for item in haul["evidence"] if item["path"].endswith("route-experiment.md"))
@@ -109,7 +109,7 @@ class EvidenceOpsScorecardTests(unittest.TestCase):
             self.assertIn("# EvidenceOps Scorecard", markdown)
             self.assertIn("Portfolio evidence status: **PASS**", markdown)
             self.assertIn("Application submission status: **NEEDS_OFFICIAL_CONFIRMATION**", markdown)
-            self.assertIn("Quality score: **100/100**", markdown)
+            self.assertIn("Evidence completeness score: **100/100**", markdown)
             self.assertIn("| AegisOps Agent | PASS |", markdown)
             self.assertIn("| Kube Copilot | PASS |", markdown)
             self.assertIn("| Haul Truck Planner | PASS |", markdown)
@@ -126,14 +126,36 @@ class EvidenceOpsScorecardTests(unittest.TestCase):
             gate = build_release_gate(repo)
 
             self.assertEqual(gate["release_gate_status"], "PASS")
-            self.assertEqual(gate["required_checks_passed"], 6)
-            self.assertEqual(gate["required_checks_total"], 6)
+            self.assertEqual(gate["required_checks_passed"], 7)
+            self.assertEqual(gate["required_checks_total"], 7)
             self.assertEqual(gate["blockers"], [])
             check_names = {check["name"] for check in gate["checks"]}
             self.assertIn("portfolio evidence scorecard", check_names)
             self.assertIn("demo output index", check_names)
             self.assertIn("claim trace", check_names)
             self.assertIn("public boundary check", check_names)
+            self.assertIn("adversarial review", check_names)
+
+    def test_keyword_stuffed_policy_pack_fails_structural_quality_check(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            self._write_required_public_evidence(repo)
+            (repo / "kube-copilot/reports/policy-pack.json").write_text(
+                json.dumps(
+                    {
+                        "pack_id": "kube-copilot-predeploy",
+                        "rules": "rules rules rules",
+                        "trust_boundary": "human review",
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+
+            scorecard = build_scorecard(repo)
+
+            self.assertEqual(scorecard["portfolio_evidence_status"], "WEAK")
+            self.assertIn("kube-copilot/reports/policy-pack.json", scorecard["weak_evidence"])
 
     def test_release_gate_blocks_failed_portfolio_status(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -262,19 +284,43 @@ class EvidenceOpsScorecardTests(unittest.TestCase):
             "PORTFOLIO_STATUS.json": json.dumps({"overall_portfolio_status": "PASS"}) + "\n",
             "aegisops-agent/reports/final-portfolio-report.md": "AegisOps Agent evidence: root cause, validation, report, and patch preview.\n",
             "aegisops-agent/reports/S4/multi/pr-summary.md": "S4 PR summary with evidence, root cause, validation, and human review.\n",
+            "aegisops-agent/reports/S4/multi/diagnosis.json": json.dumps(
+                {
+                    "root_cause_id": "invalid_app_mode_env",
+                    "decision": "PROPOSE_PATCH",
+                    "ranked_hypotheses": [{"root_cause_id": "invalid_app_mode_env", "score": 4.0}],
+                }
+            )
+            + "\n",
             "kube-copilot/reports/risk-comparison.md": "Kube Copilot Kubernetes risk comparison with PASS FAIL policy validation and manual review.\n",
             "kube-copilot/reports/policy-matrix.md": "Policy matrix with image, resources, probes, securityContext, and CI validation.\n",
             "kube-copilot/reports/policy-pack.json": json.dumps(
                 {
                     "pack_id": "kube-copilot-predeploy",
-                    "rules": [{"id": "KC001_IMAGE_TAG_PINNED", "severity": "blocking"}],
+                    "rules": [
+                        {"id": f"KC{index:03d}", "severity": "blocking"}
+                        for index in range(1, 15)
+                    ],
                     "trust_boundary": "generated Kubernetes artifacts still require human review",
                 }
             )
             + "\n",
             "kube-copilot/reports/policy-pack.md": "Kube Copilot Policy Pack with policy rules, validation, evidence, and human review boundary.\n",
-            "haul-truck-planner/reports/route-experiment.md": "Route experiment with battery reserve, charging, grade, risk, Dijkstra, and A*.\n",
+            "kube-copilot/reports/adversarial-validation.md": "Kube Copilot Adversarial Validation catches comment spoof and unsafe sidecar cases.\n",
+            "haul-truck-planner/reports/route-experiment.md": "Route experiment with battery reserve, charging, grade, risk, Dijkstra, A*, and Explicit model assumptions.\n",
             "haul-truck-planner/reports/algorithm-comparison.md": "Algorithm comparison for shortest path, Dijkstra, A*, energy, and charging.\n",
+            "docs/ADVERSARIAL_REVIEW.md": "Overall status PASS. Challenges passed with evidence and Boundary notes.\n",
+            "docs/ADVERSARIAL_REVIEW.json": json.dumps(
+                {
+                    "overall_status": "PASS",
+                    "challenges": [
+                        {"challenge_id": f"C-{index}", "passed": True}
+                        for index in range(1, 13)
+                    ],
+                    "boundary": "negative controls do not prove production robustness",
+                }
+            )
+            + "\n",
         }
         for relative_path, contents in required_files.items():
             path = repo / relative_path
@@ -304,6 +350,7 @@ class EvidenceOpsScorecardTests(unittest.TestCase):
                         {"name": "Kube Copilot report", "status": "PASS"},
                         {"name": "Kube Policy Pack", "status": "PASS"},
                         {"name": "Haul Truck Planner report", "status": "PASS"},
+                        {"name": "adversarial review", "status": "PASS"},
                         {"name": "EvidenceOps scorecard", "status": "PASS"},
                         {"name": "public boundary check", "status": "PASS"},
                     ],

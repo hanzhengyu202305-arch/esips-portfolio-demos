@@ -1,14 +1,30 @@
 {
   "scenario_id": "S8",
   "root_cause_id": "nested_loop_latency_regression",
-  "confidence": 0.97,
+  "confidence": 0.89,
+  "decision": "PROPOSE_PATCH",
+  "decision_reason": "highest-scoring hypothesis has sufficient evidence and separation",
+  "ranked_hypotheses": [
+    {
+      "root_cause_id": "nested_loop_latency_regression",
+      "score": 6.25,
+      "evidence_hits": [
+        "nested loop",
+        "p95 latency.{0,50}(?:980ms|increased)",
+        "repeats customer aggregation"
+      ],
+      "context_hits": [
+        "latency regression"
+      ]
+    }
+  ],
   "evidence_refs": [
     "latency:S8:nested-loop"
   ],
   "retrieved_context_refs": [
     "latency-regression",
-    "container-security",
-    "docker-build"
+    "docker-build",
+    "k8s-readiness-probe"
   ],
   "impact": "The scoring path regressed after adding an O(n^2) customer aggregation loop.",
   "fix_plan": [

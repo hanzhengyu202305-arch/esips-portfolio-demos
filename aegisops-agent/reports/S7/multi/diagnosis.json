@@ -1,14 +1,30 @@
 {
   "scenario_id": "S7",
   "root_cause_id": "container_runs_as_root",
-  "confidence": 0.97,
+  "confidence": 0.89,
+  "decision": "PROPOSE_PATCH",
+  "decision_reason": "highest-scoring hypothesis has sufficient evidence and separation",
+  "ranked_hypotheses": [
+    {
+      "root_cause_id": "container_runs_as_root",
+      "score": 6.25,
+      "evidence_hits": [
+        "must runasnonroot",
+        "allows root execution",
+        "allowprivilegeescalation"
+      ],
+      "context_hits": [
+        "container security context"
+      ]
+    }
+  ],
   "evidence_refs": [
     "security:S7:root-container"
   ],
   "retrieved_context_refs": [
     "container-security",
-    "k8s-readiness-probe",
-    "kubernetes-crashloop"
+    "github-actions",
+    "latency-regression"
   ],
   "impact": "Policy validation flags a root container and missing privilege escalation controls.",
   "fix_plan": [

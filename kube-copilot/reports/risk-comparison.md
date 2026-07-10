@@ -7,7 +7,7 @@ This report frames Kube Copilot as a small Kubernetes-based CI/CD pipeline assis
 | case | validation | reviewer decision | blocking | warning | manual review |
 | --- | --- | --- | --- | --- | --- |
 | safe | PASS | PASS | none | none | credential handling, RBAC, rollout window, and production context still require human review |
-| risky | FAIL | FAIL | image tag must not be latest; runAsNonRoot must be true; privileged containers are not allowed; privilege escalation must be disabled | cpu limit is required; memory limit is required; cpu request is required; memory request is required | none |
+| risky | FAIL | FAIL | image tag must not be latest; runAsNonRoot must be true; privileged containers are not allowed; privilege escalation must be disabled | cpu request is required; memory request is required; cpu limit is required; memory limit is required | none |
 | partial | FAIL | PARTIAL | ci workflow is required | liveness probe is required | none |
 
 ## Remediation checklist

@@ -1,14 +1,20 @@
 from __future__ import annotations
 
 import json
+import sys
+from dataclasses import replace
 from pathlib import Path
 
+from agent.diagnosis_engine import build_retrieval_query, infer_root_cause
 from agent.evaluation.evaluator import run_eval
 from agent.graph.multi_agent import run_multi_agent
 from agent.graph.single_agent import run_single_agent
 from agent.scenarios import get_scenario
 from agent.tools.file_tools import PatchSafetyError, validate_patch_targets
 from agent.tools.test_tools import run_validation
+from agent.llm.mock_client import MockLLM
+from agent.memory.retriever import build_index, retrieve
+from agent.tools.evidence_tools import collect_evidence
 
 
 def test_patch_safety_rejects_blocked_targets() -> None:
@@ -78,6 +84,8 @@ def test_stable_validation_logs_normalize_pytest_duration(tmp_path: Path, monkey
     text = result.log_path.read_text(encoding="utf-8")
     assert "5 passed in <stable>s" in text
     assert "passed in 0." not in text
+    assert result.commands_run[0].startswith("python3 -m pytest")
+    assert sys.executable not in result.commands_run[0]
 
 
 def test_eval_mock_generates_summary_and_metrics(tmp_path: Path) -> None:
@@ -91,3 +99,41 @@ def test_eval_mock_generates_summary_and_metrics(tmp_path: Path) -> None:
     assert "estimated_cost_usd" in summary
     assert len(results) == 6
     assert all(item["root_cause_correct"] for item in results)
+
+
+def test_diagnosis_does_not_read_fixture_gold_label(tmp_path: Path) -> None:
+    scenario = get_scenario("S4")
+    evidence_path = collect_evidence("S4", reports_dir=tmp_path)
+    evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+    index_path = build_index(index_path=tmp_path / "index.json")
+    contexts = retrieve(build_retrieval_query(evidence), index_path=index_path, limit=3)
+
+    tampered = replace(scenario, root_cause_id="tampered_gold_label")
+    diagnosis = MockLLM().diagnose(tampered, evidence, contexts, mode="multi")
+
+    assert diagnosis.root_cause_id == "invalid_app_mode_env"
+    assert diagnosis.decision == "PROPOSE_PATCH"
+    assert diagnosis.root_cause_id != tampered.root_cause_id
+
+
+def test_diagnosis_escalates_when_evidence_is_missing() -> None:
+    decision = infer_root_cause({"raw_log": "", "signals": []}, [], mode="single")
+
+    assert decision.decision == "ESCALATE"
+    assert decision.root_cause_id == "undetermined"
+    assert "insufficient" in decision.reason
+
+
+def test_diagnosis_escalates_when_evidence_conflicts() -> None:
+    evidence = {
+        "raw_log": "APP_MODE is empty; got ''. APP_MODE has unsupported value 'broken'.",
+        "signals": [
+            {"kind": "ci", "message": "empty APP_MODE"},
+            {"kind": "kubernetes", "message": "APP_MODE got 'broken' and is unsupported"},
+        ],
+    }
+
+    decision = infer_root_cause(evidence, [], mode="multi")
+
+    assert decision.decision == "ESCALATE"
+    assert "conflicting" in decision.reason

@@ -1,6 +1,8 @@
 # Demo Report: Kubernetes readiness probe path is wrong
 
 - root_cause_id: `wrong_readiness_probe_path`
+- decision: `PROPOSE_PATCH`
+- decision_reason: `highest-scoring hypothesis has sufficient evidence and separation`
 - mode: `single`
 - root_cause_correct: `True`
 - fix_successful: `True`

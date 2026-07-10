@@ -4,7 +4,7 @@ AegisOps Agent is an agentic DevOps RCA and remediation portfolio project for CI
 
 It is designed as a portfolio project for ESIPS-style AI/software placements, especially Accenture's SDLC agent and Kubernetes DevOps briefs. The project shows how an LLM-style agent can enter a real engineering workflow without becoming an unverified chatbot: it collects evidence, retrieves runbook context, diagnoses a root cause, generates a safe patch preview, runs validation, and reports quality, cost, latency, and tool-call metrics.
 
-It uses deterministic fixtures and a `MockLLM`, so the main demo runs locally without API keys:
+It uses deterministic fixtures and a `MockLLM`, so the main demo runs locally without API keys. The diagnosis harness ranks patterns found in observed logs and signals; it does not read the fixture's gold root-cause label.
 
 ```bash
 make setup
@@ -64,6 +64,7 @@ The MVP includes:
 - Evidence JSON generation
 - Markdown runbook retrieval
 - Deterministic MockLLM diagnosis
+- Ranked evidence hypotheses with `ESCALATE` on insufficient or conflicting evidence
 - Single-agent and multi-agent orchestration
 - Whitelisted patch preview generation
 - pytest, compile-lint, and DevOps dry-run validation
@@ -83,7 +84,18 @@ The latest local validation covers 8 scenarios in both single-agent and multi-ag
 | evaluated runs | 16 |
 | reproducible failure scenarios | 8 |
 
-The project also produces a deterministic ROI proxy so the discussion can move beyond "AI is cool" into engineering value, review cost, and operational risk.
+These are in-suite deterministic results, not external benchmark accuracy. The adversarial gate separately tampers with the gold label and tests missing and conflicting evidence. The project also produces a deterministic ROI proxy so the discussion can move beyond "AI is cool" into engineering value, review cost, and operational risk.
+
+## Adversarial Controls
+
+The repository-level `make adversarial-review` command verifies that:
+
+- changing `ScenarioSpec.root_cause_id` does not change an evidence-derived diagnosis;
+- missing evidence returns `ESCALATE`;
+- equally supported conflicting causes return `ESCALATE`;
+- an escalation stops patch generation and validation.
+
+Read [`../docs/ADVERSARIAL_REVIEW.md`](../docs/ADVERSARIAL_REVIEW.md) for the generated results.
 
 ## Newcomer Guide
 

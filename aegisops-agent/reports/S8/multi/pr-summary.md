@@ -6,7 +6,9 @@ Latency regression because order scoring uses a nested loop
 
 ## Root Cause
 
-`nested_loop_latency_regression` with confidence `0.97`.
+`nested_loop_latency_regression` with confidence `0.89`.
+
+Decision: `PROPOSE_PATCH` because highest-scoring hypothesis has sufficient evidence and separation.
 
 The scoring path regressed after adding an O(n^2) customer aggregation loop.
 
@@ -20,9 +22,9 @@ Validation: passed
 
 Commands run:
 
-- `/opt/anaconda3/bin/python3.13 -m pytest apps/demo-api/tests -q`
-- `/opt/anaconda3/bin/python3.13 scripts/lint.py`
-- `/opt/anaconda3/bin/python3.13 scripts/devops_check.py --scenario S8 --patched-dir reports/S8/multi/patched`
+- `python3 -m pytest apps/demo-api/tests -q`
+- `python3 scripts/lint.py`
+- `python3 scripts/devops_check.py --scenario S8 --patched-dir reports/S8/multi/patched`
 
 ## Risk And Review
 

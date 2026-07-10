@@ -15,12 +15,16 @@ This matrix documents the deterministic checks used by Kube Copilot. The demo is
 | privileged container rejected | privilege boundary | risky fails |
 | privilege escalation disabled | least privilege | risky fails |
 | GitHub Actions workflow present | CI validation gate | partial fails |
+| structural YAML parsing | validator integrity | comments cannot spoof controls |
+| every container checked | policy coverage | unsafe sidecar fails |
+| host namespace and hostPath rejected | host isolation | host-boundary cases fail |
 
 ## Fixtures
 
 - `fixtures/safe/` shows a pinned image, resources, probes, security context, and CI.
 - `fixtures/partial/` shows incremental remediation with a missing liveness probe and missing CI workflow.
 - `fixtures/risky/` shows a latest tag, missing resources, and insecure container settings.
+- `reports/adversarial-validation.md` shows comment spoofing, unsafe sidecar, and multi-document bypass attempts being rejected.
 
 ## Trust Boundary
 

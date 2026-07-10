@@ -5,8 +5,8 @@
     "passed_projects": 3,
     "total_projects": 3,
     "portfolio_status_file": "PASS",
-    "quality_score": 100,
-    "passed_evidence": 12,
+    "evidence_completeness_score": 100,
+    "passed_evidence": 16,
     "weak_evidence": 0,
     "missing_evidence": 0
   },
@@ -15,28 +15,42 @@
       "path": "README.md",
       "exists": true,
       "status": "PASS",
-      "bytes": 11609,
+      "bytes": 12029,
       "quality_issues": []
     },
     {
       "path": "CLAIMS_MATRIX.md",
       "exists": true,
       "status": "PASS",
-      "bytes": 3935,
+      "bytes": 4168,
       "quality_issues": []
     },
     {
       "path": "PORTFOLIO_STATUS.md",
       "exists": true,
       "status": "PASS",
-      "bytes": 1026,
+      "bytes": 1087,
       "quality_issues": []
     },
     {
       "path": "PORTFOLIO_STATUS.json",
       "exists": true,
       "status": "PASS",
-      "bytes": 3820,
+      "bytes": 3998,
+      "quality_issues": []
+    },
+    {
+      "path": "docs/ADVERSARIAL_REVIEW.md",
+      "exists": true,
+      "status": "PASS",
+      "bytes": 2710,
+      "quality_issues": []
+    },
+    {
+      "path": "docs/ADVERSARIAL_REVIEW.json",
+      "exists": true,
+      "status": "PASS",
+      "bytes": 3877,
       "quality_issues": []
     }
   ],
@@ -58,7 +72,14 @@
           "path": "aegisops-agent/reports/S4/multi/pr-summary.md",
           "exists": true,
           "status": "PASS",
-          "bytes": 901,
+          "bytes": 937,
+          "quality_issues": []
+        },
+        {
+          "path": "aegisops-agent/reports/S4/multi/diagnosis.json",
+          "exists": true,
+          "status": "PASS",
+          "bytes": 897,
           "quality_issues": []
         }
       ]
@@ -80,21 +101,28 @@
           "path": "kube-copilot/reports/policy-matrix.md",
           "exists": true,
           "status": "PASS",
-          "bytes": 1547,
+          "bytes": 1913,
           "quality_issues": []
         },
         {
           "path": "kube-copilot/reports/policy-pack.json",
           "exists": true,
           "status": "PASS",
-          "bytes": 3767,
+          "bytes": 4756,
           "quality_issues": []
         },
         {
           "path": "kube-copilot/reports/policy-pack.md",
           "exists": true,
           "status": "PASS",
-          "bytes": 2392,
+          "bytes": 2985,
+          "quality_issues": []
+        },
+        {
+          "path": "kube-copilot/reports/adversarial-validation.md",
+          "exists": true,
+          "status": "PASS",
+          "bytes": 1128,
           "quality_issues": []
         }
       ]
@@ -109,7 +137,7 @@
           "path": "haul-truck-planner/reports/route-experiment.md",
           "exists": true,
           "status": "PASS",
-          "bytes": 2829,
+          "bytes": 3237,
           "quality_issues": []
         },
         {

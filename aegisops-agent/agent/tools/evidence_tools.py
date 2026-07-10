@@ -20,6 +20,7 @@ def collect_evidence(
         "title": scenario.title,
         "category": scenario.category,
         "failure_summary": scenario.failure_summary,
+        "raw_log": scenario.raw_log,
         "signals": scenario.evidence_signals,
         "artifacts": [str(scenario_dir / "raw_failure.log")],
     }

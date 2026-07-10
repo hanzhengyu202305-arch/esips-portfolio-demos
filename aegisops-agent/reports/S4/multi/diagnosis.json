@@ -1,14 +1,30 @@
 {
   "scenario_id": "S4",
   "root_cause_id": "invalid_app_mode_env",
-  "confidence": 0.97,
+  "confidence": 0.89,
+  "decision": "PROPOSE_PATCH",
+  "decision_reason": "highest-scoring hypothesis has sufficient evidence and separation",
+  "ranked_hypotheses": [
+    {
+      "root_cause_id": "invalid_app_mode_env",
+      "score": 6.25,
+      "evidence_hits": [
+        "app_mode.{0,50}got\\s+['\\\"]broken['\\\"]",
+        "app_mode.{0,50}unsupported",
+        "unsupported value ['\\\"]broken['\\\"]"
+      ],
+      "context_hits": [
+        "crashloopbackoff"
+      ]
+    }
+  ],
   "evidence_refs": [
     "k8s:S4:invalid-env"
   ],
   "retrieved_context_refs": [
     "kubernetes-crashloop",
-    "github-actions",
-    "docker-build"
+    "pytest-failure",
+    "k8s-readiness-probe"
   ],
   "impact": "Pod restarts because APP_MODE is set to an unsupported value.",
   "fix_plan": [

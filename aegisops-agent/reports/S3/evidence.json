@@ -3,6 +3,7 @@
   "title": "GitHub Actions failure because APP_MODE is missing",
   "category": "ci",
   "failure_summary": "CI starts the app with an empty APP_MODE environment variable.",
+  "raw_log": "Run pytest\nRuntimeError: APP_MODE must be one of demo, test, prod; got ''\nError: Process completed with exit code 1.\n",
   "signals": [
     {
       "id": "gha:S3:empty-env",

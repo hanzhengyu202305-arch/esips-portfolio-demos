@@ -3,6 +3,7 @@
   "title": "Latency regression because order scoring uses a nested loop",
   "category": "latency",
   "failure_summary": "The scoring path regressed after adding an O(n^2) customer aggregation loop.",
+  "raw_log": "benchmark failed\np95 latency increased from 120ms to 980ms after order scoring change\n",
   "signals": [
     {
       "id": "latency:S8:nested-loop",

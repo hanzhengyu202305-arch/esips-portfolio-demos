@@ -1,0 +1,119 @@
+{
+  "overall_status": "PASS",
+  "summary": {
+    "passed": 12,
+    "total": 12,
+    "failed": 0
+  },
+  "challenges": [
+    {
+      "challenge_id": "AEG-01",
+      "project": "AegisOps",
+      "attack": "tamper fixture gold label",
+      "expected": "infer invalid_app_mode_env from evidence",
+      "observed": "invalid_app_mode_env",
+      "passed": true,
+      "evidence": "diagnosis is independent of ScenarioSpec.root_cause_id"
+    },
+    {
+      "challenge_id": "AEG-02",
+      "project": "AegisOps",
+      "attack": "remove all diagnostic evidence",
+      "expected": "ESCALATE",
+      "observed": "ESCALATE",
+      "passed": true,
+      "evidence": "insufficient independent evidence matches"
+    },
+    {
+      "challenge_id": "AEG-03",
+      "project": "AegisOps",
+      "attack": "inject equally supported conflicting causes",
+      "expected": "ESCALATE",
+      "observed": "ESCALATE",
+      "passed": true,
+      "evidence": "conflicting hypotheses require human review"
+    },
+    {
+      "challenge_id": "AEG-04",
+      "project": "AegisOps",
+      "attack": "force an escalation decision before remediation",
+      "expected": "no patch and no validation commands",
+      "observed": "patch_applied=False, commands=0",
+      "passed": true,
+      "evidence": "agent flow stops before patch preview and validation"
+    },
+    {
+      "challenge_id": "KUBE-01",
+      "project": "Kube Copilot",
+      "attack": "safe baseline",
+      "expected": "PASS",
+      "observed": "PASS",
+      "passed": true,
+      "evidence": "no blocking findings"
+    },
+    {
+      "challenge_id": "KUBE-02",
+      "project": "Kube Copilot",
+      "attack": "comment spoof",
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "passed": true,
+      "evidence": "image tag must not be latest; cpu request is required; memory request is required"
+    },
+    {
+      "challenge_id": "KUBE-03",
+      "project": "Kube Copilot",
+      "attack": "unsafe sidecar",
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "passed": true,
+      "evidence": "image tag must not be latest; cpu request is required; memory request is required"
+    },
+    {
+      "challenge_id": "KUBE-04",
+      "project": "Kube Copilot",
+      "attack": "unsafe second document",
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "passed": true,
+      "evidence": "host namespaces are not allowed; hostPath volumes are not allowed; image tag must not be latest"
+    },
+    {
+      "challenge_id": "HAUL-01",
+      "project": "Haul Truck Planner",
+      "attack": "compare A* against Dijkstra correctness baseline",
+      "expected": "same optimal cost (7.6)",
+      "observed": "A* cost 7.6",
+      "passed": true,
+      "evidence": "expanded states: Dijkstra=37, A*=23"
+    },
+    {
+      "challenge_id": "HAUL-02",
+      "project": "Haul Truck Planner",
+      "attack": "initial energy exceeds battery capacity",
+      "expected": "reject input",
+      "observed": "truck energy must satisfy 0 <= reserve <= initial <= capacity",
+      "passed": true,
+      "evidence": "battery-state invariant"
+    },
+    {
+      "challenge_id": "HAUL-03",
+      "project": "Haul Truck Planner",
+      "attack": "charging point overlaps blocked road",
+      "expected": "reject input",
+      "observed": "charging points cannot also be blocked",
+      "passed": true,
+      "evidence": "map topology invariant"
+    },
+    {
+      "challenge_id": "HAUL-04",
+      "project": "Haul Truck Planner",
+      "attack": "raise per-cell energy consumption above available margin",
+      "expected": "no feasible route",
+      "observed": "no energy-feasible route found",
+      "passed": true,
+      "evidence": "explicit EnergyModel sensitivity"
+    }
+  ],
+  "boundary": "These deterministic negative controls test portfolio failure handling. They do not prove production robustness or formal security assurance."
+}

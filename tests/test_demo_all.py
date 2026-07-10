@@ -32,6 +32,14 @@ class DemoAllTests(unittest.TestCase):
         self.assertLess(review_queue_position, scorecard_position)
         self.assertIn('"patch-review-queue"', script)
 
+    def test_portfolio_check_runs_adversarial_review_before_scorecard(self):
+        script = (ROOT / "scripts" / "portfolio_check.py").read_text(encoding="utf-8")
+
+        adversarial_position = script.index('"adversarial review"')
+        scorecard_position = script.index('"EvidenceOps scorecard"')
+        self.assertLess(adversarial_position, scorecard_position)
+        self.assertIn("scripts/adversarial_review.py", script)
+
     def test_portfolio_check_runs_release_gate_after_status_write(self):
         script = (ROOT / "scripts" / "portfolio_check.py").read_text(encoding="utf-8")
 
@@ -88,6 +96,14 @@ class DemoAllTests(unittest.TestCase):
         self.assertEqual(release_gate.display_command, "make -C evidenceops-scorecard release-gate")
         self.assertIn("evidenceops-scorecard/reports/release-gate.md", release_gate.reports)
         self.assertIn("evidenceops-scorecard/reports/release-gate.json", release_gate.reports)
+
+    def test_demo_all_includes_portfolio_adversarial_review(self):
+        runs = build_demo_runs("python3")
+        adversarial = next(run for run in runs if run.name == "Portfolio Adversarial Review")
+
+        self.assertEqual(adversarial.display_command, "make adversarial-review")
+        self.assertIn("docs/ADVERSARIAL_REVIEW.md", adversarial.reports)
+        self.assertIn("docs/ADVERSARIAL_REVIEW.json", adversarial.reports)
 
     def test_render_index_lists_all_public_evidence_paths(self):
         markdown = render_index(

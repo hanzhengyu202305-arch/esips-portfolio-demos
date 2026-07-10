@@ -6,7 +6,9 @@ Kubernetes CrashLoopBackOff because APP_MODE is invalid
 
 ## Root Cause
 
-`invalid_app_mode_env` with confidence `0.97`.
+`invalid_app_mode_env` with confidence `0.89`.
+
+Decision: `PROPOSE_PATCH` because highest-scoring hypothesis has sufficient evidence and separation.
 
 Pod restarts because APP_MODE is set to an unsupported value.
 
@@ -20,9 +22,9 @@ Validation: passed
 
 Commands run:
 
-- `/opt/anaconda3/bin/python3.13 -m pytest apps/demo-api/tests -q`
-- `/opt/anaconda3/bin/python3.13 scripts/lint.py`
-- `/opt/anaconda3/bin/python3.13 scripts/devops_check.py --scenario S4 --patched-dir reports/S4/multi/patched`
+- `python3 -m pytest apps/demo-api/tests -q`
+- `python3 scripts/lint.py`
+- `python3 scripts/devops_check.py --scenario S4 --patched-dir reports/S4/multi/patched`
 
 ## Risk And Review
 

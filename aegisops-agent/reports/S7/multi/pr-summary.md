@@ -6,7 +6,9 @@ Container security failure because the API runs as root
 
 ## Root Cause
 
-`container_runs_as_root` with confidence `0.97`.
+`container_runs_as_root` with confidence `0.89`.
+
+Decision: `PROPOSE_PATCH` because highest-scoring hypothesis has sufficient evidence and separation.
 
 Policy validation flags a root container and missing privilege escalation controls.
 
@@ -20,9 +22,9 @@ Validation: passed
 
 Commands run:
 
-- `/opt/anaconda3/bin/python3.13 -m pytest apps/demo-api/tests -q`
-- `/opt/anaconda3/bin/python3.13 scripts/lint.py`
-- `/opt/anaconda3/bin/python3.13 scripts/devops_check.py --scenario S7 --patched-dir reports/S7/multi/patched`
+- `python3 -m pytest apps/demo-api/tests -q`
+- `python3 scripts/lint.py`
+- `python3 scripts/devops_check.py --scenario S7 --patched-dir reports/S7/multi/patched`
 
 ## Risk And Review
 

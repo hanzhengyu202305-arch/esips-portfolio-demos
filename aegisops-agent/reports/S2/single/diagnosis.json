@@ -1,14 +1,30 @@
 {
   "scenario_id": "S2",
   "root_cause_id": "missing_python_dependency",
-  "confidence": 0.93,
+  "confidence": 0.87,
+  "decision": "PROPOSE_PATCH",
+  "decision_reason": "highest-scoring hypothesis has sufficient evidence and separation",
+  "ranked_hypotheses": [
+    {
+      "root_cause_id": "missing_python_dependency",
+      "score": 6.25,
+      "evidence_hits": [
+        "modulenotfounderror",
+        "cannot import pydantic",
+        "no module named ['\\\"]?pydantic"
+      ],
+      "context_hits": [
+        "missing dependenc"
+      ]
+    }
+  ],
   "evidence_refs": [
     "docker:S2:missing-module"
   ],
   "retrieved_context_refs": [
     "docker-build",
-    "container-security",
-    "github-actions"
+    "latency-regression",
+    "container-security"
   ],
   "impact": "Docker build imports pydantic but the image requirements omit it.",
   "fix_plan": [

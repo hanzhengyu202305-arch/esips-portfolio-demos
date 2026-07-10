@@ -5,6 +5,7 @@ import os
 import time
 from pathlib import Path
 
+from agent.diagnosis_engine import build_retrieval_query
 from agent.llm.mock_client import MockLLM
 from agent.memory.retriever import build_index, retrieve
 from agent.patch_risk_diff import write_patch_risk_report
@@ -35,11 +36,27 @@ def run_agent_flow(
     evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
 
     index_path = build_index()
-    contexts = retrieve(scenario.runbook_query, index_path=index_path, limit=3)
+    contexts = retrieve(build_retrieval_query(evidence), index_path=index_path, limit=3)
 
     mock_llm = MockLLM()
     diagnosis = mock_llm.diagnose(scenario, evidence, contexts, mode)
     _write_json(run_dir / "diagnosis.json", diagnosis.to_dict())
+
+    if diagnosis.decision != "PROPOSE_PATCH":
+        patch = PatchResult(
+            scenario_id=scenario.scenario_id,
+            files_changed=[],
+            diff_path="",
+            patch_applied=False,
+            validation_passed=False,
+            commands_run=[],
+        )
+        metrics = _escalation_metrics(start, scenario.scenario_id, mode, mock_llm, scenario)
+        _write_json(run_dir / "patch-result.json", patch.to_dict())
+        _write_json(run_dir / "metrics.json", metrics.to_dict())
+        _write_demo_report(run_dir, scenario.title, diagnosis.root_cause_id, metrics, diagnosis)
+        _write_pr_summary(run_dir, scenario.title, diagnosis, patch, metrics)
+        return AgentRunResult(diagnosis=diagnosis, patch=patch, metrics=metrics, run_dir=str(run_dir))
 
     trace = _stage_trace(mode, scenario.scenario_id, diagnosis.root_cause_id)
     if mode == "multi":
@@ -88,7 +105,7 @@ def run_agent_flow(
     _write_json(run_dir / "patch-result.json", patch.to_dict())
     _write_json(run_dir / "metrics.json", metrics.to_dict())
     write_patch_risk_report(reports_path, scenario.scenario_id, mode)
-    _write_demo_report(run_dir, scenario.title, diagnosis.root_cause_id, metrics)
+    _write_demo_report(run_dir, scenario.title, diagnosis.root_cause_id, metrics, diagnosis)
     _write_pr_summary(run_dir, scenario.title, diagnosis, patch, metrics)
 
     return AgentRunResult(
@@ -135,10 +152,13 @@ def _write_demo_report(
     title: str,
     root_cause_id: str,
     metrics: EvalResult,
+    diagnosis: Diagnosis,
 ) -> None:
     report = f"""# Demo Report: {title}
 
 - root_cause_id: `{root_cause_id}`
+- decision: `{diagnosis.decision}`
+- decision_reason: `{diagnosis.decision_reason}`
 - mode: `{metrics.mode}`
 - root_cause_correct: `{metrics.root_cause_correct}`
 - fix_successful: `{metrics.fix_successful}`
@@ -168,6 +188,8 @@ def _write_pr_summary(
 ## Root Cause
 
 `{diagnosis.root_cause_id}` with confidence `{diagnosis.confidence}`.
+
+Decision: `{diagnosis.decision}` because {diagnosis.decision_reason}.
 
 {diagnosis.impact}
 
@@ -199,3 +221,21 @@ Commands run:
 - tool_calls: `{metrics.tool_calls}`
 """
     (run_dir / "pr-summary.md").write_text(report, encoding="utf-8")
+
+
+def _escalation_metrics(start, scenario_id, mode, mock_llm, scenario) -> EvalResult:
+    prompt_tokens, completion_tokens = mock_llm.estimate_tokens(scenario, mode)
+    return EvalResult(
+        scenario_id=scenario_id,
+        mode=mode,
+        root_cause_correct=False,
+        fix_successful=False,
+        latency_seconds=_elapsed_seconds(start, scenario_id, mode),
+        prompt_tokens=prompt_tokens,
+        completion_tokens=completion_tokens,
+        estimated_cost_usd=round(
+            (prompt_tokens * 0.00000015) + (completion_tokens * 0.0000006),
+            6,
+        ),
+        tool_calls=4 if mode == "single" else 6,
+    )
