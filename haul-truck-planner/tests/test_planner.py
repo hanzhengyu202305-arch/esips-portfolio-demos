@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 from haul_truck_planner.experiments import compare_shortest_and_energy_aware, render_sensitivity_lab, run_sensitivity_lab, write_report
-from haul_truck_planner.planner import MineMap, Truck, plan_route, plan_route_astar
+from haul_truck_planner.planner import EnergyModel, MineMap, Truck, plan_route, plan_route_astar
 
 
 class HaulTruckPlannerTests(unittest.TestCase):
@@ -151,6 +151,52 @@ class HaulTruckPlannerTests(unittest.TestCase):
             self.assertTrue((Path(tmp) / "algorithm-comparison.md").is_file())
             self.assertTrue(sensitivity_path.is_file())
             self.assertIn("Mine Route Sensitivity Lab", sensitivity_path.read_text(encoding="utf-8"))
+
+    def test_rejects_invalid_battery_state_before_search(self):
+        mine = MineMap(width=3, height=1, blocked=set(), charging=set(), grades={})
+        invalid = Truck(capacity_kwh=5.0, initial_kwh=6.0, reserve_kwh=1.0)
+
+        with self.assertRaisesRegex(ValueError, "reserve <= initial <= capacity"):
+            plan_route(mine, start=(0, 0), goal=(2, 0), truck=invalid)
+
+    def test_rejects_map_boundary_and_charger_conflicts(self):
+        outside = MineMap(width=3, height=1, blocked=set(), charging={(4, 0)}, grades={})
+        truck = Truck(capacity_kwh=5.0, initial_kwh=4.0, reserve_kwh=1.0)
+        with self.assertRaisesRegex(ValueError, "charging point is outside"):
+            plan_route(outside, start=(0, 0), goal=(2, 0), truck=truck)
+
+        blocked_charger = MineMap(
+            width=3,
+            height=1,
+            blocked={(1, 0)},
+            charging={(1, 0)},
+            grades={},
+        )
+        with self.assertRaisesRegex(ValueError, "charging points cannot also be blocked"):
+            plan_route(blocked_charger, start=(0, 0), goal=(2, 0), truck=truck)
+
+    def test_explicit_energy_model_changes_feasibility(self):
+        efficient = MineMap(
+            width=3,
+            height=1,
+            blocked=set(),
+            charging=set(),
+            grades={},
+            energy_model=EnergyModel(base_kwh_per_cell=0.5, minimum_step_kwh=0.5),
+        )
+        harsh = MineMap(
+            width=3,
+            height=1,
+            blocked=set(),
+            charging=set(),
+            grades={},
+            energy_model=EnergyModel(base_kwh_per_cell=1.0, minimum_step_kwh=1.0),
+        )
+        truck = Truck(capacity_kwh=3.0, initial_kwh=2.0, reserve_kwh=0.5)
+
+        self.assertEqual(plan_route(efficient, (0, 0), (2, 0), truck).path[-1], (2, 0))
+        with self.assertRaisesRegex(ValueError, "no energy-feasible route"):
+            plan_route(harsh, (0, 0), (2, 0), truck)
 
 
 if __name__ == "__main__":

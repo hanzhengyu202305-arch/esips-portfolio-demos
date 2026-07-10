@@ -128,6 +128,16 @@ def build_demo_runs(aegisops_python: str) -> list[DemoRun]:
             ),
         ),
         DemoRun(
+            name="Portfolio Adversarial Review",
+            command=[sys.executable, "scripts/adversarial_review.py"],
+            display_command="make adversarial-review",
+            purpose="negative controls -> expected rejection or escalation -> machine-readable gate",
+            reports=(
+                "docs/ADVERSARIAL_REVIEW.md",
+                "docs/ADVERSARIAL_REVIEW.json",
+            ),
+        ),
+        DemoRun(
             name="EvidenceOps Scorecard",
             command=["make", "-C", "evidenceops-scorecard", "report"],
             display_command="make -C evidenceops-scorecard report",
@@ -215,7 +225,7 @@ def write_index(results: list[DemoResult], path: Path = INDEX_PATH) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run all public demos and write a reviewer output index.")
-    parser.add_argument("--aegisops-python", default=os.environ.get("AEGISOPS_PY", "/opt/anaconda3/bin/python3.13"))
+    parser.add_argument("--aegisops-python", default=os.environ.get("AEGISOPS_PY", "python3"))
     args = parser.parse_args()
 
     env = os.environ.copy()

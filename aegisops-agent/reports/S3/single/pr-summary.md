@@ -6,7 +6,9 @@ GitHub Actions failure because APP_MODE is missing
 
 ## Root Cause
 
-`missing_app_mode_env` with confidence `0.93`.
+`missing_app_mode_env` with confidence `0.77`.
+
+Decision: `PROPOSE_PATCH` because highest-scoring hypothesis has sufficient evidence and separation.
 
 CI starts the app with an empty APP_MODE environment variable.
 
@@ -20,9 +22,9 @@ Validation: passed
 
 Commands run:
 
-- `/opt/anaconda3/bin/python3.13 -m pytest apps/demo-api/tests -q`
-- `/opt/anaconda3/bin/python3.13 scripts/lint.py`
-- `/opt/anaconda3/bin/python3.13 scripts/devops_check.py --scenario S3 --patched-dir reports/S3/single/patched`
+- `python3 -m pytest apps/demo-api/tests -q`
+- `python3 scripts/lint.py`
+- `python3 scripts/devops_check.py --scenario S3 --patched-dir reports/S3/single/patched`
 
 ## Risk And Review
 

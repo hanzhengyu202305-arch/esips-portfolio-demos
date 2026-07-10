@@ -14,6 +14,8 @@ This local project implements a small energy-aware route planner:
 - A* energy-aware planner using the same transition model and a conservative distance lower bound.
 - Battery reserve constraint so infeasible routes are rejected.
 - Demo route where the truck must use a charging lane to reach the destination.
+- Explicit `EnergyModel` parameters for base consumption, grade penalties, regenerative credit, charging gain, risk weight, and energy quantization.
+- Input invariants that reject impossible battery states, out-of-bounds map data, blocked chargers, and invalid risk/model values before search.
 
 ## Run
 
@@ -30,6 +32,7 @@ make report
 - Easy to extend into richer EV routing constraints, time windows, stochastic renewable charging, fleet dispatch, and charging queue simulation.
 - Gives a visual story: map -> constraints -> feasible route -> energy trace.
 - `make report` writes `reports/route-experiment.md`, comparing geometric shortest path, battery-state Dijkstra, and A* energy-aware planning.
+- The route report lists every synthetic energy assumption instead of hiding constants inside the algorithm.
 - Algorithm comparison notes are in [`docs/algorithm-comparison.md`](docs/algorithm-comparison.md) and `reports/algorithm-comparison.md`.
 - Sensitivity analysis is in `reports/sensitivity-lab.md`, showing how reserve, charging, and risk assumptions change feasibility and route choice.
-- Current claim is a small synthetic planning prototype, not a production mine dispatch optimizer.
+- Current claim is discrete grid route planning with synthetic parameters, not continuous trajectory control, calibrated vehicle dynamics, or a production mine dispatch optimizer.

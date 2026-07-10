@@ -9,7 +9,7 @@ The official brief asks for a prototype or workflow recommendation engine that u
 This local project keeps the LLM layer simulated and focuses on the engineering core:
 
 - Generate a Dockerfile, Kubernetes Deployment, Kubernetes Service, GitHub Actions workflow, and validation checklist from structured deployment requirements.
-- Validate generated infrastructure-as-code for pinned image tags, resource requests and limits, readiness and liveness probes, and CI presence.
+- Parse generated YAML with PyYAML and validate every Deployment document, application container, and init container for pinned images, resource requests and limits, probes, security context, and host-boundary risks.
 - Produce a small report that separates machine-generated config from human review points.
 - Export a small policy pack as `reports/policy-pack.json` and `reports/policy-pack.md` so the validation rules are reviewable as a reusable artifact.
 
@@ -26,6 +26,8 @@ make report
 make policy-pack
 ```
 
+`make report` also writes `reports/adversarial-validation.md`. It proves that comments cannot spoof controls and that unsafe sidecars or later YAML documents are still inspected.
+
 ## Portfolio talking points
 
 - Shows Kubernetes, Docker, CI/CD, and IaC validation basics.
@@ -33,3 +35,4 @@ make policy-pack
 - Can later be connected to a real LLM by replacing the structured generator with prompt/model output while keeping the same validator.
 - `make report` writes `reports/risk-comparison.md` and `reports/policy-matrix.md`, showing safe, partial-remediation, and risky generated configs.
 - `make policy-pack` writes `reports/policy-pack.json` and `reports/policy-pack.md`, turning the same rules into a compact reviewer artifact.
+- Structural parsing is the trust boundary for this demo; it remains a focused policy subset, not Kubernetes schema validation, admission control, or a replacement for kube-linter/Kyverno/Gatekeeper.

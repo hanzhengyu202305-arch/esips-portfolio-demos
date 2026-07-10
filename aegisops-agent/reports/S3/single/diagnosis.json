@@ -1,14 +1,29 @@
 {
   "scenario_id": "S3",
   "root_cause_id": "missing_app_mode_env",
-  "confidence": 0.93,
+  "confidence": 0.77,
+  "decision": "PROPOSE_PATCH",
+  "decision_reason": "highest-scoring hypothesis has sufficient evidence and separation",
+  "ranked_hypotheses": [
+    {
+      "root_cause_id": "missing_app_mode_env",
+      "score": 4.25,
+      "evidence_hits": [
+        "app_mode.{0,40}got\\s+['\\\"]{2}",
+        "app_mode\\s+is\\s+empty"
+      ],
+      "context_hits": [
+        "environment variable"
+      ]
+    }
+  ],
   "evidence_refs": [
     "gha:S3:empty-env"
   ],
   "retrieved_context_refs": [
     "github-actions",
-    "docker-build",
-    "container-security"
+    "pytest-failure",
+    "docker-build"
   ],
   "impact": "CI starts the app with an empty APP_MODE environment variable.",
   "fix_plan": [

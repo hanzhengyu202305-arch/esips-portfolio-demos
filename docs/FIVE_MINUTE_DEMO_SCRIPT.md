@@ -20,7 +20,7 @@ docs/EXECUTIVE_ONE_PAGE.md
 Run:
 
 ```bash
-make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=/opt/anaconda3/bin/python3.13
+make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=python3
 ```
 
 Open:
@@ -89,7 +89,7 @@ evidenceops-scorecard/reports/submission-readiness.md
 
 Say:
 
-> EvidenceOps is the evidence quality gate. It checks whether the reports, claims, status files, and manual-review boundaries are present, then labels evidence as PASS, WEAK, or MISSING and gives a quality score. This means the portfolio is not only a set of demos; it is a reviewable evidence package.
+> The adversarial gate first attacks happy-path assumptions across all three demos. EvidenceOps then checks whether reports, structured outputs, claims, status files, and manual-review boundaries are present, labels evidence as PASS, WEAK, or MISSING, and gives a completeness score. The score means the evidence package is complete, not that the engineering is independently certified as perfect.
 
 ## 4:50-5:00 - Boundary
 

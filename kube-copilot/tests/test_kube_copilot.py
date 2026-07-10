@@ -5,9 +5,11 @@ from pathlib import Path
 from kube_copilot.generator import generate_workspace
 from kube_copilot.policy_pack import build_policy_pack, render_policy_pack_markdown, write_policy_pack
 from kube_copilot.risk_report import (
+    adversarial_workspaces,
     compare_safe_and_risky_workspace,
     partial_remediation_workspace,
     policy_matrix_markdown,
+    render_adversarial_validation,
 )
 from kube_copilot.validator import validate_workspace
 
@@ -194,7 +196,7 @@ class KubeCopilotTests(unittest.TestCase):
         policy_pack = build_policy_pack()
 
         self.assertEqual(policy_pack["pack_id"], "kube-copilot-predeploy")
-        self.assertEqual(policy_pack["version"], "0.1.0")
+        self.assertEqual(policy_pack["version"], "0.2.0")
         self.assertEqual(policy_pack["scope"], "pre-deployment generated Kubernetes and CI artifacts")
         rule_ids = {rule["id"] for rule in policy_pack["rules"]}
         self.assertIn("KC001_IMAGE_TAG_PINNED", rule_ids)
@@ -205,6 +207,27 @@ class KubeCopilotTests(unittest.TestCase):
         self.assertEqual(image_rule["validator_finding"], "image tag must not be latest")
         self.assertIn("fixtures/risky", image_rule["fixture_evidence"])
         self.assertIn("human review", policy_pack["trust_boundary"])
+
+    def test_structural_validator_rejects_adversarial_bypasses(self):
+        reports = {
+            name: validate_workspace(workspace)
+            for name, workspace in adversarial_workspaces().items()
+        }
+
+        self.assertTrue(reports["safe baseline"].passed)
+        self.assertFalse(reports["comment spoof"].passed)
+        self.assertIn("privileged containers are not allowed", reports["comment spoof"].findings)
+        self.assertFalse(reports["unsafe sidecar"].passed)
+        self.assertIn("image tag must not be latest", reports["unsafe sidecar"].findings)
+        self.assertFalse(reports["unsafe second document"].passed)
+        self.assertIn("host namespaces are not allowed", reports["unsafe second document"].findings)
+        self.assertIn("hostPath volumes are not allowed", reports["unsafe second document"].findings)
+
+        markdown = render_adversarial_validation()
+        self.assertIn("| safe baseline | PASS | PASS |", markdown)
+        self.assertIn("| comment spoof | FAIL | FAIL |", markdown)
+        self.assertIn("| unsafe sidecar | FAIL | FAIL |", markdown)
+        self.assertIn("| unsafe second document | FAIL | FAIL |", markdown)
 
     def test_policy_pack_markdown_is_reviewer_readable(self):
         markdown = render_policy_pack_markdown(build_policy_pack())

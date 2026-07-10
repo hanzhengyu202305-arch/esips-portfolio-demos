@@ -1,14 +1,30 @@
 {
   "scenario_id": "S5",
   "root_cause_id": "wrong_readiness_probe_path",
-  "confidence": 0.93,
+  "confidence": 0.87,
+  "decision": "PROPOSE_PATCH",
+  "decision_reason": "highest-scoring hypothesis has sufficient evidence and separation",
+  "ranked_hypotheses": [
+    {
+      "root_cause_id": "wrong_readiness_probe_path",
+      "score": 6.25,
+      "evidence_hits": [
+        "readiness probe.{0,50}404",
+        "/readyz.{0,40}404",
+        "/health.{0,40}200"
+      ],
+      "context_hits": [
+        "readiness probe"
+      ]
+    }
+  ],
   "evidence_refs": [
     "k8s:S5:probe-404"
   ],
   "retrieved_context_refs": [
     "k8s-readiness-probe",
-    "kubernetes-crashloop",
-    "container-security"
+    "docker-build",
+    "kubernetes-crashloop"
   ],
   "impact": "The pod is running but not ready because readiness probes call /readyz.",
   "fix_plan": [

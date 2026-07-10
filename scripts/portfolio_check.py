@@ -24,7 +24,7 @@ class CheckResult:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run portfolio validation and write status artifacts.")
-    parser.add_argument("--aegisops-python", default=os.environ.get("AEGISOPS_PY", "/opt/anaconda3/bin/python3.13"))
+    parser.add_argument("--aegisops-python", default=os.environ.get("AEGISOPS_PY", "python3"))
     args = parser.parse_args()
 
     env = os.environ.copy()
@@ -39,6 +39,7 @@ def main() -> int:
         ("Kube Copilot report", ["make", "-C", "kube-copilot", "report"]),
         ("Kube Policy Pack", ["make", "-C", "kube-copilot", "policy-pack"]),
         ("Haul Truck Planner report", ["make", "-C", "haul-truck-planner", "report"]),
+        ("adversarial review", [sys.executable, "scripts/adversarial_review.py"]),
         ("EvidenceOps scorecard", ["make", "-C", "evidenceops-scorecard", "report"]),
         ("public boundary check", [sys.executable, "scripts/public_boundary_check.py"]),
     ]

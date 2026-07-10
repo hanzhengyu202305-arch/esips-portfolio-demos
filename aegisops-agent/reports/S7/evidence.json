@@ -3,6 +3,7 @@
   "title": "Container security failure because the API runs as root",
   "category": "security",
   "failure_summary": "Policy validation flags a root container and missing privilege escalation controls.",
+  "raw_log": "policy check failed\ncontainer api must runAsNonRoot and must set allowPrivilegeEscalation=false\n",
   "signals": [
     {
       "id": "security:S7:root-container",

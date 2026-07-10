@@ -1,12 +1,12 @@
-$ /opt/anaconda3/bin/python3.13 -m pytest apps/demo-api/tests -q
+$ python3 -m pytest apps/demo-api/tests -q
 .....                                                                    [100%]
 5 passed in <stable>s
 
 
-$ /opt/anaconda3/bin/python3.13 scripts/lint.py
-All checks passed!
+$ python3 scripts/lint.py
+ruff not installed; compile lint passed
 
 
-$ /opt/anaconda3/bin/python3.13 scripts/devops_check.py --scenario S2 --patched-dir reports/S2/multi/patched
+$ python3 scripts/devops_check.py --scenario S2 --patched-dir reports/S2/multi/patched
 passed: docker dry-run requires pydantic dependency
 

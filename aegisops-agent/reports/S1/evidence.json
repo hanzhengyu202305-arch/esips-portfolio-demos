@@ -3,6 +3,7 @@
   "title": "pytest failure because discount logic is wrong",
   "category": "pytest",
   "failure_summary": "pytest assertion fails because gold customer discount is 1% instead of 10%.",
+  "raw_log": "tests/test_demo_api.py::test_discount_logic_is_deterministic FAILED\nE       assert 2.5 == 25.0\nE        + where 2.5 = calculate_discount(order_total=250.0, customer_tier='gold')\n",
   "signals": [
     {
       "id": "pytest:S1:assertion",

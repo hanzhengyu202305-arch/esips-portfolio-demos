@@ -18,7 +18,7 @@ Read the short application framing in [`THREE_LINE_ESIPS_PLAN.md`](../THREE_LINE
 
 | demo | command | evidence to inspect |
 | --- | --- | --- |
-| AegisOps Agent | `make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=/opt/anaconda3/bin/python3.13` | [`aegisops-agent/reports/S4/multi/demo-report.md`](../aegisops-agent/reports/S4/multi/demo-report.md), [`aegisops-agent/reports/S4/multi/pr-summary.md`](../aegisops-agent/reports/S4/multi/pr-summary.md) |
+| AegisOps Agent | `make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=python3` | [`aegisops-agent/reports/S4/multi/demo-report.md`](../aegisops-agent/reports/S4/multi/demo-report.md), [`aegisops-agent/reports/S4/multi/pr-summary.md`](../aegisops-agent/reports/S4/multi/pr-summary.md) |
 | Kube Copilot | `make -C kube-copilot report` | [`kube-copilot/reports/risk-comparison.md`](../kube-copilot/reports/risk-comparison.md) |
 | Haul Truck Planner | `make -C haul-truck-planner report` | [`haul-truck-planner/reports/route-experiment.md`](../haul-truck-planner/reports/route-experiment.md) |
 | Whole portfolio | `make portfolio-check` | [`PORTFOLIO_STATUS.md`](../PORTFOLIO_STATUS.md), [`PORTFOLIO_STATUS.json`](../PORTFOLIO_STATUS.json) |
@@ -51,7 +51,7 @@ make portfolio-check AEGISOPS_PY=python3
 
 1. Open the top-level README and state the thesis: AI software engineering with validation.
 2. Open `THREE_LINE_ESIPS_PLAN.md` and show why AegisOps is the main line.
-3. Run `make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=/opt/anaconda3/bin/python3.13`.
+3. Run `make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=python3`.
 4. Open [`aegisops-agent/reports/S4/multi/pr-summary.md`](../aegisops-agent/reports/S4/multi/pr-summary.md) and point to root cause, allowed file, validation, and metrics.
 5. Open [`kube-copilot/reports/risk-comparison.md`](../kube-copilot/reports/risk-comparison.md) to show the generated-config trust boundary.
 6. Open [`haul-truck-planner/reports/route-experiment.md`](../haul-truck-planner/reports/route-experiment.md) to show shortest path versus constrained planning.

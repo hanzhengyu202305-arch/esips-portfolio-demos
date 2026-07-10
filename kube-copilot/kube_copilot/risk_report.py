@@ -92,6 +92,9 @@ def policy_matrix_markdown() -> str:
         ("privileged container rejected", "privilege boundary", "risky fails"),
         ("privilege escalation disabled", "least privilege", "risky fails"),
         ("GitHub Actions workflow present", "CI validation gate", "partial fails"),
+        ("structural YAML parsing", "validator integrity", "comments cannot spoof controls"),
+        ("every container checked", "policy coverage", "unsafe sidecar fails"),
+        ("host namespace and hostPath rejected", "host isolation", "host-boundary cases fail"),
     ]
     lines = [
         "# Kube Copilot policy matrix",
@@ -111,6 +114,7 @@ def policy_matrix_markdown() -> str:
             "- `fixtures/safe/` shows a pinned image, resources, probes, security context, and CI.",
             "- `fixtures/partial/` shows incremental remediation with a missing liveness probe and missing CI workflow.",
             "- `fixtures/risky/` shows a latest tag, missing resources, and insecure container settings.",
+            "- `reports/adversarial-validation.md` shows comment spoofing, unsafe sidecar, and multi-document bypass attempts being rejected.",
             "",
             "## Trust Boundary",
             "",
@@ -142,6 +146,134 @@ def partial_remediation_workspace() -> GeneratedWorkspace:
     files = dict(workspace.files)
     files["k8s/deployment.yaml"] = deployment
     files.pop(".github/workflows/ci.yml")
+    return GeneratedWorkspace(app_name=workspace.app_name, files=files)
+
+
+def adversarial_workspaces() -> dict[str, GeneratedWorkspace]:
+    safe = generate_workspace(
+        app_name="safe-api",
+        image="ghcr.io/example/safe-api:1.0.0",
+        port=8080,
+        replicas=2,
+        cpu_limit="500m",
+        memory_limit="512Mi",
+    )
+    comment_spoof = _workspace_with_deployment(
+        safe,
+        """apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comment-spoof
+spec:
+  template:
+    spec:
+      # runAsNonRoot: true
+      containers:
+        - name: api
+          image: example/api:latest
+          # limits: {cpu: 500m, memory: 512Mi}
+          # readinessProbe: {httpGet: {path: /health, port: 8080}}
+          securityContext:
+            privileged: true
+            allowPrivilegeEscalation: true
+""",
+    )
+    unsafe_sidecar = _workspace_with_deployment(
+        safe,
+        safe.files["k8s/deployment.yaml"]
+        + """---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unsafe-sidecar
+spec:
+  template:
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: app
+          image: example/app:1.0.0
+          readinessProbe: {httpGet: {path: /health, port: 8080}}
+          livenessProbe: {httpGet: {path: /health, port: 8080}}
+          resources:
+            requests: {cpu: 100m, memory: 128Mi}
+            limits: {cpu: 200m, memory: 256Mi}
+          securityContext:
+            allowPrivilegeEscalation: false
+        - name: debug-sidecar
+          image: example/debug:latest
+          privileged: true
+""",
+    )
+    second_document = _workspace_with_deployment(
+        safe,
+        safe.files["k8s/deployment.yaml"]
+        + """---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hidden-unsafe
+spec:
+  template:
+    spec:
+      hostPID: true
+      volumes:
+        - name: host-root
+          hostPath: {path: /}
+      containers:
+        - name: hidden
+          image: example/hidden:latest
+""",
+    )
+    return {
+        "safe baseline": safe,
+        "comment spoof": comment_spoof,
+        "unsafe sidecar": unsafe_sidecar,
+        "unsafe second document": second_document,
+    }
+
+
+def render_adversarial_validation() -> str:
+    lines = [
+        "# Kube Copilot Adversarial Validation",
+        "",
+        "These cases attack validator assumptions that plain text search commonly misses.",
+        "",
+        "| case | expected | observed | key findings |",
+        "| --- | --- | --- | --- |",
+    ]
+    for name, workspace in adversarial_workspaces().items():
+        report = validate_workspace(workspace)
+        expected = "PASS" if name == "safe baseline" else "FAIL"
+        observed = "PASS" if report.passed else "FAIL"
+        findings = "; ".join(report.findings[:5]) if report.findings else "none"
+        lines.append(f"| {name} | {expected} | {observed} | {findings} |")
+    lines.extend(
+        [
+            "",
+            "## Why This Matters",
+            "",
+            "The validator parses every YAML document and every application or init container. Comments do not count as controls, and an unsafe sidecar or second Deployment cannot hide behind a safe first container.",
+            "",
+            "## Boundary",
+            "",
+            "This is a focused local policy demo, not schema validation, admission control, or a replacement for mature Kubernetes security tools.",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
+def write_adversarial_report(path: str | Path = "reports/adversarial-validation.md") -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(render_adversarial_validation(), encoding="utf-8")
+    return output_path
+
+
+def _workspace_with_deployment(workspace: GeneratedWorkspace, deployment: str) -> GeneratedWorkspace:
+    files = dict(workspace.files)
+    files["k8s/deployment.yaml"] = deployment
     return GeneratedWorkspace(app_name=workspace.app_name, files=files)
 
 
@@ -190,6 +322,7 @@ def write_report(path: str = "reports/risk-comparison.md") -> Path:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(compare_safe_and_risky_workspace(), encoding="utf-8")
     write_policy_matrix(output_path.parent / "policy-matrix.md")
+    write_adversarial_report(output_path.parent / "adversarial-validation.md")
     return output_path
 
 

@@ -17,6 +17,7 @@ PROJECTS = [
         "evidence": [
             "aegisops-agent/reports/final-portfolio-report.md",
             "aegisops-agent/reports/S4/multi/pr-summary.md",
+            "aegisops-agent/reports/S4/multi/diagnosis.json",
         ],
     },
     {
@@ -28,6 +29,7 @@ PROJECTS = [
             "kube-copilot/reports/policy-matrix.md",
             "kube-copilot/reports/policy-pack.json",
             "kube-copilot/reports/policy-pack.md",
+            "kube-copilot/reports/adversarial-validation.md",
         ],
     },
     {
@@ -46,6 +48,8 @@ PORTFOLIO_EVIDENCE = [
     "CLAIMS_MATRIX.md",
     "PORTFOLIO_STATUS.md",
     "PORTFOLIO_STATUS.json",
+    "docs/ADVERSARIAL_REVIEW.md",
+    "docs/ADVERSARIAL_REVIEW.json",
 ]
 
 QUALITY_RULES = {
@@ -55,12 +59,31 @@ QUALITY_RULES = {
     "PORTFOLIO_STATUS.json": {"min_bytes": 20, "keywords": ["overall_portfolio_status"]},
     "aegisops-agent/reports/final-portfolio-report.md": {"min_bytes": 120, "keywords": ["AegisOps", "validation"]},
     "aegisops-agent/reports/S4/multi/pr-summary.md": {"min_bytes": 120, "keywords": ["root cause", "validation"]},
+    "aegisops-agent/reports/S4/multi/diagnosis.json": {
+        "min_bytes": 120,
+        "keywords": ["decision", "ranked_hypotheses", "root_cause_id"],
+    },
     "kube-copilot/reports/risk-comparison.md": {"min_bytes": 120, "keywords": ["Kube Copilot", "manual review"]},
     "kube-copilot/reports/policy-matrix.md": {"min_bytes": 120, "keywords": ["policy", "validation"]},
     "kube-copilot/reports/policy-pack.json": {"min_bytes": 120, "keywords": ["kube-copilot-predeploy", "rules", "trust_boundary"]},
     "kube-copilot/reports/policy-pack.md": {"min_bytes": 120, "keywords": ["Policy Pack", "validation", "human review"]},
-    "haul-truck-planner/reports/route-experiment.md": {"min_bytes": 120, "keywords": ["battery", "charging"]},
+    "kube-copilot/reports/adversarial-validation.md": {
+        "min_bytes": 120,
+        "keywords": ["Adversarial Validation", "comment spoof", "unsafe sidecar"],
+    },
+    "haul-truck-planner/reports/route-experiment.md": {
+        "min_bytes": 120,
+        "keywords": ["battery", "charging", "Explicit model assumptions"],
+    },
     "haul-truck-planner/reports/algorithm-comparison.md": {"min_bytes": 120, "keywords": ["Dijkstra", "A*"]},
+    "docs/ADVERSARIAL_REVIEW.md": {
+        "min_bytes": 120,
+        "keywords": ["Overall status", "Challenges passed", "Boundary"],
+    },
+    "docs/ADVERSARIAL_REVIEW.json": {
+        "min_bytes": 120,
+        "keywords": ["overall_status", "challenges", "boundary"],
+    },
 }
 
 
@@ -94,7 +117,7 @@ def build_scorecard(root: Path | str = ROOT) -> dict[str, Any]:
             "passed_projects": passed_projects,
             "total_projects": len(projects),
             "portfolio_status_file": status_payload.get("overall_portfolio_status", "MISSING_OR_INVALID"),
-            "quality_score": _quality_score(all_evidence),
+            "evidence_completeness_score": _completeness_score(all_evidence),
             "passed_evidence": sum(1 for item in all_evidence if item["status"] == "PASS"),
             "weak_evidence": len(weak_evidence),
             "missing_evidence": len(missing_evidence),
@@ -119,7 +142,7 @@ def render_markdown(scorecard: dict[str, Any]) -> str:
         "",
         f"Portfolio evidence status: **{scorecard['portfolio_evidence_status']}**",
         "",
-        f"Quality score: **{scorecard['summary']['quality_score']}/100**",
+        f"Evidence completeness score: **{scorecard['summary']['evidence_completeness_score']}/100**",
         "",
         f"Application submission status: **{scorecard['application_submission_status']}**",
         "",
@@ -202,7 +225,7 @@ def render_submission_readiness(scorecard: dict[str, Any]) -> str:
             "# Submission Readiness",
             "",
             f"- Public evidence: `{scorecard['portfolio_evidence_status']}`",
-            f"- Evidence quality score: `{scorecard['summary']['quality_score']}/100`",
+            f"- Evidence completeness score: `{scorecard['summary']['evidence_completeness_score']}/100`",
             f"- Application submission: `{scorecard['application_submission_status']}`",
             f"- Projects with evidence: `{scorecard['summary']['passed_projects']}/{scorecard['summary']['total_projects']}`",
             f"- Weak evidence items: `{scorecard['summary']['weak_evidence']}`",
@@ -212,7 +235,7 @@ def render_submission_readiness(scorecard: dict[str, Any]) -> str:
             "",
             *[f"- {item}" for item in scorecard["manual_review_items"]],
             "",
-            "Do not treat this file as final application approval. It is a public evidence quality report only.",
+            "Do not treat this file as final application approval. It is a public evidence completeness report only.",
             "",
         ]
     )
@@ -239,6 +262,7 @@ def build_release_gate(root: Path | str = ROOT) -> dict[str, Any]:
         ),
         _demo_index_check(repo_root),
         _claim_trace_check(repo_root),
+        _adversarial_review_check(repo_root),
         _portfolio_named_check(status_payload, "public boundary check", "public boundary check did not pass"),
         _validation_suite_check(status_payload),
     ]
@@ -393,6 +417,8 @@ def _quality_issues(path: Path, relative_path: str) -> list[str]:
     for keyword in rule["keywords"]:
         if keyword.lower() not in text:
             issues.append(f"missing keyword: {keyword}")
+    if path.suffix == ".json":
+        issues.extend(_json_structure_issues(path, relative_path))
     return issues
 
 
@@ -403,7 +429,7 @@ def _read_text(path: Path) -> str:
         return ""
 
 
-def _quality_score(evidence: list[dict[str, Any]]) -> int:
+def _completeness_score(evidence: list[dict[str, Any]]) -> int:
     if not evidence:
         return 0
     points = 0.0
@@ -413,6 +439,44 @@ def _quality_score(evidence: list[dict[str, Any]]) -> int:
         elif item["status"] == "WEAK":
             points += 0.5
     return round((points / len(evidence)) * 100)
+
+
+def _json_structure_issues(path: Path, relative_path: str) -> list[str]:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return ["invalid JSON structure"]
+    if not isinstance(payload, dict):
+        return ["JSON root must be an object"]
+
+    if relative_path == "PORTFOLIO_STATUS.json":
+        if payload.get("overall_portfolio_status") not in {"PASS", "FAIL"}:
+            return ["overall_portfolio_status must be PASS or FAIL"]
+    elif relative_path.endswith("diagnosis.json"):
+        issues = []
+        if payload.get("decision") not in {"PROPOSE_PATCH", "ESCALATE"}:
+            issues.append("diagnosis decision is missing or invalid")
+        if not isinstance(payload.get("ranked_hypotheses"), list) or not payload.get("ranked_hypotheses"):
+            issues.append("diagnosis ranked_hypotheses must be a non-empty list")
+        if not payload.get("root_cause_id"):
+            issues.append("diagnosis root_cause_id is missing")
+        return issues
+    elif relative_path.endswith("policy-pack.json"):
+        rules = payload.get("rules")
+        if not isinstance(rules, list) or len(rules) < 14:
+            return ["policy pack must contain at least 14 structured rules"]
+        rule_ids = {rule.get("id") for rule in rules if isinstance(rule, dict)}
+        if len(rule_ids) != len(rules):
+            return ["policy pack rule ids must be present and unique"]
+    elif relative_path == "docs/ADVERSARIAL_REVIEW.json":
+        challenges = payload.get("challenges")
+        if payload.get("overall_status") != "PASS":
+            return ["adversarial review overall_status must be PASS"]
+        if not isinstance(challenges, list) or len(challenges) < 12:
+            return ["adversarial review must contain at least 12 structured challenges"]
+        if any(not isinstance(item, dict) or item.get("passed") is not True for item in challenges):
+            return ["every adversarial challenge must pass"]
+    return []
 
 
 def _quality_fixes(evidence: list[dict[str, Any]]) -> list[str]:
@@ -478,6 +542,26 @@ def _claim_trace_check(repo_root: Path) -> dict[str, str]:
     )
 
 
+def _adversarial_review_check(repo_root: Path) -> dict[str, str]:
+    path = repo_root / "docs/ADVERSARIAL_REVIEW.json"
+    if not path.is_file():
+        return _release_check(
+            "adversarial review",
+            False,
+            "docs/ADVERSARIAL_REVIEW.json",
+            "missing adversarial review",
+            "docs/ADVERSARIAL_REVIEW.json is missing",
+        )
+    issues = _json_structure_issues(path, "docs/ADVERSARIAL_REVIEW.json")
+    return _release_check(
+        "adversarial review",
+        not issues,
+        "docs/ADVERSARIAL_REVIEW.json",
+        "all structured adversarial challenges passed" if not issues else "; ".join(issues),
+        "adversarial review did not pass",
+    )
+
+
 def _portfolio_named_check(status_payload: dict[str, Any], name: str, blocker: str) -> dict[str, str]:
     named = _portfolio_check_status(status_payload, name)
     return _release_check(
@@ -496,6 +580,7 @@ def _validation_suite_check(status_payload: dict[str, Any]) -> dict[str, str]:
         "Kube Copilot report",
         "Kube Policy Pack",
         "Haul Truck Planner report",
+        "adversarial review",
         "EvidenceOps scorecard",
     ]
     missing_or_failed = [name for name in required if _portfolio_check_status(status_payload, name) != "PASS"]

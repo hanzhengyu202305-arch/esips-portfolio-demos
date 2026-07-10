@@ -1,7 +1,7 @@
 # Kube Copilot Policy Pack
 
 - pack_id: `kube-copilot-predeploy`
-- version: `0.1.0`
+- version: `0.2.0`
 - scope: `pre-deployment generated Kubernetes and CI artifacts`
 
 ## Rules
@@ -19,6 +19,9 @@
 | KC009_NO_PRIVILEGE_ESCALATION | blocking | least privilege | Privilege escalation is disabled | privilege escalation must be disabled | fixtures/safe passes; fixtures/risky fails |
 | KC010_RESOURCE_REQUESTS | warning | scheduler reliability | Resource requests block exists | resource requests are required | fixtures/safe passes; fixtures/risky fails |
 | KC011_CI_WORKFLOW_PRESENT | blocking | CI validation gate | CI workflow validates generated artifacts | ci workflow is required | fixtures/safe passes; fixtures/partial fails |
+| KC012_STRUCTURAL_YAML_PARSE | blocking | validator integrity | Manifest is parsed structurally | deployment YAML must be structurally valid | adversarial comment and multi-document cases |
+| KC013_EVERY_CONTAINER_CHECKED | blocking | policy coverage | Every application and init container is checked | container-level findings are aggregated across the pod | adversarial unsafe-sidecar case |
+| KC014_HOST_BOUNDARY | blocking | host isolation | Host namespaces and hostPath are rejected | host namespaces are not allowed; hostPath volumes are not allowed | adversarial host-boundary cases |
 
 ## Trust Boundary
 

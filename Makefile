@@ -1,6 +1,6 @@
-AEGISOPS_PY ?= /opt/anaconda3/bin/python3.13
+AEGISOPS_PY ?= python3
 
-.PHONY: test root-test reports demo-all public-boundary-check portfolio-check aegisops-test kube-test haul-test evidenceops-test
+.PHONY: test root-test reports demo-all adversarial-review public-boundary-check portfolio-check aegisops-test kube-test haul-test evidenceops-test
 
 test: root-test aegisops-test kube-test haul-test evidenceops-test
 
@@ -25,10 +25,14 @@ reports:
 	$(MAKE) -C kube-copilot report
 	$(MAKE) -C kube-copilot policy-pack
 	$(MAKE) -C haul-truck-planner report
+	$(MAKE) adversarial-review
 	$(MAKE) -C evidenceops-scorecard report
 
 demo-all:
 	python3 scripts/demo_all.py --aegisops-python "$(AEGISOPS_PY)"
+
+adversarial-review:
+	python3 scripts/adversarial_review.py
 
 public-boundary-check:
 	python3 scripts/public_boundary_check.py

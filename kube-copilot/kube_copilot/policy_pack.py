@@ -94,13 +94,37 @@ POLICY_RULES: tuple[dict[str, str], ...] = (
         "validator_finding": "ci workflow is required",
         "fixture_evidence": "fixtures/safe passes; fixtures/partial fails",
     },
+    {
+        "id": "KC012_STRUCTURAL_YAML_PARSE",
+        "title": "Manifest is parsed structurally",
+        "severity": "blocking",
+        "category": "validator integrity",
+        "validator_finding": "deployment YAML must be structurally valid",
+        "fixture_evidence": "adversarial comment and multi-document cases",
+    },
+    {
+        "id": "KC013_EVERY_CONTAINER_CHECKED",
+        "title": "Every application and init container is checked",
+        "severity": "blocking",
+        "category": "policy coverage",
+        "validator_finding": "container-level findings are aggregated across the pod",
+        "fixture_evidence": "adversarial unsafe-sidecar case",
+    },
+    {
+        "id": "KC014_HOST_BOUNDARY",
+        "title": "Host namespaces and hostPath are rejected",
+        "severity": "blocking",
+        "category": "host isolation",
+        "validator_finding": "host namespaces are not allowed; hostPath volumes are not allowed",
+        "fixture_evidence": "adversarial host-boundary cases",
+    },
 )
 
 
 def build_policy_pack() -> dict[str, Any]:
     return {
         "pack_id": "kube-copilot-predeploy",
-        "version": "0.1.0",
+        "version": "0.2.0",
         "scope": "pre-deployment generated Kubernetes and CI artifacts",
         "trust_boundary": (
             "Generated Kubernetes and CI files remain draft artifacts. The policy pack "

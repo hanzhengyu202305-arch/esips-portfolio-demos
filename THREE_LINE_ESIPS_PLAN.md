@@ -24,8 +24,8 @@ For a public reviewer one-page overview, read `docs/EXECUTIVE_ONE_PAGE.md`. For 
 推荐现场命令:
 
 ```bash
-make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=/opt/anaconda3/bin/python3.13
-make -C aegisops-agent acceptance PYTHON=/opt/anaconda3/bin/python3.13
+make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=python3
+make -C aegisops-agent acceptance PYTHON=python3
 ```
 
 ## 2. Kube Copilot -> Accenture Kubernetes DevOps
@@ -83,7 +83,7 @@ make -C haul-truck-planner demo
 
 核心说法:
 
-> 我不只是做了 demo，还做了一个 evidence quality gate，用来检查公开仓库里的 claim、报告、portfolio status 和人工审核边界是否齐全、是否足够强。
+> 我不只是做了 demo，还做了 adversarial review 和 evidence completeness gate，用反例检查失败行为，再核对公开 claim、结构化报告、portfolio status 和人工审核边界是否齐全。
 
 主要证据:
 
@@ -102,7 +102,7 @@ make -C evidenceops-scorecard report
 
 一句话版本:
 
-> 三条线不是三家高频公司，而是三个申请证据面：第一条用 AegisOps 对 Accenture SDLC Agents 做主作品；第二条用 Kube Copilot 补 Accenture Kubernetes DevOps；第三条用 Haul Truck Planner 补 RTSIH 的电动矿卡路径规划，同时借 ELEC5308 的 perception + path planning 语言。EvidenceOps 是第四层，用 PASS/WEAK/MISSING 和 quality score 证明这些公开证据不是只写在嘴上，而是有报告、测试和边界检查。
+> 三条线不是三家高频公司，而是三个申请证据面：第一条用 AegisOps 对 Accenture SDLC Agents 做主作品；第二条用 Kube Copilot 补 Accenture Kubernetes DevOps；第三条用 Haul Truck Planner 补 RTSIH 的电动矿卡路径规划，同时借 ELEC5308 的 perception + path planning 语言。Adversarial Review 主动攻击三条线，EvidenceOps 再用 PASS/WEAK/MISSING 和 completeness score 检查证据是否齐全；这个分数不等于独立质量认证。
 
 更短版本:
 

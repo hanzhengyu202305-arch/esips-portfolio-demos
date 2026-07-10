@@ -1,14 +1,27 @@
 {
   "scenario_id": "S6",
   "root_cause_id": "image_tag_mismatch",
-  "confidence": 0.97,
+  "confidence": 0.77,
+  "decision": "PROPOSE_PATCH",
+  "decision_reason": "highest-scoring hypothesis has sufficient evidence and separation",
+  "ranked_hypotheses": [
+    {
+      "root_cause_id": "image_tag_mismatch",
+      "score": 4.0,
+      "evidence_hits": [
+        "failed to pull image",
+        "canary-missing.{0,40}(?:cannot be pulled|back-off|failed)"
+      ],
+      "context_hits": []
+    }
+  ],
   "evidence_refs": [
     "k8s:S6:image-tag"
   ],
   "retrieved_context_refs": [
     "docker-build",
     "k8s-readiness-probe",
-    "kubernetes-crashloop"
+    "container-security"
   ],
   "impact": "Deployment references an image tag that does not exist in the local registry.",
   "fix_plan": [

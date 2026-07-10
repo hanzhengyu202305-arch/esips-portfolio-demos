@@ -1,14 +1,30 @@
 {
   "scenario_id": "S1",
   "root_cause_id": "wrong_discount_logic",
-  "confidence": 0.97,
+  "confidence": 0.89,
+  "decision": "PROPOSE_PATCH",
+  "decision_reason": "highest-scoring hypothesis has sufficient evidence and separation",
+  "ranked_hypotheses": [
+    {
+      "root_cause_id": "wrong_discount_logic",
+      "score": 6.25,
+      "evidence_hits": [
+        "assert\\s+2\\.5\\s+==\\s+25\\.0",
+        "gold(?:\\s+tier|\\s+customer)?.{0,30}discount",
+        "expected\\s+25\\.0.{0,30}(?:observed|got)\\s+2\\.5"
+      ],
+      "context_hits": [
+        "pytest assertion"
+      ]
+    }
+  ],
   "evidence_refs": [
     "pytest:S1:assertion"
   ],
   "retrieved_context_refs": [
     "pytest-failure",
     "container-security",
-    "docker-build"
+    "github-actions"
   ],
   "impact": "pytest assertion fails because gold customer discount is 1% instead of 10%.",
   "fix_plan": [

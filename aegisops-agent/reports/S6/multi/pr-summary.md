@@ -6,7 +6,9 @@ Kubernetes ImagePullBackOff because image tag is missing
 
 ## Root Cause
 
-`image_tag_mismatch` with confidence `0.97`.
+`image_tag_mismatch` with confidence `0.77`.
+
+Decision: `PROPOSE_PATCH` because highest-scoring hypothesis has sufficient evidence and separation.
 
 Deployment references an image tag that does not exist in the local registry.
 
@@ -20,9 +22,9 @@ Validation: passed
 
 Commands run:
 
-- `/opt/anaconda3/bin/python3.13 -m pytest apps/demo-api/tests -q`
-- `/opt/anaconda3/bin/python3.13 scripts/lint.py`
-- `/opt/anaconda3/bin/python3.13 scripts/devops_check.py --scenario S6 --patched-dir reports/S6/multi/patched`
+- `python3 -m pytest apps/demo-api/tests -q`
+- `python3 scripts/lint.py`
+- `python3 scripts/devops_check.py --scenario S6 --patched-dir reports/S6/multi/patched`
 
 ## Risk And Review
 

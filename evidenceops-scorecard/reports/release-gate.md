@@ -2,7 +2,7 @@
 
 Release gate status: **PASS**
 
-Required checks: **6/6**
+Required checks: **7/7**
 
 ## Checks
 
@@ -12,6 +12,7 @@ Required checks: **6/6**
 | portfolio status file | PASS | `PORTFOLIO_STATUS.json` |
 | demo output index | PASS | `docs/DEMO_OUTPUT_INDEX.md` |
 | claim trace | PASS | `docs/REVIEWER_CLAIM_TRACE.md` |
+| adversarial review | PASS | `docs/ADVERSARIAL_REVIEW.json` |
 | public boundary check | PASS | `PORTFOLIO_STATUS.json` |
 | required validation suite | PASS | `PORTFOLIO_STATUS.json` |
 

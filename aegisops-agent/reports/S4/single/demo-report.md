@@ -1,6 +1,8 @@
 # Demo Report: Kubernetes CrashLoopBackOff because APP_MODE is invalid
 
 - root_cause_id: `invalid_app_mode_env`
+- decision: `PROPOSE_PATCH`
+- decision_reason: `highest-scoring hypothesis has sufficient evidence and separation`
 - mode: `single`
 - root_cause_correct: `True`
 - fix_successful: `True`

@@ -23,7 +23,7 @@ make demo SCENARIO=S4 MODE=multi
 If running from the repository root with the local configured interpreter:
 
 ```bash
-make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=/opt/anaconda3/bin/python3.13
+make -C aegisops-agent demo SCENARIO=S4 MODE=multi PYTHON=python3
 ```
 
 ## Expected Root Cause

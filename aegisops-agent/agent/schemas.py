@@ -26,6 +26,9 @@ class Diagnosis:
     scenario_id: str
     root_cause_id: str
     confidence: float
+    decision: str
+    decision_reason: str
+    ranked_hypotheses: list[dict]
     evidence_refs: list[str]
     retrieved_context_refs: list[str]
     impact: str

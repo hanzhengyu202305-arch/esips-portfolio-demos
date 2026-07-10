@@ -6,10 +6,10 @@ This file explains why the portfolio is one coherent product story rather than t
 
 | dimension | AegisOps Agent | Kube Copilot | Haul Truck Planner | EvidenceOps Scorecard |
 | --- | --- | --- | --- | --- |
-| role | main evidence line | DevOps/platform support | EE/mining support | evidence quality layer |
+| role | main evidence line | DevOps/platform support | EE/mining support | evidence completeness layer |
 | core question | Can an agentic workflow turn an incident into reviewable engineering evidence? | Can generated infrastructure be checked before trust? | Can route planning include energy and risk constraints? | Is the public evidence complete and reviewable? |
 | primary output | issue-to-PR report and diagnosis | policy and risk reports | route and algorithm reports | scorecard and release gate reports |
-| validation style | tests, acceptance gates, scenario metrics | deterministic policy checks | algorithm comparison and feasibility metrics | artifact inventory, quality scoring, and release/share gate |
+| validation style | tests, evidence-derived diagnosis, abstention | structural YAML policy and bypass checks | algorithm comparison, invariants, and sensitivity | structured artifact inventory, completeness scoring, and release/share gate |
 | reviewer takeaway | strongest fit for AI software engineering and SDLC agent work | shows infrastructure trust boundaries | keeps EE and industrial systems visible | proves the portfolio is auditable |
 
 ## Why AegisOps Is The Main Line
